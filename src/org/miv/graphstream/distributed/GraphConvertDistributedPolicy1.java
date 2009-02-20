@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.miv.graphstream.tool;
+package org.miv.graphstream.distributed;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
