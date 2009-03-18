@@ -36,6 +36,7 @@ import org.miv.graphstream.io.GraphParseException;
 import org.miv.graphstream.io.GraphReader;
 import org.miv.graphstream.io.GraphReaderFactory;
 import org.miv.graphstream.io.GraphReaderListener;
+import org.miv.graphstream.io.GraphReaderListenerExtended;
 import org.miv.graphstream.io.GraphReaderListenerHelper;
 
 public class GraphRmiServer extends UnicastRemoteObject implements GraphRmi {
@@ -90,14 +91,14 @@ public class GraphRmiServer extends UnicastRemoteObject implements GraphRmi {
 		this.graph = graphFactory.newInstance(id, graphClass) ;
 		this.graph.setAutoCreate(true);
 		this.graph.setStrictChecking(false);
-		this.vGraph.setId(id);
+		//this.vGraph.setId(id);
 		this.run = new GraphReqRunner(this.graph);
 	}
 
 	public void newDgsReader(String fileName) {
 		try {
 			GraphReader graphReader = GraphReaderFactory.readerFor(fileName) ;
-			GraphReaderListener alistener = new GraphReaderListenerHelper(this.graph);
+			GraphReaderListenerExtended alistener = new GraphReaderListenerHelper(this.graph);
 			graphReader.addGraphReaderListener(alistener) ;
 			Algorithms algo = new Algorithms();
 			algo.setGraph(this.graph);
