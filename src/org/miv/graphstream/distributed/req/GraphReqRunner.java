@@ -29,7 +29,7 @@ public class GraphReqRunner {
 	// Creation dynamique d'objets et enregistrement ds une hastable
 	public void newAlgorithm(String className, String instanceName) {
 		objectRegistry.put(instanceName, (new GraphRemoteObjectFactory()).newInstance(className));
-		((Algorithm)(objectRegistry.get(instanceName))).setGraph((Graph)objectRegistry.get(this.graphId));
+		((Algorithm)(objectRegistry.get(instanceName))).init((Graph)objectRegistry.get(this.graphId));
 	}
 
 	// Ajoute une instance de classe existante
@@ -40,7 +40,7 @@ public class GraphReqRunner {
 	// Créé dynamiquement une instance de classe et l'ajoute ds le registry
 	public void newClassInst(String className, String instanceName) {
 		objectRegistry.put(instanceName, (new GraphRemoteObjectFactory()).newInstance(className));
-		((Algorithm)(objectRegistry.get(instanceName))).setGraph((Graph)objectRegistry.get(this.graphId));
+		((Algorithm)(objectRegistry.get(instanceName))).init((Graph)objectRegistry.get(this.graphId));
 	}
 
 	// Modifier

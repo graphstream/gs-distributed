@@ -1,5 +1,7 @@
 package org.miv.graphstream.distributed;
 
+import org.miv.graphstream.distributed.io.GraphConvertDistributedPolicy1DataDist;
+
 
 public class DistributedGraphActions {
 

@@ -21,7 +21,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.miv.graphstream.algorithm.Algorithms;
+import org.miv.graphstream.algorithm.ConnectedComponents;
 import org.miv.graphstream.distributed.io.GraphReaderListenerHelperDistributedLocal;
 import org.miv.graphstream.distributed.req.GraphReqContainer;
 import org.miv.graphstream.distributed.req.GraphReqRunner;
@@ -100,8 +100,9 @@ public class GraphRmiServer extends UnicastRemoteObject implements GraphRmi {
 			GraphReader graphReader = GraphReaderFactory.readerFor(fileName) ;
 			GraphReaderListenerExtended alistener = new GraphReaderListenerHelper(this.graph);
 			graphReader.addGraphReaderListener(alistener) ;
-			Algorithms algo = new Algorithms();
-			algo.setGraph(this.graph);
+			//Algorithms algo = new Algorithms();
+			ConnectedComponents algo = new ConnectedComponents();
+			algo.init(this.graph);
 			graphReader.begin(fileName) ;
 		}
 		catch(IOException e) {
