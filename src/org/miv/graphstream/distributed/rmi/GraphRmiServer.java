@@ -90,7 +90,7 @@ public class GraphRmiServer extends UnicastRemoteObject implements GraphRmi {
 		GraphFactory graphFactory = new GraphFactory() ;
 		this.graph = graphFactory.newInstance(id, graphClass) ;
 		this.graph.setAutoCreate(true);
-		this.graph.setStrictChecking(false);
+		this.graph.setStrict(false);
 		//this.vGraph.setId(id);
 		this.run = new GraphReqRunner(this.graph);
 	}
@@ -243,7 +243,7 @@ public class GraphRmiServer extends UnicastRemoteObject implements GraphRmi {
 
 	public void removeNode( String id ) throws java.rmi.RemoteException {
 		this.graph.removeNode(id);
-		// si le node appartient à un virtual edge
+		// si le node appartient ï¿½ un virtual edge
 		if(this.vGraph.getNode(id)!=null) {
 			Iterator<? extends Edge> it = this.vGraph.getNode(id).getEdgeIterator();
 			this.vGraph.removeNode(id);

@@ -34,7 +34,7 @@ import org.miv.graphstream.io.GraphReaderListener;
  * graph, and modifies this graph according to the events received. This is a
  * simple and quick way to build a graph from a graph reader.
  *
- * @author Yoann Pigné
+ * @author Yoann Pignï¿½
  * @author Antoine Dutot
  * @since 20060101
  * @see GraphReader
@@ -159,7 +159,7 @@ public class GraphReaderListenerHelperDistributedLocal implements GraphReaderLis
 		//System.out.println("nodeChanged " + id);
 		if(n == null)
 		{
-			if(graph.isStrictCheckingEnabled())
+			if(graph.isStrict())
 			{
 				throw new GraphParseException();
 			}
@@ -183,7 +183,7 @@ public class GraphReaderListenerHelperDistributedLocal implements GraphReaderLis
 		try {
 			//graph.removeNode(id);
 			this.graph.removeNode(id);
-			// si le node appartient à un virtual edge
+			// si le node appartient ï¿½ un virtual edge
 
 			if(this.vGraph.getNode(id)!=null) {
 				Iterator<? extends Edge> it = this.vGraph.getNode(id).getEdgeIterator();
