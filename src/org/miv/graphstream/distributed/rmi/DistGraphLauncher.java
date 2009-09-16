@@ -20,19 +20,19 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 
-public class GraphRmiServerLauncher {
+public class DistGraphLauncher {
 
 	public static void main(String args[]) {
 		//exposition de l'objet DISTRIBUTEDGRAPH aux requetes RMI
-		binding(args[0], args[1]);
+		binding(args[0], args[1]) ;
 	}
 
-	public static void binding(String host, String objectName) {
+	public static void binding(String host, String graphId) {
 		try {
-			GraphRmiServer aGraphRmiServer = new GraphRmiServer();
-			System.out.println("l'objet RMI est construit " + host);
-			Naming.rebind("rmi://"+host+"/"+objectName, aGraphRmiServer);
-			System.out.println("l'objet RMI REMOTE_GRAPH est inscrit au service de nommage");
+			DistGraphServer g = new DistGraphServerImpl(graphId);
+			System.out.println("l'objet RMI " + graphId + " est construit " + host);
+			Naming.rebind("rmi://"+host+"/"+graphId, g);
+			System.out.println("l'objet RMI RemoteGraphImpl est inscrit au service de nommage");
 		} catch (RemoteException exp) {
 			System.out.println("Pb de RemoteException : " + exp);
 		} catch (MalformedURLException exp) {

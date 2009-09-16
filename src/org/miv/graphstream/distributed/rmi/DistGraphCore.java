@@ -16,31 +16,15 @@
 
 package org.miv.graphstream.distributed.rmi ;
 
-import java.rmi.Remote;
 import java.util.Map;
 
 
-public interface GraphRmi extends Remote {
+public interface DistGraphCore {
 
-
-	/**
-	 * Fonctions du server GraphStream
-	 */
-
-	public void init() throws java.rmi.RemoteException ;
-
-	public void register(String uri) throws java.rmi.RemoteException ;
-
-	public void unregister(String uri) throws java.rmi.RemoteException ;
 
 	/**
 	 * Fonctions courantes de GraphStream
 	 */
-
-	// Graph
-	public void createGraph(String id, String graphClass) throws java.rmi.RemoteException ;
-
-	//public void modifyGraph( String graphId, Map<String,Object> attributes ) throws java.rmi.RemoteException ;
 
 
 	// Node
@@ -77,11 +61,15 @@ public interface GraphRmi extends Remote {
 	// removeNode
 	public void removeNode( String id ) throws java.rmi.RemoteException ;
 
-	public void removeNodeOnVGraph( String id) throws java.rmi.RemoteException ;
+	public void removeNodeOnGraphVirtual( String id) throws java.rmi.RemoteException ;
 
 	/**
 	 * Fonctions complementaires
 	 */
+
+	/*public void notifyNewGraph(String uri) throws java.rmi.RemoteException;
+
+	public void notifyDelGraph(String graphId) throws java.rmi.RemoteException;
 
 	public void nextDgsEvent() throws java.rmi.RemoteException;
 
@@ -93,30 +81,30 @@ public interface GraphRmi extends Remote {
 
 	public void setGraphReader(String fileName) throws java.rmi.RemoteException;
 
-	public void loadData(String fileName) throws java.rmi.RemoteException;
-
-	public GraphRmi getServerInst(String id) throws java.rmi.RemoteException;
+	public void loadData(String fileName) throws java.rmi.RemoteException;*/
 
 	/**
 	 * Generic request
 	 */
 
 	// Create new instance of algorithms
-	public void newAlgorithm(String className, String instanceName) throws java.rmi.RemoteException ;
+	/*public void newAlgorithm(String className, String instanceName) throws java.rmi.RemoteException ;
 
-	// Requetes JSON (idees à  préciser et completer)
-	public Object executeReq(Object req) throws java.rmi.RemoteException;
+	public Object exec(String methode, Object[] params) throws java.rmi.RemoteException;
+
+	public Object exec(String objectInstanceName, String methode, Object[] params) throws java.rmi.RemoteException ;
+
+	public Object newRemoteObject(String objectInstanceName, String className, Object[] params) throws java.rmi.RemoteException ;
+*/
 
 	// test
-	public void test() throws java.rmi.RemoteException;
+	/*public void test() throws java.rmi.RemoteException;*/
 
 	/**
 	 * Callback
 	 */
 
-	public void execute(Object req) throws java.rmi.RemoteException ;
-
-	public Object callBack() throws java.rmi.RemoteException ;
+	//public Object callBack() throws java.rmi.RemoteException ;
 
 
 }
