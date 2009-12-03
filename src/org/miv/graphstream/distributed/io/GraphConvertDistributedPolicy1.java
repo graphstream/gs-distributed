@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.miv.graphstream.distributed.utile.GraphEdgeInfo;
+import org.miv.graphstream.distributed.common.GraphEdgeInfo;
 import org.miv.graphstream.io.GraphParseException;
 import org.miv.graphstream.io.GraphReader;
 import org.miv.graphstream.io.GraphReaderFactory;
@@ -36,7 +36,7 @@ import org.miv.graphstream.io.GraphWriterFactory;
  * Convert a graph file in a given format to another file in another format.
  *
  * @author Antoine Dutot
- * @author Yoann Pigné
+ * @author Yoann Pignï¿½
  * @since 2007
  */
 public class GraphConvertDistributedPolicy1 implements GraphReaderListener
@@ -63,7 +63,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 		if( args.length >= 3 ) {
 			System.out.println("Fichier source " + args[0] + " en cours de traitement") ;
 			new GraphConvertDistributedPolicy1(args) ;
-			System.out.println("Fichier source traité - génération du fichier " + args[1]) ;
+			System.out.println("Fichier source traitï¿½ - gï¿½nï¿½ration du fichier " + args[1]) ;
 		}
 	}
 
@@ -111,7 +111,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 
 		// init steps
 		for(int i = 0 ; i <= distDegree ; i++) {
-			steps[i] = (int)((nbNodeMax*i/distDegree)) ;
+			steps[i] = ((nbNodeMax*i/distDegree)) ;
 		}
 	}
 
@@ -309,7 +309,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
     private static void initStep() {
 		steps = new int[distDegree+1] ;
 		for(int i = 0 ; i <= distDegree ; i++) {
-			steps[i] = (int)((nbNodeMax*i/distDegree)) ;
+			steps[i] = ((nbNodeMax*i/distDegree)) ;
 		}
 	}
 

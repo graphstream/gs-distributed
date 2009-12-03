@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.server.UnicastRemoteObject;
 
+import org.miv.graphstream.distributed.graph.DistGraph;
+
 public class DistGraphServerImpl extends UnicastRemoteObject implements DistGraphServer {
 
 	/*

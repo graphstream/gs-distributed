@@ -31,7 +31,7 @@ public class DistGraphLauncher {
 		try {
 			DistGraphServer g = new DistGraphServerImpl(graphId);
 			System.out.println("l'objet RMI " + graphId + " est construit " + host);
-			Naming.rebind("rmi://"+host+"/"+graphId, g);
+			Naming.rebind("rmi://127.0.0.1/"+graphId, g);
 			System.out.println("l'objet RMI RemoteGraphImpl est inscrit au service de nommage");
 		} catch (RemoteException exp) {
 			System.out.println("Pb de RemoteException : " + exp);

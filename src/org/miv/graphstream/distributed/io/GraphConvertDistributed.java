@@ -20,11 +20,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.miv.graphstream.distributed.utile.GraphEdgeInfo;
+import org.miv.graphstream.distributed.common.GraphEdgeInfo;
 import org.miv.graphstream.io.GraphParseException;
 import org.miv.graphstream.io.GraphReader;
 import org.miv.graphstream.io.GraphReaderFactory;
-import org.miv.graphstream.io.GraphReaderListener;
+import org.miv.graphstream.io.GraphReaderListenerExtended;
 import org.miv.graphstream.io.GraphWriter;
 import org.miv.graphstream.io.GraphWriterFactory;
 
@@ -33,10 +33,10 @@ import org.miv.graphstream.io.GraphWriterFactory;
  * Convert a graph file in a given format to another file in another format.
  *
  * @author Antoine Dutot
- * @author Yoann Pigné
+ * @author Yoann Pignï¿½
  * @since 2007
  */
-public class GraphConvertDistributed implements GraphReaderListener
+public class GraphConvertDistributed implements GraphReaderListenerExtended
 {
 	protected GraphReader reader;
 
@@ -75,6 +75,13 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 	}
 
+	/**
+	 *
+	 * @param fromFile
+	 * @param toFile
+	 * @throws IOException
+	 * @throws GraphParseException
+	 */
 	public void convert( String fromFile, String toFile )
 		throws IOException, GraphParseException
 	{
@@ -92,6 +99,9 @@ public class GraphConvertDistributed implements GraphReaderListener
 
 // GraphReaderListener
 
+	/***
+	 *
+	 */
 	public void edgeAdded( String id, String from, String to, boolean directed, Map<String, Object> attributes ) throws GraphParseException
 	{
 		try
@@ -111,6 +121,19 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 	}
 
+	/**
+	 *
+	 */
+	public void graphChanged( String attribute, Object value, boolean removed ) throws GraphParseException {
+
+	}
+
+	/**
+	 *
+	 * @param id
+	 * @param attributes
+	 * @throws GraphParseException
+	 */
 	public void edgeChanged( String id, Map<String, Object> attributes ) throws GraphParseException
 	{
 		try
@@ -129,6 +152,18 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 	}
 
+
+	/**
+	 *
+	 */
+	public void edgeChanged( String id, String attribute, Object value, boolean removed  ) throws GraphParseException {
+
+	}
+
+
+	/**
+	 *
+	 */
 	public void edgeRemoved( String id ) throws GraphParseException
 	{
 		try
@@ -147,6 +182,12 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 	}
 
+
+	/**
+	 *
+	 * @param attributes
+	 * @throws GraphParseException
+	 */
 	public void graphChanged( Map<String, Object> attributes ) throws GraphParseException
 	{
 /*		try
@@ -159,6 +200,10 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 */	}
 
+
+	/**
+	 *
+	 */
 	public void nodeAdded( String id, Map<String, Object> attributes ) throws GraphParseException
 	{
 		try
@@ -173,16 +218,20 @@ public class GraphConvertDistributed implements GraphReaderListener
 		}
 	}
 
-	public void nodeChanged( String id, Map<String, Object> attributes ) throws GraphParseException
+	/**
+	 *
+	 */
+	public void nodeChanged( String id, String attribute, Object value, boolean removed ) throws GraphParseException
 	{
-		try
-		{
-			writer.changeNode( modifyId(id), attributes );
-		}
-		catch( IOException e )
-		{
-			throw new GraphParseException( "I/O error while writing (" + e.getClass().getSimpleName() + "): " + e.getMessage() );
-		}
+		/*try
+        {
+	        writer.changeNode( id, attributes );
+        }
+        catch( IOException e )
+        {
+        	lastError = e;
+	        e.printStackTrace();
+        }*/
 	}
 
 	public void nodeRemoved( String id ) throws GraphParseException
