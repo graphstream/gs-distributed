@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.miv.graphstream.distributed.utile;
+package org.miv.graphstream.distributed.common;
 
 public class GraphParseTag {
 

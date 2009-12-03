@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.utile;
+package org.miv.graphstream.distributed.common;
 
 public class GraphNodeInfo {
 
