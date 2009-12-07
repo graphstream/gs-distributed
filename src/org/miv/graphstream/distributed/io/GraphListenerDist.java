@@ -23,8 +23,8 @@
 
 package org.miv.graphstream.distributed.io;
 
-import org.miv.graphstream.distributed.common.GraphEdgeInfo;
-import org.miv.graphstream.distributed.common.GraphParseTag;
+import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
+import org.miv.graphstream.distributed.commun.GraphParseTag;
 import org.miv.graphstream.distributed.graph.DistGraphClient;
 import org.miv.graphstream.graph.Graph;
 import org.miv.graphstream.graph.GraphListener;

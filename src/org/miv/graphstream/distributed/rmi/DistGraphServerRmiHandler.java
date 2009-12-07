@@ -5,7 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import org.miv.graphstream.distributed.common.GraphResource;
+import org.miv.graphstream.distributed.commun.GraphResource;
 
 public class DistGraphServerRmiHandler {
 
