@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.io;
+package org.graphstream.distributed.io;
 
 
 

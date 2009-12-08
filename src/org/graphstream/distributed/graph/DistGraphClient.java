@@ -1,12 +1,12 @@
-package org.miv.graphstream.distributed.graph;
+package org.graphstream.distributed.graph;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.graphstream.distributed.rmi.DistGraphServer;
+import org.graphstream.distributed.rmi.DistGraphServerRmiHandler;
 import org.miv.graphstream.distributed.commun.GraphResource;
-import org.miv.graphstream.distributed.rmi.DistGraphServer;
-import org.miv.graphstream.distributed.rmi.DistGraphServerRmiHandler;
 
 public class DistGraphClient {
 

@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.gui;
+package org.graphstream.distributed.gui;
 
 import java.awt.BorderLayout;
 

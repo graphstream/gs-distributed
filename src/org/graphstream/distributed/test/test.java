@@ -1,12 +1,12 @@
-package org.miv.graphstream.distributed.test;
+package org.graphstream.distributed.test;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-import org.miv.graphstream.distributed.graph.DistGraphClient;
-import org.miv.graphstream.distributed.io.DistGraphConverterDGS;
-import org.miv.graphstream.distributed.io.GraphListenerDist;
-import org.miv.graphstream.distributed.rmi.DistGraphServer;
+import org.graphstream.distributed.graph.DistGraphClient;
+import org.graphstream.distributed.io.DistGraphConverterDGS;
+import org.graphstream.distributed.io.GraphListenerDist;
+import org.graphstream.distributed.rmi.DistGraphServer;
 import org.miv.graphstream.graph.implementations.SingleGraph;
 import org.miv.graphstream.io2.file.FileInputDGS;
 

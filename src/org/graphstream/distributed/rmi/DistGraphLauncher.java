@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.miv.graphstream.distributed.rmi;
+package org.graphstream.distributed.rmi;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;

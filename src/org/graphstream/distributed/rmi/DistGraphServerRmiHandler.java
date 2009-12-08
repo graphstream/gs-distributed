@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.rmi;
+package org.graphstream.distributed.rmi;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;

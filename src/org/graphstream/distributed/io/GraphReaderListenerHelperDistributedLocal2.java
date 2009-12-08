@@ -13,15 +13,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-package org.miv.graphstream.distributed.io;
+package org.graphstream.distributed.io;
 
 import java.rmi.RemoteException;
 import java.util.Map;
 
+import org.graphstream.distributed.graph.DistGraphClient;
+import org.graphstream.distributed.graph.DistGraphCoreImpl;
 import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
 import org.miv.graphstream.distributed.commun.GraphParseTag;
-import org.miv.graphstream.distributed.graph.DistGraphClient;
-import org.miv.graphstream.distributed.graph.DistGraphCoreImpl;
 import org.miv.graphstream.graph.Graph;
 import org.miv.graphstream.io.GraphParseException;
 import org.miv.graphstream.io.GraphReader;

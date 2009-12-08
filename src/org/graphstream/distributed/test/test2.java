@@ -1,9 +1,9 @@
-package org.miv.graphstream.distributed.test;
+package org.graphstream.distributed.test;
 
 import java.rmi.RemoteException;
 
-import org.miv.graphstream.distributed.graph.DistGraphClient;
-import org.miv.graphstream.distributed.rmi.DistGraphServer;
+import org.graphstream.distributed.graph.DistGraphClient;
+import org.graphstream.distributed.rmi.DistGraphServer;
 
 
 public class test2 {

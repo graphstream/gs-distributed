@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.test;
+package org.graphstream.distributed.test;
 
 import java.rmi.Naming;
 

@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.miv.graphstream.distributed.graph;
+package org.graphstream.distributed.graph;
 
 import java.util.Iterator;
 import java.util.Map;

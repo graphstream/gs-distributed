@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.graph;
+package org.graphstream.distributed.graph;
 
 
 public class DistGraph {

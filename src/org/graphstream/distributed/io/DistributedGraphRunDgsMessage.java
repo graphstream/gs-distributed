@@ -1,4 +1,4 @@
-package org.miv.graphstream.distributed.io;
+package org.graphstream.distributed.io;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
