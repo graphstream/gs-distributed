@@ -4,9 +4,9 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.graphstream.distributed.common.GraphResource;
 import org.graphstream.distributed.rmi.DistGraphServer;
 import org.graphstream.distributed.rmi.DistGraphServerRmiHandler;
-import org.miv.graphstream.distributed.commun.GraphResource;
 
 public class DistGraphClient {
 
