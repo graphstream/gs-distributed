@@ -7,8 +7,10 @@ import org.graphstream.distributed.graph.DistGraphClient;
 import org.graphstream.distributed.io.DistGraphConverterDGS;
 import org.graphstream.distributed.io.GraphListenerDist;
 import org.graphstream.distributed.rmi.DistGraphServer;
-import org.miv.graphstream.graph.implementations.SingleGraph;
-import org.miv.graphstream.io2.file.FileInputDGS;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.file.FileSinkDGS;
+
 
 public class test {
 
@@ -18,12 +20,13 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("coucou");
-		SingleGraph g = new SingleGraph();
+		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
 		//demo() ;
 		//testio();
-		test_multi();
+		//test_multi();
 		//graph_convert();
+		//Graph g2 ;
 	}
 
 
@@ -60,7 +63,7 @@ public class test {
 	 */
 	public static void testio() {
 		try {
-		FileInputDGS f = new FileInputDGS();
+		FileSinkDGS f = new FileSinkDGS();
 		GraphListenerDist l = new GraphListenerDist();
 
 		f.addGraphListener(l);

@@ -25,10 +25,6 @@ package org.graphstream.distributed.io;
 
 import java.io.IOException;
 
-import org.miv.graphstream.graph.GraphListener;
-import org.miv.graphstream.io2.file.FileInputDGS;
-import org.miv.graphstream.io2.file.FileOutputDGS;
-
 /**
  * A void implementation of {@link org.miv.graphstream.graph.GraphListener} that a
  *

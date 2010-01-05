@@ -20,13 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
-import org.miv.graphstream.io.GraphParseException;
-import org.miv.graphstream.io.GraphReader;
-import org.miv.graphstream.io.GraphReaderFactory;
-import org.miv.graphstream.io.GraphReaderListenerExtended;
-import org.miv.graphstream.io.GraphWriter;
-import org.miv.graphstream.io.GraphWriterFactory;
+import org.graphstream.distributed.common.GraphEdgeInfo;
 
 
 /**

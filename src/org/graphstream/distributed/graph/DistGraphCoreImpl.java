@@ -19,13 +19,11 @@ package org.graphstream.distributed.graph;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
-import org.miv.graphstream.distributed.commun.GraphParseTag;
-import org.miv.graphstream.graph.Edge;
-import org.miv.graphstream.graph.Graph;
-import org.miv.graphstream.graph.GraphFactory;
-import org.miv.graphstream.graph.Node;
-import org.miv.graphstream.graph.implementations.DefaultGraph;
+import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.GraphParseTag;
+
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 
 public class DistGraphCoreImpl implements DistGraphCore {
 

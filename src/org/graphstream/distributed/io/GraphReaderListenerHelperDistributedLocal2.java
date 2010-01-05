@@ -18,14 +18,12 @@ package org.graphstream.distributed.io;
 import java.rmi.RemoteException;
 import java.util.Map;
 
+import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.GraphParseTag;
 import org.graphstream.distributed.graph.DistGraphClient;
 import org.graphstream.distributed.graph.DistGraphCoreImpl;
-import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
-import org.miv.graphstream.distributed.commun.GraphParseTag;
-import org.miv.graphstream.graph.Graph;
-import org.miv.graphstream.io.GraphParseException;
-import org.miv.graphstream.io.GraphReader;
-import org.miv.graphstream.io.GraphReaderListener;
+
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 /**
  * Default implementation for a graph reader listener. It takes as argument a

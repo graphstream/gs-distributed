@@ -23,11 +23,11 @@
 
 package org.graphstream.distributed.io;
 
+import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.GraphParseTag;
 import org.graphstream.distributed.graph.DistGraphClient;
-import org.miv.graphstream.distributed.commun.GraphEdgeInfo;
-import org.miv.graphstream.distributed.commun.GraphParseTag;
-import org.miv.graphstream.graph.Graph;
-import org.miv.graphstream.graph.GraphListener;
+
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 /**
  * A void implementation of {@link org.miv.graphstream.graph.GraphListener} that a
