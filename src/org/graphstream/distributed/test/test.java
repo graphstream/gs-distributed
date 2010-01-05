@@ -22,7 +22,7 @@ public class test {
 		System.out.println("coucou");
 		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
-		//demo() ;
+		demo() ;
 		//testio();
 		//test_multi();
 		//graph_convert();
@@ -35,27 +35,27 @@ public class test {
 	 * demo
 	 */
 	public static void demo() {
-		//try {
+		try {
 			DistGraphClient c = new DistGraphClient();
 
-			//c.addDistGraph("rmi:127.0.0.1/g1:DefaultGraph", true);
-			//c.addDistGraph("rmi:127.0.0.1/g2:DefaultGraph", true);
+			c.addDistGraph("rmi:127.0.0.1/g1:DefaultGraph", true);
+			c.addDistGraph("rmi:127.0.0.1/g2:DefaultGraph", true);
 
-			//DistGraphServer g1 = c.getDistGraphServer("g1");
-			//DistGraphServer g2 = c.getDistGraphServer("g2");
+			DistGraphServer g1 = c.getDistGraphServer("g1");
+			DistGraphServer g2 = c.getDistGraphServer("g2");
 
-			/*g1.exec("addNode", new String[] {"n1"});
+			g1.exec("addNode", new String[] {"n1"});
 			g1.exec("addNode", new String[] {"n2"});
 			g2.exec("addNode", new String[] {"n3"});
 			g1.exec("eddEdge", new String[] {"e1", "n1", "g2/n3"});
 
 			System.out.println("getNodeCount : " + g1.exec("getNodeCount", new Object[] {}));
-			System.out.println("getNodeCount : " + g2.exec("getNodeCount", new Object[] {}));*/
+			System.out.println("getNodeCount : " + g2.exec("getNodeCount", new Object[] {}));
 
-		//}
-		//catch(RemoteException e) {
-		//	System.out.println("" + e.getMessage());
-		//}
+		}
+		catch(RemoteException e) {
+			System.out.println("" + e.getMessage());
+		}
 	}
 
 	/*

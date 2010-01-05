@@ -43,7 +43,7 @@ public class DistGraphServerImpl extends UnicastRemoteObject implements DistGrap
 	 * notification
 	 */
 	public void notifyDistGraphCreation(String uri) throws java.rmi.RemoteException {
-		this.aDistGraph.getClient().addLocal(uri);
+		this.aDistGraph.getClient().addLocal(uri);		
 	}
 
 	/**

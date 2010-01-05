@@ -75,7 +75,7 @@ public class DistGraphClient {
 			this.distGraphServerList.get(resource.getGraphId()).newDistGraph(resource.getGraphClass());
 		}
 		catch(RemoteException e) {
-			System.out.println("addRemoteGraph error : " + e.getMessage());
+			System.out.println("addLocal error : " + e.getMessage());
 		}
 	}
 
@@ -99,13 +99,13 @@ public class DistGraphClient {
 			while(it.hasNext()) {
 				String id = it.next();
 				if(r.getGraphId() != id) {
-					System.out.println("id : " + id + " - URI : " + r.getUri());
+					System.out.println("id : " + id + " - URI : " + r + this.distGraphServerList.get(id));
 					this.distGraphServerList.get(id).notifyDistGraphCreation(uri);
 				}
 			}
 		}
 		catch(RemoteException e) {
-			System.out.println("" + e.getMessage());
+			System.out.println("addGraphNotify Error : " + e.getMessage());
 		}
 	}
 

@@ -21,8 +21,11 @@ import java.util.Map;
 
 import org.graphstream.distributed.common.GraphEdgeInfo;
 import org.graphstream.distributed.common.GraphParseTag;
-
-import com.sun.corba.se.impl.orbutil.graph.Graph;
+import org.graphstream.graph.Edge;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.GraphFactory;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.DefaultGraph;
 
 
 public class DistGraphCoreImpl implements DistGraphCore {
@@ -65,7 +68,7 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	}
 
 	private void initGraphs(String graphClass) {
-		this.GraphVirtual 	= new DefaultGraph("", false, true);
+		this.GraphVirtual 	= new DefaultGraph("");
 		GraphFactory graphFactory = new GraphFactory() ;
 		this.Graph = graphFactory.newInstance("", graphClass) ;
 		this.Graph.setAutoCreate(true);
