@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 import org.graphstream.distributed.graph.DistGraphClient;
-import org.graphstream.distributed.io.DistGraphConverterDGS;
-import org.graphstream.distributed.io.GraphListenerDist;
+import org.graphstream.distributed.io.old.DistGraphConverterDGS;
 import org.graphstream.distributed.rmi.DistGraphServer;
+import org.graphstream.distributed.stream.FileSinkDGSDist;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.file.FileSinkDGS;
+import org.graphstream.stream.file.FileSourceDGS;
 
 
 public class test {
@@ -22,8 +22,8 @@ public class test {
 		System.out.println("coucou");
 		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
-		demo() ;
-		//testio();
+		//demo() ;
+		testio();
 		//test_multi();
 		//graph_convert();
 		//Graph g2 ;
@@ -63,14 +63,18 @@ public class test {
 	 */
 	public static void testio() {
 		try {
-		FileSinkDGS f = new FileSinkDGS();
-		GraphListenerDist l = new GraphListenerDist();
-
-		f.addGraphListener(l);
+		FileSourceDGS f = new FileSourceDGS();
+		FileSinkDGSDist o = new FileSinkDGSDist();
+		o.begin("out.dgs");
+		f.addSink(o);
+		
+		//GraphListenerDist l = new GraphListenerDist();
+		//f.addGraphListener(l);
 		//f.begin("/home/baudryj/workspace-java/gs-distributed/bin/org/miv/graphstream/distributed/data/madhoc_170stations_v2.dgs");
-		f.begin("/home/baudryj/workspace-gs/gs-distributed/bin/org/miv/graphstream/distributed/data/aaa.dgs");
+		f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/io/files/aaa.dgs");
 
 		while(f.nextEvents()) {
+			System.out.println("new Elements");
 		}
 
 		/*FileOutputDGS o = new FileOutputDGS();
@@ -117,7 +121,6 @@ public class test {
 	 */
 	public static void graph_convert() {
 		DistGraphConverterDGS conv = new DistGraphConverterDGS();
-
 	}
 
 }

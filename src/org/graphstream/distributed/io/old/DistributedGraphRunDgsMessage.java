@@ -1,4 +1,4 @@
-package org.graphstream.distributed.io;
+package org.graphstream.distributed.io.old;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

@@ -21,9 +21,14 @@
  * 	Guilhelm Savin
  */
 
-package org.graphstream.distributed.io;
+package org.graphstream.distributed.io.old;
 
-import java.io.IOException;
+import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.GraphParseTag;
+import org.graphstream.distributed.graph.DistGraphClient;
+import org.graphstream.stream.file.FileSink;
+
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 
 /**
  * A void implementation of {@link org.miv.graphstream.graph.GraphListener} that a
@@ -35,39 +40,24 @@ import java.io.IOException;
  * @see org.miv.graphstream.graph.GraphListener
  *
  */
-public class DistGraphConverterDGS implements GraphListener
+public class _FileSinkDgsDist implements FileSink
 {
 
 	/**
 	 * A reference to the graph it modifies.
 	 */
-	protected FileInputDGS I ;
-	protected FileOutputDGS O ;
+	protected DistGraphClient L;
+	protected Graph graph ;
+	protected Graph vGraph ;
 
-	public DistGraphConverterDGS() {
-		try {
-			I = new FileInputDGS();
-			I.addGraphListener(this);
-			I.begin("/home/baudryj/workspace-java/gs-distributed/bin/org/miv/graphstream/distributed/data/aaa.dgs");
-			O = new FileOutputDGS();
-			O.begin("file.txt");
-			while(I.nextEvents()) {
+	private GraphEdgeInfo e ;
+	private GraphParseTag parser ;
 
-			}
-			I.end();
-			O.end();
-		}
-		catch(IOException e) {
-			System.out.println("DistGraphConverterDGS : " + e.getMessage());
-		}
-
-	}
 
 	public void edgeAdded( String graphId, String edgeId, String fromNodeId, String toNodeId,
             boolean directed )
     {
-		System.out.println("edgeAdded" + graphId + edgeId + fromNodeId + toNodeId);
-		O.edgeAdded(graphId, edgeId, fromNodeId, toNodeId, directed);
+		System.out.println("edgeAdded");
     }
 
 	public void edgeRemoved( String graphId, String edgeId )
@@ -92,8 +82,7 @@ public class DistGraphConverterDGS implements GraphListener
 
 	public void nodeAdded( String graphId, String nodeId )
     {
-		System.out.println("nodeAdded" + graphId +"--" + nodeId + O);
-		O.nodeAdded(graphId, nodeId);
+		System.out.println("nodeAdded");
     }
 
 	public void nodeRemoved( String graphId, String nodeId )

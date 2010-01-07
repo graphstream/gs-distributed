@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.graphstream.distributed.io;
+package org.graphstream.distributed.io.old;
 
 import java.io.IOException;
 import java.util.HashMap;
