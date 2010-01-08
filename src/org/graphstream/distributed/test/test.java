@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 
 import org.graphstream.distributed.graph.DistGraphClient;
-import org.graphstream.distributed.io.old.DistGraphConverterDGS;
 import org.graphstream.distributed.rmi.DistGraphServer;
 import org.graphstream.distributed.stream.FileSinkDGSDist;
+import org.graphstream.distributed.stream.old.DistGraphConverterDGS;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.file.FileSourceDGS;

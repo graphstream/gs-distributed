@@ -21,7 +21,7 @@
  * 	Guilhelm Savin
  */
 
-package org.graphstream.distributed.io.old;
+package org.graphstream.distributed.stream.old;
 
 import org.graphstream.distributed.common.GraphEdgeInfo;
 import org.graphstream.distributed.common.GraphParseTag;
