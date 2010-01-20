@@ -6,32 +6,30 @@ public class DistGraph {
 	/*
 	 * Variables
 	 */
-	private DistGraphCore DistGraphCore ;
-	private DistGraphClient DistGraphClient ;
-	private DistGraphObjects DistGraphObjects ;
+	private DGraphCore DistGraphCore ;
+	private DGraphClientOld DistGraphClient ;
+	private DGraphObjects DistGraphObjects ;
 
 	/**
 	 *
 	 * @param graphClass
 	 */
 	public DistGraph(String graphClass) {
-		this.DistGraphClient = new DistGraphClient();
-		this.DistGraphCore = new DistGraphCoreImpl(graphClass);
+		this.DistGraphClient = new DGraphClientOld();
+		this.DistGraphCore = new DGraphCoreImpl(graphClass);
 	}
 
 	/**
-	 *
 	 * @return
 	 */
-	public DistGraphObjects getObjects() {
+	public DGraphObjects getObjects() {
 		return this.DistGraphObjects;
 	}
 
 	/**
-	 *
 	 * @return
 	 */
-	public DistGraphClient getClient() {
+	public DGraphClientOld getClient() {
 		return this.DistGraphClient ;
 	}
 
@@ -39,10 +37,9 @@ public class DistGraph {
 	 *
 	 * @return
 	 */
-	public DistGraphCore getGraph() {
+	public DGraphCore getGraph() {
 		return this.DistGraphCore ;
 	}
-
 
 
 
