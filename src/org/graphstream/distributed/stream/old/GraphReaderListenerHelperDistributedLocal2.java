@@ -18,10 +18,10 @@ package org.graphstream.distributed.stream.old;
 import java.rmi.RemoteException;
 import java.util.Map;
 
-import org.graphstream.distributed.common.GraphEdgeInfo;
-import org.graphstream.distributed.common.GraphParseTag;
-import org.graphstream.distributed.graph.DistGraphClient;
-import org.graphstream.distributed.graph.DistGraphCoreImpl;
+import org.graphstream.distributed.common.DGraphEdgeInfo;
+import org.graphstream.distributed.common.DGraphParseTag;
+import org.graphstream.distributed.graph.DGraphClientOld;
+import org.graphstream.distributed.graph.DGraphCore;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 
@@ -42,20 +42,20 @@ public class GraphReaderListenerHelperDistributedLocal2 implements GraphReaderLi
 	 * A reference to the graph it modifies.
 	 */
 
-	private GraphEdgeInfo e ;
-	private GraphParseTag parser ;
+	private DGraphEdgeInfo e ;
+	private DGraphParseTag parser ;
 
-	private DistGraphCoreImpl g ;
+	private DGraphCore g ;
 
 	/**
 	 * New default graph reader listener that modifies the given graph according
 	 * to the received events.
 	 * @param graph The graph to modify according to events.
 	 */
-	public GraphReaderListenerHelperDistributedLocal2(Graph aGraph, Graph aVgraph, DistGraphClient c)
+	public GraphReaderListenerHelperDistributedLocal2(Graph aGraph, Graph aVgraph, DGraphClientOld c)
 	{
-		e = new GraphEdgeInfo() ;
-		parser = new GraphParseTag() ;
+		e = new DGraphEdgeInfo() ;
+		parser = new DGraphParseTag() ;
 	}
 
 	/* (non-Javadoc)

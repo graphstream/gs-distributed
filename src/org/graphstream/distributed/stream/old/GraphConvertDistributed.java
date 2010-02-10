@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.DGraphEdgeInfo;
 
 
 /**
@@ -36,13 +36,13 @@ public class GraphConvertDistributed implements GraphReaderListenerExtended
 
 	protected GraphWriter writer;
 
-	static private HashMap<String,GraphEdgeInfo> edgeIndex ;
+	static private HashMap<String,DGraphEdgeInfo> edgeIndex ;
 
 	int nbNodeAddedd ;
 
 	public static void main( String args[] )
 	{
-		edgeIndex = new HashMap<String,GraphEdgeInfo>() ;
+		edgeIndex = new HashMap<String,DGraphEdgeInfo>() ;
 
 		new GraphConvertDistributed( args );
 
@@ -100,7 +100,7 @@ public class GraphConvertDistributed implements GraphReaderListenerExtended
 	{
 		try
 		{
-			GraphEdgeInfo edgeInfo = new GraphEdgeInfo(modifyId(from),modifyId(to)) ;
+			DGraphEdgeInfo edgeInfo = new DGraphEdgeInfo(modifyId(from),modifyId(to)) ;
 			edgeIndex.put(id, edgeInfo);
 			if(edgeInfo.isIntraEdge()) {
 				writer.addEdge( edgeInfo.getGraphTag1()+"/"+id, modifyId(from), modifyId(to), directed, attributes );
@@ -132,7 +132,7 @@ public class GraphConvertDistributed implements GraphReaderListenerExtended
 	{
 		try
 		{
-			GraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
+			DGraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
 			if(edgeInfo.isIntraEdge()) {
 				writer.changeEdge( edgeInfo.getGraphTag1()+"/"+id, attributes );
 			}
@@ -162,7 +162,7 @@ public class GraphConvertDistributed implements GraphReaderListenerExtended
 	{
 		try
 		{
-			GraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
+			DGraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
 			if(edgeInfo.isIntraEdge()) {
 				writer.delEdge( edgeInfo.getGraphTag1()+"/"+id );
 			}

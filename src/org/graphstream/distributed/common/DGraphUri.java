@@ -28,80 +28,58 @@ import java.util.HashMap;
  *
  * @author Julien Baudry
  * @author Antoine Dutot
- * @author Yoann Pign�
+ * @author Yoann Pigne
  * @since 20020709
  */
 
-public class GraphResource {
+public class DGraphUri {
 
 	// Fields
-
-	String GraphId ;
+	String Uri ;
+	
+	String DGraphId ;
 	String Protocole ;
 	String Host ;
 	String Port ;
-	HashMap<String,String> Params = new HashMap<String,String>() ;
-	String GraphClass ;
-	boolean Display ;
-	String Uri ;
+	HashMap<String,String> Params ;
+	String DGraphClass ;
+	
 
 
 	// Constructor
 
-	public GraphResource(String uri) {
+	public DGraphUri(String uri) {
+		init();
 		this.Uri = uri ;
 		uriParser(uri);
 	}
 
-	public GraphResource(String aGraphId, String aProtocol, String aHost, String aPort, String aGraphClass, boolean aDisplay) {
-		this.GraphId = aGraphId ;
-		this.Host = aHost ;
-		this.Protocole = aProtocol ;
-		this.Port = aPort ;
-		this.GraphClass = aGraphClass ;
-		this.Display = aDisplay ;
+	private void init() {
+		this.Params = new HashMap<String,String>() ;
 	}
-
 
 	// rmi:<host>:<port>/<id>:<graphClass>
 	private void uriParser(String uri) {
 		this.Protocole = uri.split(":")[0] ;
 		this.Port = "1099";
 		if(uri.split(":").length > 3) { // avec port specifie
-			this.Port = uri.split(":")[2] ;
+			this.Port = uri.split(":")[2].split("/")[0] ;
+			this.Host = uri.split(":")[1] ;
 		}
 		else { // sans port specif
 			this.Host = uri.split(":")[1].split("/")[0] ;
-			System.out.println("----> "+this.Host + " " + uri);
 		}
-		this.GraphId = uri.split("/")[1].split(":")[0];
-		this.GraphClass = uri.split("/")[1].split(":")[1];
+		this.DGraphId = uri.split("/")[1].split(":")[0];
+		this.DGraphClass = uri.split("/")[1].split(":")[1];
 	}
-
-	/*
-	private GraphConnector GraphConnectorFactory(String anId, String aHost, String aGraphClass) {
-		try {
-			GraphClient aGraphClient =  null ;
-			if(aGraphClass.equals("rmi")) {
-				aGraphClient = new GraphClientRMI(aHost) ;
-			}
-			aGraphClient.getGraphHandler().createGraph(anId, aGraphClass);
-			return aGraphClient.getGraphHandler();
-		}
-		catch(RemoteException e) {
-			System.out.println("Remote Exception in ConnectionRmi " + e.getMessage()) ;
-			return null ;
-		}
-	}
-	*/
 
 
 	// Modifiers
 
 
 	// set the id of the graph
-	public void setGraphId(String value) {
-		this.GraphId = value ;
+	public void setDGraphId(String value) {
+		this.DGraphId = value ;
 	}
 
 	//
@@ -120,14 +98,8 @@ public class GraphResource {
 	}
 
 	//
-	public void setGraphClass(String value) {
-		this.GraphClass = value ;
-	}
-
-
-	//
-	public void setDisplay(boolean value) {
-		this.Display = value ;
+	public void setDGraphClass(String value) {
+		this.DGraphClass = value ;
 	}
 
 	//
@@ -145,8 +117,8 @@ public class GraphResource {
 	}
 
 	//
-	public String getGraphId() {
-		return this.GraphId ;
+	public String getDGraphId() {
+		return this.DGraphId ;
 	}
 
 	//
@@ -160,13 +132,8 @@ public class GraphResource {
 	}
 
 	//
-	public String getGraphClass() {
-		return this.GraphClass ;
-	}
-
-	//
-	public boolean getDisplay() {
-		return this.Display ;
+	public String getDGraphClass() {
+		return this.DGraphClass ;
 	}
 
 	// Method getParameter

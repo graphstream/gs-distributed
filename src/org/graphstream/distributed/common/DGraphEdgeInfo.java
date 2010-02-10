@@ -1,7 +1,7 @@
 package org.graphstream.distributed.common;
 
 
-public class GraphEdgeInfo {
+public class DGraphEdgeInfo {
 
 	private String graphId1 ;
 	private String graphTag1 ;
@@ -13,21 +13,21 @@ public class GraphEdgeInfo {
 	 * @param from
 	 * @param to
 	 */
-	public GraphEdgeInfo(String from, String to) {
-		GraphParseTag pFrom = new GraphParseTag(from) ;
-		GraphParseTag pTo = new GraphParseTag(to) ;
+	public DGraphEdgeInfo(String from, String to) {
+		DGraphParseTag pFrom = new DGraphParseTag(from) ;
+		DGraphParseTag pTo = new DGraphParseTag(to) ;
 		this.graphId1 = pFrom.getElementId() ;
 		this.graphId2 = pTo.getElementId() ;
 		this.graphTag1 = pFrom.getGraphId() ;
 		this.graphTag2 = pTo.getGraphId();
 	}
 
-	public GraphEdgeInfo() {
+	public DGraphEdgeInfo() {
 	}
 
 	public void setEdgeInfo(String from, String to) {
-		GraphParseTag pFrom = new GraphParseTag(from) ;
-		GraphParseTag pTo = new GraphParseTag(to) ;
+		DGraphParseTag pFrom = new DGraphParseTag(from) ;
+		DGraphParseTag pTo = new DGraphParseTag(to) ;
 		this.graphId1 = pFrom.getElementId() ;
 		this.graphId2 = pTo.getElementId() ;
 		this.graphTag1 = pFrom.getGraphId() ;

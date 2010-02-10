@@ -16,7 +16,7 @@
 
 package org.graphstream.distributed.common;
 
-public class GraphParseTag {
+public class DGraphParseTag {
 
 
 	// Fields
@@ -28,10 +28,10 @@ public class GraphParseTag {
 
 	// Constructors
 
-	public GraphParseTag() {
+	public DGraphParseTag() {
 	}
 
-	public GraphParseTag(String value) {
+	public DGraphParseTag(String value) {
 		this.parse(value);
 	}
 
@@ -39,7 +39,7 @@ public class GraphParseTag {
 	// Modifiers
 
 	// Parse a string
-	public GraphParseTag parse(String value) {
+	public DGraphParseTag parse(String value) {
 		String[] res = value.split("/") ;
 		if(res.length > 1) {
 			this.isValidString = true ;

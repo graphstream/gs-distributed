@@ -18,9 +18,10 @@ package org.graphstream.distributed.graph;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.distributed.common.GraphEdgeInfo;
-import org.graphstream.distributed.common.GraphParseTag;
+import org.graphstream.distributed.common.DGraphEdgeInfo;
+import org.graphstream.distributed.common.DGraphParseTag;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.GraphFactory;
@@ -28,28 +29,23 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
 
 
-public class DistGraphCoreImpl implements DistGraphCore {
+public class DGraphCore implements DGraphCoreAdapter {
 
 	// Variables
 	private Graph Graph ;
-	private Graph GraphVirtual ;
-
-	private DistGraphClient Client ;
-	//private DistGraphObjects GraphObjects ;
-
-	//private HashMap<String, Object> Registry ;
+	private Graph GraphV ;
+	private DGraphManager Manager ;
 
 	// A encapsuler
-	private GraphEdgeInfo E ;
-	private GraphParseTag Parser ;
+	private DGraphEdgeInfo E ;
+	private DGraphParseTag Parser ;
 
 	private boolean LastStep ;
 	private boolean LastEvent ;
 	private static final long serialVersionUID = 0001 ;
 
 	// Constructor
-	public DistGraphCoreImpl(String graphClass) {
-		init(graphClass);
+	public DGraphCore() {
 	}
 
 	// Modifiers
@@ -58,30 +54,17 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	 * initialisation
 	 */
 	public void init(String graphClass) {
-		initCst();
-		initGraphs(graphClass);
-	}
-
-	private void initCst() {
-		this.E 		= new GraphEdgeInfo();
-		this.Parser = new GraphParseTag();
-	}
-
-	private void initGraphs(String graphClass) {
-		this.GraphVirtual 	= new DefaultGraph("");
+		this.E 		= new DGraphEdgeInfo();
+		this.Parser = new DGraphParseTag();
+		
 		GraphFactory graphFactory = new GraphFactory() ;
 		this.Graph = graphFactory.newInstance("", graphClass) ;
 		this.Graph.setAutoCreate(true);
 		this.Graph.setStrict(false);
-	}
-
-	/**
-	 *
-	 * @return
-	 * @throws java.rmi.RemoteException
-	 */
-	public DistGraphClient getClient() throws java.rmi.RemoteException {
-		return this.Client ;
+		
+		this.GraphV = new DefaultGraph("", false, true) ;
+		
+		this.Manager = new DGraphManager("messenger") ;
 	}
 
 
@@ -89,14 +72,14 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	 * notifyNewGraph
 	 */
 	public void notifyNewGraph(String uri) throws java.rmi.RemoteException {
-		this.Client.addDistGraph(uri, false);
+		this.Manager.register(uri);
 	}
 
 	/**
 	 * notifyDelGraph
 	 */
 	public void notifyDelGraph(String graphId) throws java.rmi.RemoteException {
-		this.Client.delDistGraph(graphId, false);
+		this.Manager.unregister(graphId);
 	}
 
 
@@ -110,6 +93,7 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	 * addNode
 	 */
 	public void addNode(String id) throws java.rmi.RemoteException {
+		System.out.println("addNode");
 		this.Graph.addNode(id);
 	}
 
@@ -138,38 +122,40 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	public void addEdge( String id, String node1, String node2 ) throws java.rmi.RemoteException {
 		E.setEdgeInfo(node1, node2) ;
 		if(E.isIntraEdge()) { // intra edge
-			System.out.println("intra");
 			this.Graph.addEdge(id, node1, node2);
 		}
 		else {
-			System.out.println("requete vient d'un serveur part (1 requete)");
 			if (E.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2) - requete vient d'un server
-				//System.out.println("addEdge " +id + " --> "+ node1 + "-" + node2 + " on GraphVirtual " + this.graph.getId());
-				this.GraphVirtual.addEdge(id, node1, node2);
+				this.GraphV.addEdge(id, node1, node2);
 			}
-			else { // virtual edge (part 1 + part2) - requete vient d'un Registry
-				System.out.println("requete vient d'un client (2 requetes)");
-				System.out.println("addEdge " +id + " --> "+ node1 + "-" + node2 + " on GraphVirtual " + E.getGraphTag2());
-				this.GraphVirtual.addEdge(id, node1, node2);
-				this.getClient().getDistGraphServer(E.getGraphTag2()).exec("addEdge", new String[] {"id", "node1", "node2"});
+			else {
+				this.GraphV.addEdge(id, node1, node2);
+				this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addVirtualEdge", new String[] {id, node1, node2});
 			}
 		}
+	}
+	
+	/*
+	 * addVirtualEdge
+	 */
+	public void addVirtualEdge(String id, String node1, String node2) {
+		this.GraphV.addEdge(id, node1, node2);
 	}
 
 	/**
 	 * addEdge
 	 */
 	public void addEdge( String id, String from, String to, boolean directed ) throws java.rmi.RemoteException{
-		GraphEdgeInfo e = new GraphEdgeInfo(from, to) ;
+		DGraphEdgeInfo e = new DGraphEdgeInfo(from, to) ;
 		if(e.isIntraEdge()) {
 			this.Graph.addEdge(id, from, to, directed);
 		}
 		else if (e.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2)
-			this.GraphVirtual.addEdge(id, from, to);
+			this.GraphV.addEdge(id, from, to);
 		}
 		else {
-			this.GraphVirtual.addEdge(id, from, to);
-			this.getClient().getDistGraphServer(e.getGraphTag2()).exec("addEdge", new Object[] {id, from, to, directed});
+			this.GraphV.addEdge(id, from, to);
+			this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addEdge", new Object[] {id, from, to, directed});
 		}
 	}
 
@@ -183,11 +169,11 @@ public class DistGraphCoreImpl implements DistGraphCore {
 			edge = this.Graph.addEdge(id, from, to, directed);
 		}
 		else if (E.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2)
-			edge = this.GraphVirtual.addEdge(id, from, to);
+			edge = this.GraphV.addEdge(id, from, to);
 		}
 		else {
-			edge = this.GraphVirtual.addEdge(id, from, to);
-			this.getClient().getDistGraphServer(E.getGraphTag2()).exec("addEdge", new Object[] {id, from, to, directed, attributes});
+			edge = this.GraphV.addEdge(id, from, to);
+			this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addEdge", new Object[] {id, from, to, directed, attributes});
 		}
 		if( attributes != null )
 			edge.addAttributes(attributes);
@@ -214,7 +200,7 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	public int[] getEdgeCount() throws java.rmi.RemoteException {
 		int[] res = new int[2] ;
 		res[0]=this.Graph.getEdgeCount();
-		res[1]=this.GraphVirtual.getEdgeCount();
+		res[1]=this.GraphV.getEdgeCount();
 		return (res) ;
 	}
 
@@ -226,10 +212,10 @@ public class DistGraphCoreImpl implements DistGraphCore {
 		if(this.Parser.getGraphId().equals(this.Graph.getId()))
 			this.Graph.removeEdge(id); // edge intra graph
 		else {
-			Node Node1 = this.GraphVirtual.getEdge(id).getNode1();
-			this.GraphVirtual.removeEdge(id); // edge inter (part1)
+			Node Node1 = this.GraphV.getEdge(id).getNode1();
+			this.GraphV.removeEdge(id); // edge inter (part1)
 			if(!this.Parser.parse(Node1.getId()).getGraphId().equals(this.Graph.getId())) {
-				this.getClient().getDistGraphServer(this.Parser.parse(Node1.getId()).getGraphId()).exec("removeEdge", new Object[] {id}); // edge inter (part2)
+				this.Manager.getDGraph(this.Parser.parse(Node1.getId()).getGraphId()).exec("g", "removeEdge", new Object[] {id}); // edge inter (part2)
 			}
 		}
 	}
@@ -243,9 +229,9 @@ public class DistGraphCoreImpl implements DistGraphCore {
 		if(E.isIntraEdge())
 			this.Graph.removeEdge(from, to); // edge intra graph
 		else {
-			this.GraphVirtual.removeEdge(from, to); // edge inter (part1)
+			this.GraphV.removeEdge(from, to); // edge inter (part1)
 			if(Parser.parse(to).getGraphId().equals(this.Graph.getId())) {
-				this.getClient().getDistGraphServer(Parser.parse(to).getGraphId()).exec("removeEdge", new Object[] {from, to}); // edge inter (part2)
+				this.Manager.getDGraph(Parser.parse(to).getGraphId()).exec("g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
 			}
 		}
 	}
@@ -256,16 +242,16 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	public void removeNode( String id ) throws java.rmi.RemoteException {
 		this.Graph.removeNode(id);
 		// si le node appartient a un virtual edge
-		if(this.GraphVirtual.getNode(id)!=null) {
-			Iterator<? extends Edge> it = this.GraphVirtual.getNode(id).getEdgeIterator();
-			this.GraphVirtual.removeNode(id);
+		if(this.GraphV.getNode(id)!=null) {
+			Iterator<? extends Edge> it = this.GraphV.getNode(id).getEdgeIterator();
+			this.GraphV.removeNode(id);
 			while(it.hasNext()) {
 				Edge e = it.next();
 				if(this.Parser.parse(e.getNode1().getId()).getGraphId().equals(this.Graph.getId())) {
-					this.getClient().getDistGraphServer(Parser.parse(e.getNode0().getId()).getGraphId()).exec("removeNodeOnGraphVirtual", new Object[] {id});
+					this.Manager.getDGraph(Parser.parse(e.getNode0().getId()).getGraphId()).exec("g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 				else {
-					this.getClient().getDistGraphServer(Parser.parse(e.getNode1().getId()).getGraphId()).exec("removeNodeOnGraphVirtual", new Object[] {id});
+					this.Manager.getDGraph(Parser.parse(e.getNode1().getId()).getGraphId()).exec("g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 			}
 		}
@@ -276,7 +262,7 @@ public class DistGraphCoreImpl implements DistGraphCore {
 	 * removeNodeOnGraphVirtual
 	 */
 	public void removeNodeOnGraphVirtual( String id) throws java.rmi.RemoteException {
-		this.GraphVirtual.removeNode(id);
+		this.GraphV.removeNode(id);
 	}
 
 

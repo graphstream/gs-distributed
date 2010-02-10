@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.graphstream.distributed.common.GraphEdgeInfo;
+import org.graphstream.distributed.common.DGraphEdgeInfo;
 
 
 /**
@@ -39,7 +39,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 
 	protected GraphWriter writer;
 
-	static private HashMap<String,GraphEdgeInfo> edgeIndex ;
+	static private HashMap<String,DGraphEdgeInfo> edgeIndex ;
 	static private HashMap<String,String> nodeIndex ;
 
 	// inputs
@@ -89,7 +89,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 		distDegree=(args.length-2);
 
 		//instanciation
-		edgeIndex = new HashMap<String,GraphEdgeInfo>() ;
+		edgeIndex = new HashMap<String,DGraphEdgeInfo>() ;
 		nodeIndex = new HashMap<String,String>() ;
 		nbNodeAdded = 0 ;
 		steps = new int[distDegree+1] ;
@@ -136,7 +136,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 			if(!nodeIndex.containsKey(to)) {
 				nodeIndex.put(from, modifyId(to));
 			}
-			GraphEdgeInfo edgeInfo = new GraphEdgeInfo(getNodeNewId(from),getNodeNewId(to)) ;
+			DGraphEdgeInfo edgeInfo = new DGraphEdgeInfo(getNodeNewId(from),getNodeNewId(to)) ;
 			edgeIndex.put(id, edgeInfo);
 			if(edgeInfo.isIntraEdge()) {
 				writer.addEdge( edgeInfo.getGraphTag1()+"/"+id, getNodeNewId(from), getNodeNewId(to), directed, attributes );
@@ -155,7 +155,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 	{
 		try
 		{
-			GraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
+			DGraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
 			if(edgeInfo.isIntraEdge()) {
 				writer.changeEdge( edgeInfo.getGraphTag1()+"/"+id, attributes );
 			}
@@ -173,7 +173,7 @@ public class GraphConvertDistributedPolicy1 implements GraphReaderListener
 	{
 		try
 		{
-			GraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
+			DGraphEdgeInfo edgeInfo = edgeIndex.get(id) ;
 			if(edgeInfo.isIntraEdge()) {
 				edgeIndex.remove(edgeInfo.getGraphTag1()+"/"+id);
 				writer.delEdge( edgeInfo.getGraphTag1()+"/"+id );

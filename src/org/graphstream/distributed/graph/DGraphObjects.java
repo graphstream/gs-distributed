@@ -2,7 +2,7 @@ package org.graphstream.distributed.graph;
 
 import java.util.HashMap;
 
-public class DistGraphObjects {
+public class DGraphObjects {
 
 
 	/**
@@ -14,7 +14,7 @@ public class DistGraphObjects {
 	/**
 	 * Constructor
 	 */
-	public DistGraphObjects() {
+	public DGraphObjects() {
 		distGraphObjectsList = new HashMap<String, Object>();
 
 	}

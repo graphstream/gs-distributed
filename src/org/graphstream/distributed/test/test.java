@@ -2,14 +2,18 @@ package org.graphstream.distributed.test;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.HashMap;
 
-import org.graphstream.distributed.graph.DistGraphClient;
-import org.graphstream.distributed.rmi.DistGraphServer;
-import org.graphstream.distributed.stream.FileSinkDGSDist;
+import org.graphstream.distributed.common.DGraphUri;
+import org.graphstream.distributed.graph.DGraphManager;
+import org.graphstream.distributed.rmi.RMIDGraphAdapter;
+import org.graphstream.distributed.rmi.RMIDGraphHelper;
+import org.graphstream.distributed.stream.DGraphSink;
+import org.graphstream.distributed.stream.FileSinkDGSDGraph;
 import org.graphstream.distributed.stream.old.DistGraphConverterDGS;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.file.FileSourceDGS;
+import org.graphstream.stream.file.FileSourceDGS1And2;
 
 
 public class test {
@@ -23,58 +27,70 @@ public class test {
 		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
 		//demo() ;
-		testio();
+		//testio();
 		//test_multi();
 		//graph_convert();
 		//Graph g2 ;
+		//testEnum();
+		DGraph_test1();
 	}
 
 
 
 	/*
-	 * demo
+	 * demo distributed
 	 */
-	public static void demo() {
+	/*public static void demo() {
 		try {
-			DistGraphClient c = new DistGraphClient();
+			DGraphClientOld c = new DGraphClientOld();
 
 			c.addDistGraph("rmi:127.0.0.1/g1:DefaultGraph", true);
 			c.addDistGraph("rmi:127.0.0.1/g2:DefaultGraph", true);
 
-			DistGraphServer g1 = c.getDistGraphServer("g1");
-			DistGraphServer g2 = c.getDistGraphServer("g2");
+			RMIDGraphAdapter g1 = c.getDistGraphServer("g1");
+			RMIDGraphAdapter g2 = c.getDistGraphServer("g2");
 
 			g1.exec("addNode", new String[] {"n1"});
 			g1.exec("addNode", new String[] {"n2"});
 			g2.exec("addNode", new String[] {"n3"});
-			g1.exec("eddEdge", new String[] {"e1", "n1", "g2/n3"});
+			g2.exec("addNode", new String[] {"n4"});
+			g1.exec("addEdge", new String[] {"e1", "n1", "n2"});
+			g1.exec("addEdge", new String[] {"e2", "n3", "n4"});
+			g2.exec("addEdge", new String[] {"e3", "n2", "g1/n1"});
+			g1.exec("addEdge", new String[] {"e4", "n1", "g2/n3"});
 
+			int[] res = (int[])g1.exec("getEdgeCount", new Object[] {}) ;
+			
 			System.out.println("getNodeCount : " + g1.exec("getNodeCount", new Object[] {}));
 			System.out.println("getNodeCount : " + g2.exec("getNodeCount", new Object[] {}));
-
+			System.out.println("getEdgeCount : " + g2.exec("getEdgeCount", new Object[] {}));
+			System.out.println("getEdge : "+res[0]);
 		}
 		catch(RemoteException e) {
-			System.out.println("" + e.getMessage());
+			System.out.println("demo error " + e.getMessage());
 		}
-	}
+	}*/
 
 	/*
-	 * testio
+	 * test io client
 	 */
 	public static void testio() {
 		try {
-		FileSourceDGS f = new FileSourceDGS();
-		FileSinkDGSDist o = new FileSinkDGSDist();
-		o.begin("out.dgs");
-		f.addSink(o);
+		FileSourceDGS1And2 f = new FileSourceDGS1And2();
+		FileSinkDGSDGraph o = new FileSinkDGSDGraph();
+		DGraphSink o2 = new DGraphSink();
+		//o.begin("out.dgs");
+		f.addSink(o2);
 		
 		//GraphListenerDist l = new GraphListenerDist();
 		//f.addGraphListener(l);
-		//f.begin("/home/baudryj/workspace-java/gs-distributed/bin/org/miv/graphstream/distributed/data/madhoc_170stations_v2.dgs");
-		f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/io/files/aaa.dgs");
-
-		while(f.nextEvents()) {
-			System.out.println("new Elements");
+		f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/stream/files/madhoc_170stations_v2.dgs");
+		//f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/stream/files/aaa.dgs");
+		
+		int i = 0 ;
+		while(f.nextEvents() && i<100) {
+			i++;
+			System.out.println("new Elements " + i);
 		}
 
 		/*FileOutputDGS o = new FileOutputDGS();
@@ -87,17 +103,17 @@ public class test {
 	}
 
 	/*
-	 * multi
+	 * envoi de blocs d'evenements
 	 */
-	public static void test_multi() {
+	/*public static void test_multi() {
 		try {
-			DistGraphClient c = new DistGraphClient();
+			DGraphClientOld c = new DGraphClientOld();
 
 			c.addDistGraph("rmi:127.0.0.1/g1:DefaultGraph", true);
 			c.addDistGraph("rmi:127.0.0.1/g2:DefaultGraph", true);
 
-			DistGraphServer g1 = c.getDistGraphServer("g1");
-			DistGraphServer g2 = c.getDistGraphServer("g2");
+			RMIDGraphAdapter g1 = c.getDistGraphServer("g1");
+			RMIDGraphAdapter g2 = c.getDistGraphServer("g2");
 
 			String[] methods = new String[] {"addNode", "addNode", "addNode", "addNode", "addNode"} ;
 			String[][] params = new String[][] {new String[] {"g1"}, new String[] {"g2"}, new String[] {"g3"}, new String[] {"g4"}, new String[] {"g5"}} ;
@@ -114,7 +130,7 @@ public class test {
 		catch(RemoteException e) {
 			System.out.println("" + e.getMessage());
 		}
-	}
+	}*/
 
 	/*
 	 * graph convert
@@ -122,5 +138,41 @@ public class test {
 	public static void graph_convert() {
 		DistGraphConverterDGS conv = new DistGraphConverterDGS();
 	}
-
+	
+	public static void testEnum() {
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("k1", "v1");
+		h.put("k2", "v2");
+		h.put("k3", "v3");
+		for(String k : h.values()) {
+			System.out.println("k = " + k);
+		}
+	}
+	
+	public static void DGraph_test1() {
+		RMIDGraphHelper.bind();
+		DGraphManager m = new DGraphManager("m1");
+		//Dispatch des graphs
+		m.bind("localhost", "g1");
+		m.bind("localhost", "g2");
+		
+		//Initialisation et Enregistrement d'une occurence
+		m.register("rmi:localhost/g1:DefaultGraph");
+		m.register("rmi:localhost/g2:DefaultGraph");
+		try {
+			m.getDGraph("g1").exec("dg", "addNode", new String[] {"n1"});
+			m.getDGraph("g1").exec("dg", "addNode", new String[] {"n2"});
+			m.getDGraph("g1").exec("dg", "addNode", new String[] {"n3"});
+			m.getDGraph("g2").exec("dg", "addNode", new String[] {"n4"});
+			//m.getDGraph("g2").exec("dg", "addEdge", new String[] {"e1", "n4", "g1/n2"});
+			System.out.println("hello 2 rmi : " + m.getDGraph("g1").hello("litis2"));
+			System.out.println("-->"+m.getDGraph("g1").exec("dg","getNodeCount", null));
+			System.out.println("-->"+m.getDGraph("g2").exec("dg","getNodeCount", null));
+			int nbnode = (Integer)m.getDGraph("g1").exec("dg","getNodeCount", null);
+			//System.out.println("nb node : " + m.getDGraph("g1").exec("dg","getNodeCount", null) + nbnode);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 }

@@ -1,6 +1,6 @@
 package org.graphstream.distributed.common;
 
-public class GraphNodeInfo {
+public class DGraphNodeInfo {
 
 	private String tag ;
 	private String elementId ;
@@ -10,11 +10,11 @@ public class GraphNodeInfo {
 
 	// Constructors
 
-	public GraphNodeInfo() {
+	public DGraphNodeInfo() {
 		this.sep = "/" ;
 	}
 
-	public GraphNodeInfo(String aSep) {
+	public DGraphNodeInfo(String aSep) {
 		this.sep = aSep ;
 	}
 

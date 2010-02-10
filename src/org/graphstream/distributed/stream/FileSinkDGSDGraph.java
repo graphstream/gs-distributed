@@ -33,7 +33,7 @@ import org.graphstream.stream.file.FileSinkBase;
 /**
  * File output for the DGS (Dynamic Graph Stream) file format.
  */
-public class FileSinkDGSDist
+public class FileSinkDGSDGraph
 	extends FileSinkBase
 {
 // Attribute

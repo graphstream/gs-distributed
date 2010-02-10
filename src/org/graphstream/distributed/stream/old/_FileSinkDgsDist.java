@@ -23,9 +23,9 @@
 
 package org.graphstream.distributed.stream.old;
 
-import org.graphstream.distributed.common.GraphEdgeInfo;
-import org.graphstream.distributed.common.GraphParseTag;
-import org.graphstream.distributed.graph.DistGraphClient;
+import org.graphstream.distributed.common.DGraphEdgeInfo;
+import org.graphstream.distributed.common.DGraphParseTag;
+import org.graphstream.distributed.graph.DGraphClientOld;
 import org.graphstream.stream.file.FileSink;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
@@ -46,12 +46,12 @@ public class _FileSinkDgsDist implements FileSink
 	/**
 	 * A reference to the graph it modifies.
 	 */
-	protected DistGraphClient L;
+	protected DGraphClientOld L;
 	protected Graph graph ;
 	protected Graph vGraph ;
 
-	private GraphEdgeInfo e ;
-	private GraphParseTag parser ;
+	private DGraphEdgeInfo e ;
+	private DGraphParseTag parser ;
 
 
 	public void edgeAdded( String graphId, String edgeId, String fromNodeId, String toNodeId,

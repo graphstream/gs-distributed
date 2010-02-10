@@ -19,7 +19,7 @@ package org.graphstream.distributed.graph ;
 import java.util.Map;
 
 
-public interface DistGraphCore {
+public interface DGraphCoreAdapter {
 
 
 	/**
@@ -62,49 +62,6 @@ public interface DistGraphCore {
 	public void removeNode( String id ) throws java.rmi.RemoteException ;
 
 	public void removeNodeOnGraphVirtual( String id) throws java.rmi.RemoteException ;
-
-	/**
-	 * Fonctions complementaires
-	 */
-
-	/*public void notifyNewGraph(String uri) throws java.rmi.RemoteException;
-
-	public void notifyDelGraph(String graphId) throws java.rmi.RemoteException;
-
-	public void nextDgsEvent() throws java.rmi.RemoteException;
-
-	public void nextDgsStep() throws java.rmi.RemoteException;
-
-	public boolean nextDgsVirtualStep(Integer pas) throws java.rmi.RemoteException;
-
-	public boolean nextDgsVirtualEvents(Integer pas) throws java.rmi.RemoteException;
-
-	public void setGraphReader(String fileName) throws java.rmi.RemoteException;
-
-	public void loadData(String fileName) throws java.rmi.RemoteException;*/
-
-	/**
-	 * Generic request
-	 */
-
-	// Create new instance of algorithms
-	/*public void newAlgorithm(String className, String instanceName) throws java.rmi.RemoteException ;
-
-	public Object exec(String methode, Object[] params) throws java.rmi.RemoteException;
-
-	public Object exec(String objectInstanceName, String methode, Object[] params) throws java.rmi.RemoteException ;
-
-	public Object newRemoteObject(String objectInstanceName, String className, Object[] params) throws java.rmi.RemoteException ;
-*/
-
-	// test
-	/*public void test() throws java.rmi.RemoteException;*/
-
-	/**
-	 * Callback
-	 */
-
-	//public Object callBack() throws java.rmi.RemoteException ;
 
 
 }
