@@ -1,6 +1,5 @@
 package org.graphstream.distributed.rmi;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphUri;
-import org.graphstream.distributed.graph.DGraphCore;
+import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphManager;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
@@ -22,10 +21,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 */
 	private String Id ;
 	
-	//private DGraphCoreAdapter DGraphCore ;
 	private ConcurrentHashMap<String, Object> Registry ;
-	private HashMap<String, RMIDGraphAdapter> DGraphClients ;
-	private HashMap<String, DGraphUri> DGraphUriIndex ;
 	
 	private static final long serialVersionUID = 0001234543456;
 
@@ -34,10 +30,10 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 */
 	
 	public RMIDGraph() throws java.rmi.RemoteException {	
-		//registration
 		this.Registry = new ConcurrentHashMap<String, Object>() ;
-		this.Registry.put("dg", new DGraphCore());
-		this.Registry.put("manager", new DGraphManager("messenger"));
+		this.Registry.put("", this);
+		this.Registry.put("dgraph", new DGraph());
+		this.Registry.put("manager", new DGraphManager());		
 	}
 
 	
@@ -45,12 +41,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * instantiate a distGraph
 	 */
 	public void init(String graphClass, String[] params) throws java.rmi.RemoteException {
-		/*GraphFactory graphFactory = new GraphFactory() ;
-		Graph g = graphFactory.newInstance("", graphClass) ;
-		g.setAutoCreate(true);
-		g.setStrict(false);
-		this.Registry.put("g", g);*/
-		((DGraphCore)this.Registry.get("dg")).init(graphClass);
+		((DGraph)this.Registry.get("dgraph")).init(graphClass);
 	}
 	
 	
@@ -61,12 +52,12 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	public void bind(String id) throws RemoteException {
 		try	{
 			this.Id = id ;
-			System.out.println("binding begin");
+			System.out.println("binding begin for " + id + "on " + System.getenv("hostname"));
 			Naming.rebind( String.format( "//localhost/%s", this.Id ), this );
 			System.out.println("binding done");
+			System.out.println("-------------");
 		}
-		catch( Exception e )
-		{
+		catch( Exception e ) {
 			e.printStackTrace();
 		}	
 	}
@@ -76,8 +67,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * 
 	 */
 	public void clear() throws java.rmi.RemoteException {
-		//this.DGraphCore = null ;
-		//this.DGraphObjects = null ;
+		this.Registry.clear();
 	}
 
 	/**
@@ -113,8 +103,6 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * Generic request
 	 */
 	public Object exec(String objectId, String methode, Object[] params) throws java.rmi.RemoteException {
-		//this.
-		//return null ;
 		return dynamicCall(this.Registry.get(objectId), methode, params);
 	}
 
@@ -150,7 +138,6 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
 			// pour savoir si une classe est serializable ou pas (je regarde si c'est une classe du package java ou pas)
 			// a modifier
-			//if(Serializable.class.isAssignableFrom(res.getClass())) {
 			if(res != null && !res.getClass().getName().startsWith("org.graphstream")) {
 				return res ;
 			}
@@ -176,7 +163,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * 
 	 */
 	public String hello(String name) throws java.rmi.RemoteException {
-		return ("Hello " + name + ((DGraphCore)this.Registry.get("dg")).getNodeCount()) ;
+		return ("Hello " + name + ((DGraph)this.Registry.get("dg")).getNodeCount()) ;
 	}
 
 }

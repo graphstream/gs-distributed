@@ -19,7 +19,7 @@ package org.graphstream.distributed.graph ;
 import java.util.Map;
 
 
-public interface DGraphCoreAdapter {
+public interface DGraphAdapter {
 
 
 	/**

@@ -29,7 +29,7 @@ import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
 
 
-public class DGraphCore implements DGraphCoreAdapter {
+public class DGraph implements DGraphAdapter {
 
 	// Variables
 	private Graph Graph ;
@@ -40,12 +40,10 @@ public class DGraphCore implements DGraphCoreAdapter {
 	private DGraphEdgeInfo E ;
 	private DGraphParseTag Parser ;
 
-	private boolean LastStep ;
-	private boolean LastEvent ;
 	private static final long serialVersionUID = 0001 ;
 
 	// Constructor
-	public DGraphCore() {
+	public DGraph() {
 	}
 
 	// Modifiers

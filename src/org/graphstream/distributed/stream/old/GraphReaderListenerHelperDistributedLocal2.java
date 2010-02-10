@@ -21,7 +21,7 @@ import java.util.Map;
 import org.graphstream.distributed.common.DGraphEdgeInfo;
 import org.graphstream.distributed.common.DGraphParseTag;
 import org.graphstream.distributed.graph.DGraphClientOld;
-import org.graphstream.distributed.graph.DGraphCore;
+import org.graphstream.distributed.graph.DGraph;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 
@@ -45,7 +45,7 @@ public class GraphReaderListenerHelperDistributedLocal2 implements GraphReaderLi
 	private DGraphEdgeInfo e ;
 	private DGraphParseTag parser ;
 
-	private DGraphCore g ;
+	private DGraph g ;
 
 	/**
 	 * New default graph reader listener that modifies the given graph according

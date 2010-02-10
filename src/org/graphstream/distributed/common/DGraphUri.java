@@ -17,6 +17,7 @@
 package org.graphstream.distributed.common;
 
 import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -37,112 +38,40 @@ public class DGraphUri {
 	// Fields
 	String Uri ;
 	
-	String DGraphId ;
-	String Protocole ;
-	String Host ;
-	String Port ;
-	HashMap<String,String> Params ;
-	String DGraphClass ;
-	
-
+	HashMap<String, String> data ;
 
 	// Constructor
 
 	public DGraphUri(String uri) {
-		init();
 		this.Uri = uri ;
 		uriParser(uri);
 	}
 
-	private void init() {
-		this.Params = new HashMap<String,String>() ;
-	}
-
 	// rmi:<host>:<port>/<id>:<graphClass>
 	private void uriParser(String uri) {
-		this.Protocole = uri.split(":")[0] ;
-		this.Port = "1099";
+		this.data.put("protocole", uri.split(":")[0]) ;
+		this.data.put("port","1099");
 		if(uri.split(":").length > 3) { // avec port specifie
-			this.Port = uri.split(":")[2].split("/")[0] ;
-			this.Host = uri.split(":")[1] ;
+			this.data.put("port",uri.split(":")[2].split("/")[0]);
+			this.data.put("host",uri.split(":")[1]);
 		}
 		else { // sans port specif
-			this.Host = uri.split(":")[1].split("/")[0] ;
+			this.data.put("host",uri.split(":")[1].split("/")[0]) ;
 		}
-		this.DGraphId = uri.split("/")[1].split(":")[0];
-		this.DGraphClass = uri.split("/")[1].split(":")[1];
-	}
-
-
-	// Modifiers
-
-
-	// set the id of the graph
-	public void setDGraphId(String value) {
-		this.DGraphId = value ;
-	}
-
-	//
-	public void setHost(String value) {
-		this.Host = value ;
-	}
-
-	//
-	public void setProtocole(String value) {
-		this.Protocole = value ;
-	}
-
-	//
-	public void setPort(String value) {
-		this.Port = value ;
-	}
-
-	//
-	public void setDGraphClass(String value) {
-		this.DGraphClass = value ;
-	}
-
-	//
-	public void addParameter(String key, String value) {
-		this.Params.put(key, value);
+		this.data.put("name", uri.split("/")[1].split(":")[0]);
+		this.data.put("class", uri.split("/")[1].split(":")[1]);
+		this.data.put("uri", this.Uri);
 	}
 
 
 	// Accessors
 
-
-	//
-	public String getHost() {
-		return this.Host ;
+	public String getElement(String key) {
+		return this.data.get(key) ;
 	}
 
-	//
-	public String getDGraphId() {
-		return this.DGraphId ;
-	}
-
-	//
-	public String getProtocole() {
-		return this.Protocole ;
-	}
-
-	//
-	public String getPort() {
-		return this.Port ;
-	}
-
-	//
-	public String getDGraphClass() {
-		return this.DGraphClass ;
-	}
-
-	// Method getParameter
-	public String getParameter(String key) {
-		return this.Params.get(key);
-	}
-
-	public String getUri() {
-		return this.Uri ;
+	public Map<String, String> getMap() {
+		return this.data ;
 	}
 
 }

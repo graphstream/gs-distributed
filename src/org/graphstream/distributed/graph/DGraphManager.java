@@ -9,21 +9,22 @@ import java.util.HashMap;
 import org.graphstream.distributed.common.DGraphUri;
 import org.graphstream.distributed.rmi.RMIDGraph;
 import org.graphstream.distributed.rmi.RMIDGraphAdapter;
-import org.graphstream.distributed.rmi.RMIDGraphClient;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.DefaultGraph;
 
 public class DGraphManager {
 
 	// Variables
-	String Id ;
 	HashMap<String, RMIDGraphAdapter> DGraphClients ;
 	HashMap<String, DGraphUri> DGraphUriIndex ;
 	
+	Graph metaGraph ;
 	
 	// Constructor
-	public DGraphManager(String id) {
-		this.Id = id ;
+	public DGraphManager(String name) {
 		this.DGraphClients = new HashMap<String, RMIDGraphAdapter>() ;
 		this.DGraphUriIndex = new HashMap<String, DGraphUri>() ;
+		Graph metaGraph = new DefaultGraph(name);
 	}
 	
 	
@@ -36,6 +37,8 @@ public class DGraphManager {
 	public void register(String anUri) {
 		try {
 			DGraphUri uri = new DGraphUri(anUri);
+			metaGraph.addNode(uri.getDGraphId()).;
+			
 
 			//creation de la reference en local
 			this.DGraphClients.put(uri.getDGraphId(), RMIRegister(uri));
