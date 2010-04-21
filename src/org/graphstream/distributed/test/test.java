@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
-import org.graphstream.distributed.common.DGraphUri;
 import org.graphstream.distributed.graph.DGraphManager;
-import org.graphstream.distributed.rmi.RMIDGraphAdapter;
-import org.graphstream.distributed.rmi.RMIDGraphHelper;
+import org.graphstream.distributed.rmi.RMIHelper;
 import org.graphstream.distributed.stream.DGraphSink;
 import org.graphstream.distributed.stream.FileSinkDGSDGraph;
 import org.graphstream.distributed.stream.old.DistGraphConverterDGS;
@@ -32,7 +30,7 @@ public class test {
 		//graph_convert();
 		//Graph g2 ;
 		//testEnum();
-		DGraph_test1();
+		//DGraph_test1();
 	}
 
 
@@ -150,7 +148,7 @@ public class test {
 	}
 	
 	public static void DGraph_test1() {
-		RMIDGraphHelper.bind();
+		RMIHelper.bind();
 		DGraphManager m = new DGraphManager("m1");
 		//Dispatch des graphs
 		m.bind("localhost", "g1");

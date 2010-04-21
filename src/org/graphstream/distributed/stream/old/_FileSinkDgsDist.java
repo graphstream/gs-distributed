@@ -25,7 +25,6 @@ package org.graphstream.distributed.stream.old;
 
 import org.graphstream.distributed.common.DGraphEdgeInfo;
 import org.graphstream.distributed.common.DGraphParseTag;
-import org.graphstream.distributed.graph.DGraphClientOld;
 import org.graphstream.stream.file.FileSink;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;

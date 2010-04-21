@@ -18,7 +18,6 @@ package org.graphstream.distributed.graph;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphEdgeInfo;
 import org.graphstream.distributed.common.DGraphParseTag;

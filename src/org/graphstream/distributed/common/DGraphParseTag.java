@@ -22,7 +22,7 @@ public class DGraphParseTag {
 	// Fields
 
 	private String elementId ;
-	private String graphId ;
+	private String graphName ;
 	private boolean isValidString ;
 
 
@@ -43,12 +43,12 @@ public class DGraphParseTag {
 		String[] res = value.split("/") ;
 		if(res.length > 1) {
 			this.isValidString = true ;
-			this.graphId = res[0];
+			this.graphName = res[0];
 			this.elementId = res[1];
 		}
 		else {
 			this.isValidString = false ;
-			this.graphId = "";
+			this.graphName = "";
 			this.elementId = value;
 		}
 		return this ;
@@ -63,8 +63,8 @@ public class DGraphParseTag {
 	}
 
 	// return the id of the graph
-	public String getGraphId() {
-		return graphId ;
+	public String getGraphName() {
+		return this.graphName ;
 	}
 
 	// return the id of the element

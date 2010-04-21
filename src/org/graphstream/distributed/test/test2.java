@@ -1,8 +1,8 @@
 package org.graphstream.distributed.test;
 
-import java.rmi.RemoteException;
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.implementations.SingleGraph;
 
-import org.graphstream.distributed.rmi.RMIDGraphAdapter;
 
 
 public class test2 {
@@ -13,6 +13,8 @@ public class test2 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		System.out.println("test");
+		Graph g = new SingleGraph("");
 	}
 
 	

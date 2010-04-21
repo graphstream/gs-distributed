@@ -14,10 +14,14 @@ public interface RMIDGraphAdapter extends Remote {
 
 	public void unregisterNotify(String id) throws java.rmi.RemoteException ;
 
-	public Object exec(String objectId, String method, Object[] params) throws java.rmi.RemoteException ;
+	
+	
+	public Object exec(String requestId, String objectId, String method, Object[] params) throws java.rmi.RemoteException ;
 
-	public Object[] exec(String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException ;
+	public Object[] exec(String[] requestIds, String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException ;
 	
 	public String hello(String name) throws java.rmi.RemoteException ;
 
+	
+	
 }

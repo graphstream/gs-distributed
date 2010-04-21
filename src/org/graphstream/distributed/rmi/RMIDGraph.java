@@ -7,10 +7,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphUri;
+import org.graphstream.distributed.common.EnumUri;
 import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphManager;
 
@@ -28,12 +28,11 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	/*
 	 * Constructor
 	 */
-	
 	public RMIDGraph() throws java.rmi.RemoteException {	
 		this.Registry = new ConcurrentHashMap<String, Object>() ;
 		this.Registry.put("", this);
 		this.Registry.put("dgraph", new DGraph());
-		this.Registry.put("manager", new DGraphManager());		
+		this.Registry.put("manager", new DGraphManager(""));		
 	}
 
 	
@@ -79,7 +78,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		// TODO Auto-generated method stub
 		DGraphUri u = new DGraphUri(uri);
 		try {
-			this.Registry.put(u.getDGraphId(), (RMIDGraphAdapter)Naming.lookup("rmi://"+u.getHost()+"/"+u.getDGraphId()));
+			this.Registry.put(u.getElement(EnumUri.DGraphName), (RMIDGraphAdapter)Naming.lookup("rmi://"+u.getElement(EnumUri.Host)+"/"+u.getElement(EnumUri.DGraphName)));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,21 +94,20 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
 	public void unregisterNotify(String id) throws RemoteException {
 		// TODO Auto-generated method stub
-		
 	}
 
 
-	/*
+	/**
 	 * Generic request
 	 */
-	public Object exec(String objectId, String methode, Object[] params) throws java.rmi.RemoteException {
+	public Object exec(String requestId, String objectId, String methode, Object[] params) throws java.rmi.RemoteException {
 		return dynamicCall(this.Registry.get(objectId), methode, params);
 	}
 
-	/*
+	/**
 	 * Generic request multi
 	 */
-	public Object[] exec(String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException {
+	public Object[] exec(String[] requestId, String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException {
 		Object[] res = new Object[objectIds.length];
 		for(int i = 0 ; i < objectIds.length ; i++ ) {
 			res[i] = null ;
@@ -160,7 +158,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	}
 	
 	/**
-	 * 
+	 * fonction de test
 	 */
 	public String hello(String name) throws java.rmi.RemoteException {
 		return ("Hello " + name + ((DGraph)this.Registry.get("dg")).getNodeCount()) ;

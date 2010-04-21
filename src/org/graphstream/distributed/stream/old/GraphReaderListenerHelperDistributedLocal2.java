@@ -20,8 +20,10 @@ import java.util.Map;
 
 import org.graphstream.distributed.common.DGraphEdgeInfo;
 import org.graphstream.distributed.common.DGraphParseTag;
-import org.graphstream.distributed.graph.DGraphClientOld;
 import org.graphstream.distributed.graph.DGraph;
+import org.graphstream.stream.GraphParseException;
+import org.graphstream.stream.old.GraphReader;
+import org.graphstream.stream.old.GraphReaderListener;
 
 import com.sun.corba.se.impl.orbutil.graph.Graph;
 

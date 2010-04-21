@@ -21,6 +21,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.graphstream.distributed.common.DGraphEdgeInfo;
+import org.graphstream.stream.GraphParseException;
+import org.graphstream.stream.old.GraphReader;
+import org.graphstream.stream.old.GraphReaderFactory;
+import org.graphstream.stream.old.GraphReaderListenerExtended;
+import org.graphstream.stream.old.GraphWriter;
+import org.graphstream.stream.old.GraphWriterFactory;
 
 
 /**

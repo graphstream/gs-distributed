@@ -1,5 +1,7 @@
 package org.graphstream.distributed.common;
 
+import java.util.HashMap;
+
 
 public class DGraphEdgeInfo {
 
@@ -7,6 +9,8 @@ public class DGraphEdgeInfo {
 	private String graphTag1 ;
 	private String graphId2 ;
 	private String graphTag2 ;
+	
+	private HashMap<String,String> data ;
 
 	/**
 	 *

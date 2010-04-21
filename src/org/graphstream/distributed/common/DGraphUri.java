@@ -36,20 +36,19 @@ import java.util.Map;
 public class DGraphUri {
 
 	// Fields
-	String Uri ;
-	
 	HashMap<String, String> data ;
 
 	// Constructor
 
 	public DGraphUri(String uri) {
-		this.Uri = uri ;
+		this.data.put("uri",uri);
 		uriParser(uri);
 	}
 
 	// rmi:<host>:<port>/<id>:<graphClass>
 	private void uriParser(String uri) {
 		this.data.put("protocole", uri.split(":")[0]) ;
+		DGraphParser.uri(uri);
 		this.data.put("port","1099");
 		if(uri.split(":").length > 3) { // avec port specifie
 			this.data.put("port",uri.split(":")[2].split("/")[0]);
@@ -58,9 +57,8 @@ public class DGraphUri {
 		else { // sans port specif
 			this.data.put("host",uri.split(":")[1].split("/")[0]) ;
 		}
-		this.data.put("name", uri.split("/")[1].split(":")[0]);
-		this.data.put("class", uri.split("/")[1].split(":")[1]);
-		this.data.put("uri", this.Uri);
+		this.data.put("DGraphName", uri.split("/")[1].split(":")[0]);
+		this.data.put("DGraphClass", uri.split("/")[1].split(":")[1]);
 	}
 
 

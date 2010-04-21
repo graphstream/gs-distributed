@@ -4,16 +4,14 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.Map;
 
-import org.graphstream.distributed.common.DGraphUri;
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumUri;
 
-public class RMIDGraphHelper {
-
-	public static void main(String[] args) {
-		
-	}
+public class RMIHelper {
 	
-	private RMIDGraphHelper() {
+	private RMIHelper() {
 	}
 	
 	public static void bind() {
@@ -22,10 +20,12 @@ public class RMIDGraphHelper {
 	
 	/*
 	 * register
+	 * rmi:<host>:<port>/<id>:<graphClass>
 	 */
-	public static RMIDGraphAdapter register(DGraphUri uri) {
+	public static RMIDGraphAdapter register(String uri) {
+		Map<String, Object> d = DGraphParser.uri(uri);
 		try {
-			return (RMIDGraphAdapter)Naming.lookup("rmi://"+uri.getHost()+"/"+uri.getDGraphId()) ;
+			return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
 		}
 		catch (RemoteException exp) {
 				System.out.println("RemoteException dans register : " +	exp);

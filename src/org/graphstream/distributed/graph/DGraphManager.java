@@ -1,12 +1,15 @@
-package org.graphstream.distributed.graph;
+	package org.graphstream.distributed.graph;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.graphstream.distributed.common.DGraphParser;
 import org.graphstream.distributed.common.DGraphUri;
+import org.graphstream.distributed.common.EnumUri;
 import org.graphstream.distributed.rmi.RMIDGraph;
 import org.graphstream.distributed.rmi.RMIDGraphAdapter;
 import org.graphstream.graph.Graph;
@@ -18,13 +21,13 @@ public class DGraphManager {
 	HashMap<String, RMIDGraphAdapter> DGraphClients ;
 	HashMap<String, DGraphUri> DGraphUriIndex ;
 	
-	Graph metaGraph ;
+	Graph meta ;
 	
 	// Constructor
 	public DGraphManager(String name) {
 		this.DGraphClients = new HashMap<String, RMIDGraphAdapter>() ;
 		this.DGraphUriIndex = new HashMap<String, DGraphUri>() ;
-		Graph metaGraph = new DefaultGraph(name);
+		Graph meta = new DefaultGraph(name);
 	}
 	
 	
@@ -34,11 +37,10 @@ public class DGraphManager {
 	 * register 
 	 * si une classe est définie alors 
 	 */
-	public void register(String anUri) {
+	public void register(String uri) {
 		try {
-			DGraphUri uri = new DGraphUri(anUri);
-			metaGraph.addNode(uri.getDGraphId()).;
-			
+			Map<String,Object> data = DGraphParser.uri(uri);
+			meta.addNode((String)data.get(EnumUri.DGraphName)).addAttributes(data);
 
 			//creation de la reference en local
 			this.DGraphClients.put(uri.getDGraphId(), RMIRegister(uri));
