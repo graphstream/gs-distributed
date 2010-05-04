@@ -24,6 +24,7 @@ public class test {
 		System.out.println("coucou");
 		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
+		g.addNode("coucou2");
 		//demo() ;
 		//testio();
 		//test_multi();
