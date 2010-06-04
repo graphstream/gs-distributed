@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 
 import org.graphstream.distributed.graph.DGraphManager;
+import org.graphstream.distributed.rmi.RMIDGraphAdapter;
 import org.graphstream.distributed.rmi.RMIHelper;
 import org.graphstream.distributed.stream.DGraphSink;
 import org.graphstream.distributed.stream.FileSinkDGSDGraph;
@@ -25,6 +26,7 @@ public class test {
 		Graph g = new SingleGraph("1");
 		g.addNode("coucou");
 		g.addNode("coucou2");
+		newtest();
 		//demo() ;
 		//testio();
 		//test_multi();
@@ -165,13 +167,19 @@ public class test {
 			m.getDGraph("g2").exec("dg", "addNode", new String[] {"n4"});
 			//m.getDGraph("g2").exec("dg", "addEdge", new String[] {"e1", "n4", "g1/n2"});
 			System.out.println("hello 2 rmi : " + m.getDGraph("g1").hello("litis2"));
-			System.out.println("-->"+m.getDGraph("g1").exec("dg","getNodeCount", null));
-			System.out.println("-->"+m.getDGraph("g2").exec("dg","getNodeCount", null));
-			int nbnode = (Integer)m.getDGraph("g1").exec("dg","getNodeCount", null);
+			//System.out.println("-->"+m.getDGraph("g1").exec("dg","getNodeCount", null));
+			//System.out.println("-->"+m.getDGraph("g2").exec("dg","getNodeCount", null));
+			//int nbnode = (Integer)m.getDGraph("g1").exec("dg","getNodeCount", null);
 			//System.out.println("nb node : " + m.getDGraph("g1").exec("dg","getNodeCount", null) + nbnode);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}
+
+	public static void newtest() {
+		RMIDGraphAdapter g = RMIHelper.register("rmi:localhost:1099/g1:DefaultGraph");
+		
+	}
+
 }
