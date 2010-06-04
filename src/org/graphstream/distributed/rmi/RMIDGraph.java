@@ -161,7 +161,9 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * fonction de test
 	 */
 	public String hello(String name) throws java.rmi.RemoteException {
-		return ("Hello " + name + ((DGraph)this.Registry.get("dg")).getNodeCount()) ;
+		//return ("Hello " + name + ((DGraph)this.Registry.get("dg")).getNodeCount()) ;
+		System.out.println("coucou");
+		return "hello " + name;
 	}
 
 }

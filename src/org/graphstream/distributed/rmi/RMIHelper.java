@@ -14,8 +14,17 @@ public class RMIHelper {
 	private RMIHelper() {
 	}
 	
-	public static void bind() {
+	public static void bind(String id, String host) {
 		System.out.println("bind");
+		try	{
+			System.out.println("binding begin for " + id + "on " + System.getenv("hostname"));
+			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph() );
+			System.out.println("binding done");
+			System.out.println("-------------");
+		}
+		catch( Exception e ) {
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -24,6 +33,7 @@ public class RMIHelper {
 	 */
 	public static RMIDGraphAdapter register(String uri) {
 		Map<String, Object> d = DGraphParser.uri(uri);
+		System.out.println("--> "+d.get(EnumUri.Host) + " graphName" + d.get(EnumUri.DGraphName));
 		try {
 			return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
 		}

@@ -23,10 +23,11 @@ public class test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("coucou");
-		Graph g = new SingleGraph("1");
-		g.addNode("coucou");
-		g.addNode("coucou2");
-		newtest();
+		RMIDGraphAdapter g = RMIHelper.register("rmi:localhost:1099/g1:DefaultGraph");
+		//Graph g = new SingleGraph("1");
+		//g.addNode("coucou");
+		//g.addNode("coucou2");
+		//newtest();
 		//demo() ;
 		//testio();
 		//test_multi();
