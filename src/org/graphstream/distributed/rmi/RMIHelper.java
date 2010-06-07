@@ -17,10 +17,8 @@ public class RMIHelper {
 	public static void bind(String id, String host) {
 		System.out.println("bind");
 		try	{
-			System.out.println("binding begin for " + id + "on " + System.getenv("hostname"));
 			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph() );
 			System.out.println("binding done");
-			System.out.println("-------------");
 		}
 		catch( Exception e ) {
 			e.printStackTrace();

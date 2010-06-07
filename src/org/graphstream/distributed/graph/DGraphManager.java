@@ -37,7 +37,7 @@ public class DGraphManager {
 	 * register 
 	 * si une classe est définie alors 
 	 */
-	public void register(String uri) {
+	/*public void register(String uri) {
 		try {
 			Map<String,Object> data = DGraphParser.uri(uri);
 			meta.addNode((String)data.get(EnumUri.DGraphName)).addAttributes(data);
@@ -59,7 +59,7 @@ public class DGraphManager {
 		catch(Exception e) {
 			System.out.println("Register error" + e.getMessage());
 		}
-	}
+	}*/
 	
 	/**
 	 * unregister
@@ -89,7 +89,7 @@ public class DGraphManager {
 	
 	// Methods (private)
 	
-	private RMIDGraphAdapter RMIRegister(DGraphUri anUri) {
+	/*private RMIDGraphAdapter RMIRegister(DGraphUri anUri) {
 		try {
 			return (RMIDGraphAdapter)Naming.lookup("rmi://"+anUri.getHost()+"/"+anUri.getDGraphId()) ;
 		}
@@ -105,13 +105,13 @@ public class DGraphManager {
 				System.out.println("MalformedURLException dans RMIRegister : " + exp);
 				return null ;
 		}
-	}
+	}*/
 	
 	/**
 	 * 
 	 * @throws RemoteException
 	 */
-	public void bind(String host, String id) {
+	/*public void bind(String host, String id) {
 		try	{
 			this.Id = id ;
 			RMIDGraph dg = new RMIDGraph();
@@ -123,6 +123,6 @@ public class DGraphManager {
 		catch( Exception e ) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 }

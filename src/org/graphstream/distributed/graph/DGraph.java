@@ -69,7 +69,7 @@ public class DGraph implements DGraphAdapter {
 	 * notifyNewGraph
 	 */
 	public void notifyNewGraph(String uri) throws java.rmi.RemoteException {
-		this.Manager.register(uri);
+		//this.Manager.register(uri);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class DGraph implements DGraphAdapter {
 			}
 			else {
 				this.GraphV.addEdge(id, node1, node2);
-				this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addVirtualEdge", new String[] {id, node1, node2});
+				this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addVirtualEdge", new String[] {id, node1, node2});
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addEdge", new Object[] {id, from, to, directed});
+			this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addEdge", new Object[] {id, from, to, directed});
 		}
 	}
 
@@ -170,7 +170,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			edge = this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(E.getGraphTag2()).exec("g", "addEdge", new Object[] {id, from, to, directed, attributes});
+			this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addEdge", new Object[] {id, from, to, directed, attributes});
 		}
 		if( attributes != null )
 			edge.addAttributes(attributes);
@@ -206,13 +206,13 @@ public class DGraph implements DGraphAdapter {
 	 */
 	public void removeEdge( String id ) throws java.rmi.RemoteException {
 		this.Parser.parse(id);
-		if(this.Parser.getGraphId().equals(this.Graph.getId()))
+		if(this.Parser.getGraphName().equals(this.Graph.getId()))
 			this.Graph.removeEdge(id); // edge intra graph
 		else {
 			Node Node1 = this.GraphV.getEdge(id).getNode1();
 			this.GraphV.removeEdge(id); // edge inter (part1)
-			if(!this.Parser.parse(Node1.getId()).getGraphId().equals(this.Graph.getId())) {
-				this.Manager.getDGraph(this.Parser.parse(Node1.getId()).getGraphId()).exec("g", "removeEdge", new Object[] {id}); // edge inter (part2)
+			if(!this.Parser.parse(Node1.getId()).getGraphName().equals(this.Graph.getId())) {
+				this.Manager.getDGraph(this.Parser.parse(Node1.getId()).getGraphName()).exec(null, "g", "removeEdge", new Object[] {id}); // edge inter (part2)
 			}
 		}
 	}
@@ -227,8 +227,8 @@ public class DGraph implements DGraphAdapter {
 			this.Graph.removeEdge(from, to); // edge intra graph
 		else {
 			this.GraphV.removeEdge(from, to); // edge inter (part1)
-			if(Parser.parse(to).getGraphId().equals(this.Graph.getId())) {
-				this.Manager.getDGraph(Parser.parse(to).getGraphId()).exec("g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
+			if(Parser.parse(to).getGraphName().equals(this.Graph.getId())) {
+				this.Manager.getDGraph(Parser.parse(to).getGraphName()).exec(null, "g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
 			}
 		}
 	}
@@ -244,11 +244,11 @@ public class DGraph implements DGraphAdapter {
 			this.GraphV.removeNode(id);
 			while(it.hasNext()) {
 				Edge e = it.next();
-				if(this.Parser.parse(e.getNode1().getId()).getGraphId().equals(this.Graph.getId())) {
-					this.Manager.getDGraph(Parser.parse(e.getNode0().getId()).getGraphId()).exec("g", "removeNodeOnGraphVirtual", new Object[] {id});
+				if(this.Parser.parse(e.getNode1().getId()).getGraphName().equals(this.Graph.getId())) {
+					this.Manager.getDGraph(Parser.parse(e.getNode0().getId()).getGraphName()).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 				else {
-					this.Manager.getDGraph(Parser.parse(e.getNode1().getId()).getGraphId()).exec("g", "removeNodeOnGraphVirtual", new Object[] {id});
+					this.Manager.getDGraph(Parser.parse(e.getNode1().getId()).getGraphName()).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 			}
 		}

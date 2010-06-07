@@ -43,8 +43,8 @@ public class DGraphParser {
 		else { // sans port specif
 			data.put("host",uri.split(":")[1].split("/")[0]) ;
 		}
-		data.put(EnumUri.DGraphName, uri.split("/")[1].split(":")[0]);
-		data.put(EnumUri.DGraphClass, uri.split("/")[1].split(":")[1]);
+		data.put(EnumUri.DGraphName, uri.split("/")[1]);
+		//data.put(EnumUri.DGraphClass, uri.split("/")[1].split(":")[1]);
 		return data ;
 	}
 	

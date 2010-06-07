@@ -22,8 +22,8 @@ public class DGraphEdgeInfo {
 		DGraphParseTag pTo = new DGraphParseTag(to) ;
 		this.graphId1 = pFrom.getElementId() ;
 		this.graphId2 = pTo.getElementId() ;
-		this.graphTag1 = pFrom.getGraphId() ;
-		this.graphTag2 = pTo.getGraphId();
+		this.graphTag1 = pFrom.getGraphName() ;
+		this.graphTag2 = pTo.getGraphName();
 	}
 
 	public DGraphEdgeInfo() {
@@ -34,8 +34,8 @@ public class DGraphEdgeInfo {
 		DGraphParseTag pTo = new DGraphParseTag(to) ;
 		this.graphId1 = pFrom.getElementId() ;
 		this.graphId2 = pTo.getElementId() ;
-		this.graphTag1 = pFrom.getGraphId() ;
-		this.graphTag2 = pTo.getGraphId();
+		this.graphTag1 = pFrom.getGraphName() ;
+		this.graphTag2 = pTo.getGraphName();
 	}
 
 	public boolean isIntraEdge() {
