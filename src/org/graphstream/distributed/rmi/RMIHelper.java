@@ -15,10 +15,9 @@ public class RMIHelper {
 	}
 	
 	public static void bind(String id, String host) {
-		System.out.println("bind");
 		try	{
 			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph() );
-			System.out.println("binding done");
+			System.out.println("binding " + id + "on " + host + " done");
 		}
 		catch( Exception e ) {
 			e.printStackTrace();
@@ -26,12 +25,11 @@ public class RMIHelper {
 	}
 	
 	/*
-	 * register
-	 * rmi:<host>:<port>/<id>:<graphClass>
+	 * Register
+	 * uri : rmi:<host>:<port>/<id>
 	 */
 	public static RMIDGraphAdapter register(String uri) {
-		Map<String, Object> d = DGraphParser.uri(uri);
-		System.out.println("--> "+d.get(EnumUri.Host) + " graphName" + d.get(EnumUri.DGraphName));
+		Map<String, String> d = DGraphParser.uri(uri);
 		try {
 			return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
 		}

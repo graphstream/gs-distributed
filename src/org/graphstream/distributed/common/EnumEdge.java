@@ -2,10 +2,10 @@ package org.graphstream.distributed.common;
 
 public class EnumEdge {
 
-	static public String DGraphNameFrom = "DGraphNameFrom" ;
-	static public String ElementIdFrom = "ElementIdFrom" ;
-	static public String DGraphNameTo = "DGraphNameTo" ;
-	static public String ElementIdTo = "ElementIdTo" ;
+	static public String GraphFrom = "GraphFrom" ;
+	static public String NodeFrom = "NodeFrom" ;
+	static public String GraphTo = "GraphTo" ;
+	static public String NodeTo = "NodeTo" ;
 	
 	private EnumEdge() {
 	}

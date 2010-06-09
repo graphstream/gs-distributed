@@ -70,7 +70,8 @@ public class DGraphManager {
 		if(this.DGraphClients.containsKey(anId)) {
 			for(String k : this.DGraphClients.keySet()) {
 				try {
-					this.DGraphClients.get(k).unregisterNotify(anId);
+					//this.DGraphClients.get(k).unregisterNotify(anId);
+					this.DGraphClients.get(k).exec(null, "this", "unregisterNotify", new String[] {anId});
 				}
 				catch(RemoteException e) {
 					System.out.println(e.getMessage());

@@ -7,3 +7,9 @@ Classe créé un pointeur rmi
 Faire une classe qui va multi-threader n processus
 Faire une classe de gestion d'erreur commune log4j (classe statique)
 RMIDGraph
+
+
+
+- Synchrone RMI
+
+- Asynchrone JMS (apache activ MQ eventuellement)

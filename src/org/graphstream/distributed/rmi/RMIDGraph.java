@@ -10,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphUri;
+import org.graphstream.distributed.common.EnumRegistry;
 import org.graphstream.distributed.common.EnumUri;
 import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphManager;
@@ -30,9 +31,10 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 */
 	public RMIDGraph() throws java.rmi.RemoteException {	
 		this.Registry = new ConcurrentHashMap<String, Object>() ;
-		this.Registry.put("", this);
-		this.Registry.put("dgraph", new DGraph());
-		this.Registry.put("manager", new DGraphManager(""));		
+		this.Registry.put(EnumRegistry.RmiDGraph, this);
+		this.Registry.put(EnumRegistry.Registry, this.Registry);		
+		this.Registry.put(EnumRegistry.DGraph, new DGraph());
+		this.Registry.put(EnumRegistry.Manager, new DGraphManager(""));		
 	}
 
 	
@@ -40,7 +42,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * instantiate a distGraph
 	 */
 	public void init(String graphClass, String[] params) throws java.rmi.RemoteException {
-		((DGraph)this.Registry.get("dgraph")).init(graphClass);
+		((DGraph)this.Registry.get(EnumRegistry.DGraph)).init(graphClass);
 	}
 	
 	

@@ -19,8 +19,9 @@ package org.graphstream.distributed.graph;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.graphstream.distributed.common.DGraphEdgeInfo;
-import org.graphstream.distributed.common.DGraphParseTag;
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumEdge;
+import org.graphstream.distributed.common.EnumNode;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.GraphFactory;
@@ -36,8 +37,8 @@ public class DGraph implements DGraphAdapter {
 	private DGraphManager Manager ;
 
 	// A encapsuler
-	private DGraphEdgeInfo E ;
-	private DGraphParseTag Parser ;
+	//private DGraphEdgeInfo E ;
+	//private DGraphParseTag Parser ;
 
 	private static final long serialVersionUID = 0001 ;
 
@@ -50,10 +51,7 @@ public class DGraph implements DGraphAdapter {
 	/**
 	 * initialisation
 	 */
-	public void init(String graphClass) {
-		this.E 		= new DGraphEdgeInfo();
-		this.Parser = new DGraphParseTag();
-		
+	public void init(String graphClass) {		
 		GraphFactory graphFactory = new GraphFactory() ;
 		this.Graph = graphFactory.newInstance("", graphClass) ;
 		this.Graph.setAutoCreate(true);
@@ -117,17 +115,17 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge( String id, String node1, String node2 ) throws java.rmi.RemoteException {
-		E.setEdgeInfo(node1, node2) ;
-		if(E.isIntraEdge()) { // intra edge
+		Map<String, String> e = DGraphParser.edge(node1, node2);
+		if(e.get(EnumEdge.GraphFrom).equals(e.get(EnumEdge.GraphTo))) { // intra edge
 			this.Graph.addEdge(id, node1, node2);
 		}
 		else {
-			if (E.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2) - requete vient d'un server
+			if (e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) { // virtual Edge (part2) - requete vient d'un server
 				this.GraphV.addEdge(id, node1, node2);
 			}
 			else {
 				this.GraphV.addEdge(id, node1, node2);
-				this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addVirtualEdge", new String[] {id, node1, node2});
+				this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "addVirtualEdge", new String[] {id, node1, node2});
 			}
 		}
 	}
@@ -143,16 +141,17 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge( String id, String from, String to, boolean directed ) throws java.rmi.RemoteException{
-		DGraphEdgeInfo e = new DGraphEdgeInfo(from, to) ;
-		if(e.isIntraEdge()) {
+		//DGraphEdgeInfo e = new DGraphEdgeInfo(from, to) ;
+		Map<String, String> e = DGraphParser.edge(from, to);
+		if(e.get(EnumEdge.GraphFrom) == e.get(EnumEdge.GraphTo)) {
 			this.Graph.addEdge(id, from, to, directed);
 		}
-		else if (e.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2)
+		else if (e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) { // virtual Edge (part2)
 			this.GraphV.addEdge(id, from, to);
 		}
 		else {
 			this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addEdge", new Object[] {id, from, to, directed});
+			this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "addEdge", new Object[] {id, from, to, directed});
 		}
 	}
 
@@ -160,17 +159,17 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge (String id, String from, String to, boolean directed, Map<String,Object> attributes ) throws java.rmi.RemoteException {
-		E.setEdgeInfo(from, to) ;
 		Edge edge ;
-		if(E.isIntraEdge()) {
+		Map<String, String> e = DGraphParser.edge(from, to);
+		if(e.get(EnumEdge.GraphFrom) == e.get(EnumEdge.GraphTo)) {
 			edge = this.Graph.addEdge(id, from, to, directed);
 		}
-		else if (E.getGraphTag2().equals(this.Graph.getId())) { // virtual Edge (part2)
+		else if (e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) { // virtual Edge (part2)
 			edge = this.GraphV.addEdge(id, from, to);
 		}
 		else {
 			edge = this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(E.getGraphTag2()).exec(null, "g", "addEdge", new Object[] {id, from, to, directed, attributes});
+			this.Manager.getDGraph(EnumEdge.GraphTo).exec(null, "g", "addEdge", new Object[] {id, from, to, directed, attributes});
 		}
 		if( attributes != null )
 			edge.addAttributes(attributes);
@@ -205,14 +204,14 @@ public class DGraph implements DGraphAdapter {
 	 * removeEdge
 	 */
 	public void removeEdge( String id ) throws java.rmi.RemoteException {
-		this.Parser.parse(id);
-		if(this.Parser.getGraphName().equals(this.Graph.getId()))
+		Map<String, String> m = DGraphParser.edge(id);
+		if(m.get(EnumNode.DGraphName).equals(this.Graph.getId()))
 			this.Graph.removeEdge(id); // edge intra graph
 		else {
 			Node Node1 = this.GraphV.getEdge(id).getNode1();
 			this.GraphV.removeEdge(id); // edge inter (part1)
-			if(!this.Parser.parse(Node1.getId()).getGraphName().equals(this.Graph.getId())) {
-				this.Manager.getDGraph(this.Parser.parse(Node1.getId()).getGraphName()).exec(null, "g", "removeEdge", new Object[] {id}); // edge inter (part2)
+			if(!DGraphParser.node(Node1.getId()).get(EnumNode.DGraphName).equals(this.Graph.getId())) {
+				this.Manager.getDGraph(DGraphParser.node(Node1.getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeEdge", new Object[] {id}); // edge inter (part2)
 			}
 		}
 	}
@@ -221,14 +220,13 @@ public class DGraph implements DGraphAdapter {
 	 * removeEdge
 	 */
 	public void removeEdge( String from, String to ) throws java.rmi.RemoteException {
-		E.setEdgeInfo(from, to) ;
-		Parser.parse(from);
-		if(E.isIntraEdge())
+		Map<String, String> e = DGraphParser.edge(from, to);
+		if(e.get(EnumEdge.GraphFrom).equals(e.get(EnumEdge.GraphTo)))
 			this.Graph.removeEdge(from, to); // edge intra graph
 		else {
 			this.GraphV.removeEdge(from, to); // edge inter (part1)
-			if(Parser.parse(to).getGraphName().equals(this.Graph.getId())) {
-				this.Manager.getDGraph(Parser.parse(to).getGraphName()).exec(null, "g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
+			if(e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) {
+				this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
 			}
 		}
 	}
@@ -244,11 +242,11 @@ public class DGraph implements DGraphAdapter {
 			this.GraphV.removeNode(id);
 			while(it.hasNext()) {
 				Edge e = it.next();
-				if(this.Parser.parse(e.getNode1().getId()).getGraphName().equals(this.Graph.getId())) {
-					this.Manager.getDGraph(Parser.parse(e.getNode0().getId()).getGraphName()).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
+				if(DGraphParser.edge(e.getNode1().getId()).get(EnumNode.DGraphName).equals(this.Graph.getId())) {
+					this.Manager.getDGraph(DGraphParser.edge(e.getNode0().getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 				else {
-					this.Manager.getDGraph(Parser.parse(e.getNode1().getId()).getGraphName()).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
+					this.Manager.getDGraph(DGraphParser.edge(e.getNode1().getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 			}
 		}
