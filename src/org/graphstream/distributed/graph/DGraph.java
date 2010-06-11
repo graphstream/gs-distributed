@@ -22,6 +22,7 @@ import java.util.Map;
 import org.graphstream.distributed.common.DGraphParser;
 import org.graphstream.distributed.common.EnumEdge;
 import org.graphstream.distributed.common.EnumNode;
+import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.GraphFactory;
@@ -32,18 +33,16 @@ import org.graphstream.graph.implementations.DefaultGraph;
 public class DGraph implements DGraphAdapter {
 
 	// Variables
+	private String Name ;
 	private Graph Graph ;
 	private Graph GraphV ;
-	private DGraphManager Manager ;
-
-	// A encapsuler
-	//private DGraphEdgeInfo E ;
-	//private DGraphParseTag Parser ;
+	private DGraphNetwork DGNetwork ;
 
 	private static final long serialVersionUID = 0001 ;
 
 	// Constructor
-	public DGraph() {
+	public DGraph(String id) {
+		this.Name = id ;
 	}
 
 	// Modifiers
@@ -59,22 +58,23 @@ public class DGraph implements DGraphAdapter {
 		
 		this.GraphV = new DefaultGraph("", false, true) ;
 		
-		this.Manager = new DGraphManager("messenger") ;
+		this.DGNetwork = new DGraphNetwork() ;
+		
 	}
 
 
 	/**
 	 * notifyNewGraph
 	 */
-	public void notifyNewGraph(String uri) throws java.rmi.RemoteException {
-		//this.Manager.register(uri);
+	public void addDGraphRef(String uri) throws java.rmi.RemoteException {
+		this.DGNetwork.add(uri);
 	}
 
 	/**
 	 * notifyDelGraph
 	 */
-	public void notifyDelGraph(String graphId) throws java.rmi.RemoteException {
-		this.Manager.unregister(graphId);
+	public void delDGraphRef(String graphName) throws java.rmi.RemoteException {
+		this.DGNetwork.del(graphName);
 	}
 
 
@@ -115,17 +115,22 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge( String id, String node1, String node2 ) throws java.rmi.RemoteException {
+		System.out.println("addEdge----");
 		Map<String, String> e = DGraphParser.edge(node1, node2);
+		System.out.println("addEdge----");
 		if(e.get(EnumEdge.GraphFrom).equals(e.get(EnumEdge.GraphTo))) { // intra edge
+			System.out.println("intra");
 			this.Graph.addEdge(id, node1, node2);
 		}
 		else {
-			if (e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) { // virtual Edge (part2) - requete vient d'un server
+			if (e.get(EnumEdge.GraphTo).equals(this.Name)) { // virtual Edge (part2) - requete vient d'un server
+				System.out.println("requete vient d'un server");
 				this.GraphV.addEdge(id, node1, node2);
 			}
 			else {
+				System.out.println("requete vient en local " + e.get(EnumEdge.GraphTo) + " " + this.Name + " " + this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)));
 				this.GraphV.addEdge(id, node1, node2);
-				this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "addVirtualEdge", new String[] {id, node1, node2});
+				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "addVirtualEdge", new String[] {id, node1, node2});
 			}
 		}
 	}
@@ -151,7 +156,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "addEdge", new Object[] {id, from, to, directed});
+			this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "addEdge", new Object[] {id, from, to, directed});
 		}
 	}
 
@@ -169,7 +174,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			edge = this.GraphV.addEdge(id, from, to);
-			this.Manager.getDGraph(EnumEdge.GraphTo).exec(null, "g", "addEdge", new Object[] {id, from, to, directed, attributes});
+			this.DGNetwork.getDGraph(EnumEdge.GraphTo).exec(EnumReg.DGraph, "addEdge", new Object[] {id, from, to, directed, attributes});
 		}
 		if( attributes != null )
 			edge.addAttributes(attributes);
@@ -211,7 +216,7 @@ public class DGraph implements DGraphAdapter {
 			Node Node1 = this.GraphV.getEdge(id).getNode1();
 			this.GraphV.removeEdge(id); // edge inter (part1)
 			if(!DGraphParser.node(Node1.getId()).get(EnumNode.DGraphName).equals(this.Graph.getId())) {
-				this.Manager.getDGraph(DGraphParser.node(Node1.getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeEdge", new Object[] {id}); // edge inter (part2)
+				this.DGNetwork.getDGraph(DGraphParser.node(Node1.getId()).get(EnumNode.DGraphName)).exec(EnumReg.DGraph, "removeEdge", new Object[] {id}); // edge inter (part2)
 			}
 		}
 	}
@@ -226,7 +231,7 @@ public class DGraph implements DGraphAdapter {
 		else {
 			this.GraphV.removeEdge(from, to); // edge inter (part1)
 			if(e.get(EnumEdge.GraphTo).equals(this.Graph.getId())) {
-				this.Manager.getDGraph(e.get(EnumEdge.GraphTo)).exec(null, "g", "removeEdge", new Object[] {from, to}); // edge inter (part2)
+				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "removeEdge", new Object[] {from, to}); // edge inter (part2)
 			}
 		}
 	}
@@ -243,10 +248,10 @@ public class DGraph implements DGraphAdapter {
 			while(it.hasNext()) {
 				Edge e = it.next();
 				if(DGraphParser.edge(e.getNode1().getId()).get(EnumNode.DGraphName).equals(this.Graph.getId())) {
-					this.Manager.getDGraph(DGraphParser.edge(e.getNode0().getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
+					this.DGNetwork.getDGraph(DGraphParser.edge(e.getNode0().getId()).get(EnumNode.DGraphName)).exec(EnumReg.DGraph, "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 				else {
-					this.Manager.getDGraph(DGraphParser.edge(e.getNode1().getId()).get(EnumNode.DGraphName)).exec(null, "g", "removeNodeOnGraphVirtual", new Object[] {id});
+					this.DGNetwork.getDGraph(DGraphParser.edge(e.getNode1().getId()).get(EnumNode.DGraphName)).exec(EnumReg.DGraph, "removeNodeOnGraphVirtual", new Object[] {id});
 				}
 			}
 		}

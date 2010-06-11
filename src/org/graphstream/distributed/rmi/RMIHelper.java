@@ -4,10 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Map;
-
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.EnumUri;
 
 public class RMIHelper {
 	
@@ -16,8 +12,8 @@ public class RMIHelper {
 	
 	public static void bind(String id, String host) {
 		try	{
-			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph() );
-			System.out.println("binding " + id + "on " + host + " done");
+			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph(id) );
+			System.out.println("binding " + id + " on " + host + " done");
 		}
 		catch( Exception e ) {
 			e.printStackTrace();
@@ -29,9 +25,10 @@ public class RMIHelper {
 	 * uri : rmi:<host>:<port>/<id>
 	 */
 	public static RMIDGraphAdapter register(String uri) {
-		Map<String, String> d = DGraphParser.uri(uri);
+		//Map<String, String> d = DGraphParser.uri(uri);
 		try {
-			return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
+			//return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
+			return (RMIDGraphAdapter)Naming.lookup(uri) ;
 		}
 		catch (RemoteException exp) {
 				System.out.println("RemoteException dans register : " +	exp);

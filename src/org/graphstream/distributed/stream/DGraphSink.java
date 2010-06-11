@@ -1,11 +1,11 @@
 package org.graphstream.distributed.stream;
 
-import org.graphstream.distributed.graph.DGraphManager;
+import org.graphstream.distributed.graph.DGraphNetwork;
 import org.graphstream.stream.Sink;
 
 public class DGraphSink implements Sink {
 	
-	DGraphManager m ;
+	DGraphNetwork m ;
 
 	public void edgeAttributeAdded(String sourceId, long timeId, String edgeId,
 			String attribute, Object value) {

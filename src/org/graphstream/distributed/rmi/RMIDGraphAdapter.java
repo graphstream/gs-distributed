@@ -8,11 +8,15 @@ public interface RMIDGraphAdapter extends Remote {
 	 * exec simple
 	 */
 	public Object exec(String requestId, String objectId, String method, Object[] params) throws java.rmi.RemoteException ;
+	
+	public Object exec(String objectId, String method, Object[] params) throws java.rmi.RemoteException ;
 
 	/*
 	 * exec multiple
 	 */
 	public Object[] exec(String[] requestIds, String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException ;
+	
+	public Object[] exec(String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException ;
 	
 	/*
 	 * function test

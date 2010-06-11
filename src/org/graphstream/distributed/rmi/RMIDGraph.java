@@ -9,11 +9,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.distributed.common.DGraphUri;
-import org.graphstream.distributed.common.EnumRegistry;
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.distributed.common.EnumUri;
 import org.graphstream.distributed.graph.DGraph;
-import org.graphstream.distributed.graph.DGraphManager;
+import org.graphstream.distributed.graph.DGraphNetwork;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
@@ -29,12 +29,12 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	/*
 	 * Constructor
 	 */
-	public RMIDGraph() throws java.rmi.RemoteException {	
+	public RMIDGraph(String id) throws java.rmi.RemoteException {
 		this.Registry = new ConcurrentHashMap<String, Object>() ;
-		this.Registry.put(EnumRegistry.RmiDGraph, this);
-		this.Registry.put(EnumRegistry.Registry, this.Registry);		
-		this.Registry.put(EnumRegistry.DGraph, new DGraph());
-		this.Registry.put(EnumRegistry.Manager, new DGraphManager(""));		
+		this.Registry.put("", this);
+		this.Registry.put(EnumReg.Registry, this.Registry);		
+		this.Registry.put(EnumReg.DGraph, new DGraph(id));
+		this.Registry.put(EnumReg.DGraphNetwork, new DGraphNetwork());		
 	}
 
 	
@@ -42,7 +42,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * instantiate a distGraph
 	 */
 	public void init(String graphClass, String[] params) throws java.rmi.RemoteException {
-		((DGraph)this.Registry.get(EnumRegistry.DGraph)).init(graphClass);
+		((DGraph)this.Registry.get(EnumReg.DGraph)).init(graphClass);
 	}
 	
 	
@@ -72,37 +72,13 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	}
 
 	/**
-	 * notification
-	 * @throws NotBoundException 
-	 * @throws MalformedURLException 
-	 */
-	public void registerNotify(String uri) {
-		// TODO Auto-generated method stub
-		DGraphUri u = new DGraphUri(uri);
-		try {
-			this.Registry.put(u.getElement(EnumUri.DGraphName), (RMIDGraphAdapter)Naming.lookup("rmi://"+u.getElement(EnumUri.Host)+"/"+u.getElement(EnumUri.DGraphName)));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-	public void unregisterNotify(String id) throws RemoteException {
-		// TODO Auto-generated method stub
-	}
-
-
-	/**
 	 * Generic request
 	 */
 	public Object exec(String requestId, String objectId, String methode, Object[] params) throws java.rmi.RemoteException {
+		return exec(objectId, methode, params);
+	}
+	
+	public Object exec(String objectId, String methode, Object[] params) throws java.rmi.RemoteException {
 		return dynamicCall(this.Registry.get(objectId), methode, params);
 	}
 
@@ -110,10 +86,13 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * Generic request multi
 	 */
 	public Object[] exec(String[] requestId, String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException {
+		return exec(objectIds, methods, params);
+	}
+	
+	public Object[] exec(String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException {
 		Object[] res = new Object[objectIds.length];
 		for(int i = 0 ; i < objectIds.length ; i++ ) {
-			res[i] = null ;
-			//res[i] = dynamicCall(this.DGraph.getObjects().get(objectIds[i]), methods[i], params[i]);
+			res[i] = dynamicCall(this.Registry.get(objectIds[i]), methods[i], params[i]);
 		}
 		return res ;
 	}
@@ -163,7 +142,6 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * fonction de test
 	 */
 	public String hello(String name) throws java.rmi.RemoteException {
-		//return ("Hello " + name + ((DGraph)this.Registry.get("dg")).getNodeCount()) ;
 		System.out.println("coucou");
 		return "hello " + name;
 	}

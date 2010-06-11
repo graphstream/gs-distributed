@@ -35,20 +35,20 @@ public class DGraphParser {
 	//private method
 	
 	/**
-	 * uri_analyzer
+	 * uri_analyzer rmi://<host>:<port>/<id> ou rmi://<host>/<id>
 	 */
 	private static Map<String, String> uri_analyzer(String uri) {
 		data.clear();
-		data.put("protocole", uri.split(":")[0]) ;
-		data.put("port","1099");
-		if(uri.split(":").length > 3) { // avec port specifie
+		data.put(EnumUri.Protocole, uri.split("://")[0]) ;
+		
+		if(uri.split(":").length > 2) { // avec port specifie
 			data.put(EnumUri.Port,uri.split(":")[2].split("/")[0]);
-			data.put(EnumUri.Host,uri.split(":")[1]);
+			data.put(EnumUri.Host,uri.split("://")[1].split(":")[0]);
 		}
 		else { // sans port specif
-			data.put("host",uri.split(":")[1].split("/")[0]) ;
+			data.put(EnumUri.Host,uri.split("://")[1].split("/")[0]) ;
 		}
-		data.put(EnumUri.DGraphName, uri.split("/")[1]);
+		data.put(EnumUri.DGraphName, uri.split("/")[3]);
 		return data ;
 	}
 	
@@ -60,11 +60,21 @@ public class DGraphParser {
 	private static Map<String, String> edge_analyzer(String from, String to) {
 		data.clear();
 		String[] tab = from.split(DGraphCst.sep);
-		data.put(EnumEdge.GraphFrom, tab[0]);
-		data.put(EnumEdge.NodeFrom, tab[1]);
-		tab = from.split(sep);
-		data.put(EnumEdge.GraphTo, tab[0]);
-		data.put(EnumEdge.NodeTo, tab[1]);
+		if(tab.length > 1) {
+			data.put(EnumEdge.GraphFrom, tab[0]);
+			data.put(EnumEdge.NodeFrom, tab[1]);
+		} else {
+			data.put(EnumEdge.GraphFrom, "");
+			data.put(EnumEdge.NodeFrom, tab[0]);
+		}
+		tab = to.split(sep);
+		if(tab.length > 1) {
+			data.put(EnumEdge.GraphTo, tab[0]);
+			data.put(EnumEdge.NodeTo, tab[1]);
+		} else {
+			data.put(EnumEdge.GraphTo, "");
+			data.put(EnumEdge.NodeTo, tab[0]);
+		}
 		return data ;
 	}
 	

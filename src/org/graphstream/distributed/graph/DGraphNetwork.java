@@ -1,54 +1,50 @@
 	package org.graphstream.distributed.graph;
 
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.DGraphUri;
 import org.graphstream.distributed.common.EnumUri;
-import org.graphstream.distributed.rmi.RMIDGraph;
 import org.graphstream.distributed.rmi.RMIDGraphAdapter;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.DefaultGraph;
+import org.graphstream.distributed.rmi.RMIHelper;
 
-public class DGraphManager {
+public class DGraphNetwork {
 
 	// Variables
-	HashMap<String, RMIDGraphAdapter> DGraphClients ;
-	HashMap<String, DGraphUri> DGraphUriIndex ;
-	
-	Graph meta ;
+	private HashMap<String, RMIDGraphAdapter> RmiHandler ;
+	private HashMap<String, String> Uri ;
 	
 	// Constructor
-	public DGraphManager(String name) {
-		this.DGraphClients = new HashMap<String, RMIDGraphAdapter>() ;
-		this.DGraphUriIndex = new HashMap<String, DGraphUri>() ;
-		Graph meta = new DefaultGraph(name);
+	public DGraphNetwork() {
+		this.RmiHandler = new HashMap<String, RMIDGraphAdapter>() ;
+		this.Uri = new HashMap<String, String>() ;
 	}
 	
 	
 	// Methods (public)
 	
+	
+	public void add(String uri) {
+		String name = DGraphParser.uri(uri).get(EnumUri.DGraphName) ;
+		this.RmiHandler.put(name, RMIHelper.register(uri));
+		this.Uri.put(name, uri);
+		System.out.println("add = " + name);
+	}
+	
+	public void del(String name) {
+		this.RmiHandler.remove(name);
+		this.Uri.remove(name);
+	}
+	
 	/**
 	 * register 
 	 * si une classe est définie alors 
 	 */
-	/*public void register(String uri) {
-		try {
-			Map<String,Object> data = DGraphParser.uri(uri);
-			meta.addNode((String)data.get(EnumUri.DGraphName)).addAttributes(data);
-
+	/*public void add(String uri) {
+		try {	
 			//creation de la reference en local
-			this.DGraphClients.put(uri.getDGraphId(), RMIRegister(uri));
-			this.DGraphUriIndex.put(uri.getDGraphId(), uri);
-			
-			//création/initialisation de la references distante
-			this.DGraphClients.get(uri.getDGraphId()).bind(uri.getDGraphId());
-			this.DGraphClients.get(uri.getDGraphId()).init(uri.getDGraphClass(), null);
+			String name = DGraphParser.uri(uri).get(EnumUri.DGraphName) ;
+			this.RmiHandler.put(name, RMIHelper.register(uri));
+			this.Uri.put(name, uri);
 			
 			//propagation aux autres serveur
 			for(RMIDGraphAdapter v : this.DGraphClients.values()) {
@@ -65,13 +61,13 @@ public class DGraphManager {
 	 * unregister
 	 * @param anId
 	 */
-	public void unregister(String anId) {
+	/*public void del(String anId) {
 		//suppresion des references distantes
 		if(this.DGraphClients.containsKey(anId)) {
 			for(String k : this.DGraphClients.keySet()) {
 				try {
 					//this.DGraphClients.get(k).unregisterNotify(anId);
-					this.DGraphClients.get(k).exec(null, "this", "unregisterNotify", new String[] {anId});
+					this.DGraphClients.get(k).exec(null, "", "unregisterNotify", new String[] {anId});
 				}
 				catch(RemoteException e) {
 					System.out.println(e.getMessage());
@@ -81,10 +77,10 @@ public class DGraphManager {
 			this.DGraphClients.remove(anId);
 		}
 		
-	}
+	}*/
 	
 	public RMIDGraphAdapter getDGraph(String id) {
-		return this.DGraphClients.get(id);
+		return this.RmiHandler.get(id);
 	}
 	
 	
