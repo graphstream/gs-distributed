@@ -27,7 +27,6 @@ public class DGraphNetwork {
 		String name = DGraphParser.uri(uri).get(EnumUri.DGraphName) ;
 		this.RmiHandler.put(name, RMIHelper.register(uri));
 		this.Uri.put(name, uri);
-		System.out.println("add = " + name);
 	}
 	
 	public void del(String name) {

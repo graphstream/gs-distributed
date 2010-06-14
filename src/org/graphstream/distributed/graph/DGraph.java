@@ -18,6 +18,7 @@ package org.graphstream.distributed.graph;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphParser;
 import org.graphstream.distributed.common.EnumEdge;
@@ -41,8 +42,9 @@ public class DGraph implements DGraphAdapter {
 	private static final long serialVersionUID = 0001 ;
 
 	// Constructor
-	public DGraph(String id) {
+	public DGraph(String id, ConcurrentHashMap<String, Object> registry) {
 		this.Name = id ;
+		this.DGNetwork = (DGraphNetwork)registry.get(EnumReg.DGraphNetwork);
 	}
 
 	// Modifiers
@@ -57,9 +59,7 @@ public class DGraph implements DGraphAdapter {
 		this.Graph.setStrict(false);
 		
 		this.GraphV = new DefaultGraph("", false, true) ;
-		
-		this.DGNetwork = new DGraphNetwork() ;
-		
+				
 	}
 
 
@@ -115,22 +115,20 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge( String id, String node1, String node2 ) throws java.rmi.RemoteException {
-		System.out.println("addEdge----");
 		Map<String, String> e = DGraphParser.edge(node1, node2);
-		System.out.println("addEdge----");
 		if(e.get(EnumEdge.GraphFrom).equals(e.get(EnumEdge.GraphTo))) { // intra edge
 			System.out.println("intra");
 			this.Graph.addEdge(id, node1, node2);
 		}
 		else {
 			if (e.get(EnumEdge.GraphTo).equals(this.Name)) { // virtual Edge (part2) - requete vient d'un server
-				System.out.println("requete vient d'un server");
+				System.out.println("requete vient d'un server " + this.Name + "-->" + e.get(EnumEdge.GraphTo));
 				this.GraphV.addEdge(id, node1, node2);
 			}
 			else {
-				System.out.println("requete vient en local " + e.get(EnumEdge.GraphTo) + " " + this.Name + " " + this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)));
+				System.out.println("addEdge on " + this.Name + " : " + node1 + " --> " + node2);
 				this.GraphV.addEdge(id, node1, node2);
-				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "addVirtualEdge", new String[] {id, node1, node2});
+				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "addVirtualEdge", new String[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
 			}
 		}
 	}
@@ -139,6 +137,7 @@ public class DGraph implements DGraphAdapter {
 	 * addVirtualEdge
 	 */
 	public void addVirtualEdge(String id, String node1, String node2) {
+		System.out.println("addVirtualEdge on "+ this.Name + " : " + node1 + " --> " + node2 );
 		this.GraphV.addEdge(id, node1, node2);
 	}
 

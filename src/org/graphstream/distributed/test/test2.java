@@ -42,13 +42,17 @@ public class test2 {
 			g1.exec(EnumReg.DGraphNetwork, "add", new String[] {"rmi://localhost:1099/g2"});
 			g2.exec(EnumReg.DGraphNetwork, "add", new String[] {"rmi://localhost:1099/g1"});
 			
+			
+			//RMIDGraphAdapter r1 = (RMIDGraphAdapter)(g1.exec(EnumReg.DGraphNetwork, "getDGraph", new String[] {"g2"}));
+			//System.out.println("r1 = " + r1);
+			
 			//operations sur des graphs
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n1"});
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n2"});
 			g2.exec(EnumReg.DGraph, "addNode", new String[] {"n3"});
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n4"});
 			
-			g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
+			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
 			Map<String, String> e = DGraphParser.edge("n1", "g2/n3");
 			System.out.println("parser: " + e.get(EnumEdge.GraphTo));
 			g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e2", "n1", "g2/n3"});

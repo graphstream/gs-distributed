@@ -33,8 +33,8 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		this.Registry = new ConcurrentHashMap<String, Object>() ;
 		this.Registry.put("", this);
 		this.Registry.put(EnumReg.Registry, this.Registry);		
-		this.Registry.put(EnumReg.DGraph, new DGraph(id));
-		this.Registry.put(EnumReg.DGraphNetwork, new DGraphNetwork());		
+		this.Registry.put(EnumReg.DGraphNetwork, new DGraphNetwork());
+		this.Registry.put(EnumReg.DGraph, new DGraph(id, this.Registry));
 	}
 
 	

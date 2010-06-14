@@ -27,6 +27,7 @@ public class RMIHelper {
 	public static RMIDGraphAdapter register(String uri) {
 		//Map<String, String> d = DGraphParser.uri(uri);
 		try {
+			System.out.println("register : " + uri);
 			//return (RMIDGraphAdapter)Naming.lookup("rmi://"+d.get(EnumUri.Host)+"/"+d.get(EnumUri.DGraphName)) ;
 			return (RMIDGraphAdapter)Naming.lookup(uri) ;
 		}
