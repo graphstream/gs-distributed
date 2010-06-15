@@ -13,3 +13,5 @@ RMIDGraph
 - Synchrone RMI
 
 - Asynchrone JMS (apache activ MQ eventuellement)
+
+- Serialisation des objets en JSON

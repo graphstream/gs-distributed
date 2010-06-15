@@ -2,16 +2,12 @@ package org.graphstream.distributed.rmi;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.distributed.common.DGraphParser;
 import org.graphstream.distributed.common.EnumReg;
-import org.graphstream.distributed.common.EnumUri;
 import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphNetwork;
 
@@ -142,7 +138,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * fonction de test
 	 */
 	public String hello(String name) throws java.rmi.RemoteException {
-		System.out.println("coucou");
+		System.out.println("hello");
 		return "hello " + name;
 	}
 

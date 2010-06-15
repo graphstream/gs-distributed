@@ -1,16 +1,26 @@
 package org.graphstream.distributed.stream;
 
+import java.rmi.RemoteException;
+
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumNode;
+import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.distributed.graph.DGraphNetwork;
 import org.graphstream.stream.Sink;
 
 public class DGraphSink implements Sink {
 	
 	DGraphNetwork m ;
+	
+	public void setDGraphNetwork(DGraphNetwork value) {
+		m = value ;
+	}
 
 	public void edgeAttributeAdded(String sourceId, long timeId, String edgeId,
 			String attribute, Object value) {
 		// TODO Auto-generated method stub
 		System.out.println("edgeAttributeAdded");
+		
 		//rules
 	}
 
@@ -80,13 +90,19 @@ public class DGraphSink implements Sink {
 
 	public void nodeAdded(String sourceId, long timeId, String nodeId) {
 		// TODO Auto-generated method stub
-		System.out.println("nodeAdded");
-		//c.getDistGraphServer(sourceId).
+		System.out.println("nodeAdded " + sourceId + " " + timeId);
+		try {
+			m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)).exec(EnumReg.DGraph, "addNode", new String[] {nodeId});
+		}
+		catch(RemoteException e) {
+			System.out.println("Error nodeAdded : " + e.getMessage());
+		}
 	}
 
 	public void nodeRemoved(String sourceId, long timeId, String nodeId) {
 		// TODO Auto-generated method stub
 		System.out.println("nodeRemoved");
+		rmiCall(DGraphParser.node(nodeId).get(EnumNode.DGraphName), "removeNode", new String[] {nodeId});
 	}
 
 	public void stepBegins(String sourceId, long timeId, double step) {
@@ -94,6 +110,14 @@ public class DGraphSink implements Sink {
 		System.out.println("stepBegins");
 	}
 
+	private void rmiCall(String DGraphName, String method, Object[] params) {
+		try {
+			m.getDGraph(DGraphName).exec(EnumReg.DGraph, method, params);
+		}
+		catch(RemoteException e) {
+			System.out.println("Error rmiCall : " + e.getMessage() + "parametres " + method + " " + DGraphName);
+		}
+	}
 	
 	
 }

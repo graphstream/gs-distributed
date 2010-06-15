@@ -88,7 +88,6 @@ public class DGraph implements DGraphAdapter {
 	 * addNode
 	 */
 	public void addNode(String id) throws java.rmi.RemoteException {
-		System.out.println("addNode");
 		this.Graph.addNode(id);
 	}
 
@@ -117,27 +116,23 @@ public class DGraph implements DGraphAdapter {
 	public void addEdge( String id, String node1, String node2 ) throws java.rmi.RemoteException {
 		Map<String, String> e = DGraphParser.edge(node1, node2);
 		if(e.get(EnumEdge.GraphFrom).equals(e.get(EnumEdge.GraphTo))) { // intra edge
-			System.out.println("intra");
 			this.Graph.addEdge(id, node1, node2);
 		}
 		else {
-			if (e.get(EnumEdge.GraphTo).equals(this.Name)) { // virtual Edge (part2) - requete vient d'un server
-				System.out.println("requete vient d'un server " + this.Name + "-->" + e.get(EnumEdge.GraphTo));
+			if (e.get(EnumEdge.GraphTo).equals(this.Name)) { // virtual Edge (part2) - request from another DGraph
 				this.GraphV.addEdge(id, node1, node2);
 			}
-			else {
-				System.out.println("addEdge on " + this.Name + " : " + node1 + " --> " + node2);
+			else { // virtual Edge (part1) - request from client
 				this.GraphV.addEdge(id, node1, node2);
 				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumReg.DGraph, "addVirtualEdge", new String[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
 			}
 		}
 	}
 	
-	/*
+	/**
 	 * addVirtualEdge
 	 */
 	public void addVirtualEdge(String id, String node1, String node2) {
-		System.out.println("addVirtualEdge on "+ this.Name + " : " + node1 + " --> " + node2 );
 		this.GraphV.addEdge(id, node1, node2);
 	}
 
@@ -145,7 +140,6 @@ public class DGraph implements DGraphAdapter {
 	 * addEdge
 	 */
 	public void addEdge( String id, String from, String to, boolean directed ) throws java.rmi.RemoteException{
-		//DGraphEdgeInfo e = new DGraphEdgeInfo(from, to) ;
 		Map<String, String> e = DGraphParser.edge(from, to);
 		if(e.get(EnumEdge.GraphFrom) == e.get(EnumEdge.GraphTo)) {
 			this.Graph.addEdge(id, from, to, directed);
@@ -263,211 +257,6 @@ public class DGraph implements DGraphAdapter {
 	public void removeNodeOnGraphVirtual( String id) throws java.rmi.RemoteException {
 		this.GraphV.removeNode(id);
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// Fonctions complementaires
-
-
-	/**
-	 * nextDgsEvent
-	 */
-	public void nextDgsEvent() throws java.rmi.RemoteException {
-		/*try {
-			graphReader.nextEvents();
-		}
-		catch(IOException e) {
-			System.out.println("New DGS Events : " + e.getMessage());
-		}
-		catch(GraphParseException e) {
-			System.out.println("New DGS Events : " + e.getMessage());
-		}*/
-	}
-
-
-	/**
-	 * nextDgsStep
-	 */
-	/*public void nextDgsStep() throws java.rmi.RemoteException {
-		try {
-			if (Reader.nextStep()) {
-					System.out.println("nextDgsStep");
-			}
-			else {
-				Reader.end();
-			}
-			System.out.println("Fin du pas");
-		}
-			catch(IOException e) {
-				System.out.println("Error : nextDgsStep --> " + e.getMessage());
-			}
-			catch(GraphParseException e) {
-				System.out.println("Error : nextDgsStep " + e.getMessage());
-			}
-	}*/
-
-	/**
-	 * Affectation d'un reader et listener
-	 * @param fileName
-	 * @throws java.rmi.RemoteException
-	 */
-	public void setGraphReader(String fileName) throws java.rmi.RemoteException {
-		/*try {
-			reader = GraphReaderFactory.readerFor(fileName) ;
-			listener = new GraphReaderListenerHelperDistributedLocal(this.graph, this.graphVirtual, this.Registry) ;
-			reader.addGraphReaderListener(listener) ;
-			reader.begin(fileName) ;
-		}
-		catch(IOException e) {
-			System.out.println("Error : setGraphReader --> " + e.getMessage());
-		}
-		catch(GraphParseException e) {
-			System.out.println("Error : setGraphReader " + e.getMessage());
-		}*/
-	}
-
-	/**
-	 * Execute la lecture de n steps d'un dgs
-	 * @param pas
-	 * @throws java.rmi.RemoteException
-	 */
-	/*public boolean nextDgsVirtualStep(Integer pas) throws java.rmi.RemoteException {
-		int index = 0 ;
-		try {
-			for(int i=0 ; i<pas ; i++) {
-				while(!this.LastStep) {
-					if (Reader.nextStep()) {
-						System.out.println("Step " + index);
-						index++;
-					}
-					else {
-						Reader.end();
-						this.LastStep=true; ;
-					}
-				}
-			}
-			return this.LastStep ;
-		}
-		catch(IOException e) {
-			System.out.println("Error : nextDgsVirtualStep --> " + e.getMessage());
-			return true ;
-		}
-		catch(GraphParseException e) {
-			System.out.println("Error : nextDgsVirtualStep " + e.getMessage());
-			return true ;
-		}
-	}*/
-
-	/**
-	 * Execute la lecture de n events d'un dgs
-	 * @param pas
-	 * @throws java.rmi.RemoteException
-	 */
-	/*public boolean nextDgsVirtualEvents(Integer pas) throws java.rmi.RemoteException {
-		try {
-			for(int i=0 ; i<pas ; i++) {
-				while(!this.LastEvent) {
-					if (this.Reader.nextEvents()) {
-					}
-					else {
-						this.Reader.end();
-						this.LastEvent=true; ;
-					}
-				}
-			}
-			return this.LastEvent ;
-		}
-		catch(IOException e) {
-			System.out.println("Error : nextDgsVirtualEvents --> " + e.getMessage());
-			return true ;
-		}
-		catch(GraphParseException e) {
-			System.out.println("Error : nextDgsVirtualEvents " + e.getMessage());
-			return true ;
-		}
-	}*/
-
-	// loadData
-	/*public void loadData(String fileName) {
-		try {
-			GraphReader graphReader = GraphReaderFactory.readerFor(fileName) ;
-			GraphReaderListener alistener = new GraphReaderListenerHelperDistributedLocal(this.graph, this.vGraph, this.Registry) ;
-			graphReader.addGraphReaderListener(alistener) ;
-			graphReader.begin(fileName) ;
-			while(graphReader.nextEvents()) {
-			}
-			graphReader.end();
-		}
-		catch(IOException e) {
-			System.out.println("IOException getDgsReader : " + e.getMessage());
-		}
-		catch(GraphParseException e) {
-			System.out.println("GraphParseException in loadData : " + e.getMessage());
-			System.out.println("GraphParseException in loadData : " + fileName);
-		}
-	}*/
-
-
-	/**
-	 * Fonctions dynamiques (invocation d'algo par exemple)
-	 */
-
-	/*public Object exec(String method, Object[] params) {
-		return this.Run.run(method, params);
-	}
-
-	public Object exec(String objectInstanceName, String methode, Object[] params) throws java.rmi.RemoteException {
-		return null ;
-	}
-
-	public Object newRemoteObject(String objectInstanceName, String className, Object[] params) throws java.rmi.RemoteException {
-		Registry.put(objectInstanceName, (new GraphRemoteObjectFactory()).newInstance(className));
-		//((Algorithm)(Registry.get(objectInstanceName))).init((Graph)Registry.get(this.graphId));
-		return null ;
-	}*/
-
-
-	/**
-	 * test
-	 */
-	public void test() throws java.rmi.RemoteException {
-		System.out.println("TEST TEST");
-	}
-
-
-	/**
-	 * callBack (� completer)
-	 */
-	/*public Object callBack() throws java.rmi.RemoteException {
-		return null ;
-	}*/
-
-	/**
-	 * � supprimer
-	 */
-
-	/*public void newAlgorithm(String className, String instanceName) {
-		Run.newAlgorithm(className, instanceName) ;
-	}
-
-	public Object executeReq(Object req) {
-		return this.Run.executeRequest((GraphReqContainer)req);
-	}*/
 
 
 }

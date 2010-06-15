@@ -1,14 +1,14 @@
 package org.graphstream.distributed.test;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.Map;
 
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.EnumEdge;
 import org.graphstream.distributed.common.EnumReg;
-import org.graphstream.distributed.common.EnumUri;
+import org.graphstream.distributed.graph.DGraphNetwork;
 import org.graphstream.distributed.rmi.RMIDGraphAdapter;
 import org.graphstream.distributed.rmi.RMIHelper;
+import org.graphstream.distributed.stream.DGraphSink;
+import org.graphstream.stream.file.FileSourceDGS1And2;
 
 
 
@@ -21,10 +21,10 @@ public class test2 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("coucou");
-		Map<String, String> m =  DGraphParser.uri("rmi://localhost/id");
-		System.out.println("parser : " + m.get(EnumUri.DGraphName) + "--" + m.get(EnumUri.Host) + "--" + m.get(EnumUri.Port));
-		
+		testio();
+	}
+
+	public static void test01() {
 		//Déploiement des objets sur le serveur RMI
 		RMIHelper.bind("g1", "localhost");
 		RMIHelper.bind("g2", "localhost");
@@ -43,38 +43,75 @@ public class test2 {
 			g2.exec(EnumReg.DGraphNetwork, "add", new String[] {"rmi://localhost:1099/g1"});
 			
 			
-			//RMIDGraphAdapter r1 = (RMIDGraphAdapter)(g1.exec(EnumReg.DGraphNetwork, "getDGraph", new String[] {"g2"}));
-			//System.out.println("r1 = " + r1);
-			
 			//operations sur des graphs
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n1"});
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n2"});
 			g2.exec(EnumReg.DGraph, "addNode", new String[] {"n3"});
 			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n4"});
 			
-			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
-			Map<String, String> e = DGraphParser.edge("n1", "g2/n3");
-			System.out.println("parser: " + e.get(EnumEdge.GraphTo));
+			//ajout de plusieurs nodes en 1 commande
+			String[] methods = {"addNode", "addNode", "addNode", "addNode"} ;
+			String[] objects = {EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph};
+			String[][] params = {new String[] {"n8"}, new String[] {"n5"}, new String[] {"n6"}, new String[] {"n7"}};
+			
+			g2.exec(objects, methods, params);
+			
+			
+			// ajout edge intra
+			g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
+			// ajout edge inter graphe
 			g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e2", "n1", "g2/n3"});
+			g2.exec(EnumReg.DGraph, "addEdge", new String[] {"e3", "n3", "g1/n4"});
 			
-			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e2", "n1", "g2/n3"});
+			// comptage du nombre de nodes
+			System.out.println("g1 getNodeCount : " + g1.exec(EnumReg.DGraph, "getNodeCount", null));
+			System.out.println("g2 getNodeCount : " + g2.exec(EnumReg.DGraph, "getNodeCount", null));
 			
-			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "g2/n3"});
-			
-			//Objet type json
-			//g1.exec(DG.addNode("n1"));
-			
-			//g1.exec(EnumReg.Registry, "clear", null);
-			
-			//System.out.println("hello --> " + g1.hello("hello 1") + "nb node : " + g1.exec(null, "dgraph", "getNodeCount", null));
-			//System.out.println("hello --> " + g1.hello("hello 2"));
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());
+		}	
+	}
+	
+	public static void testio() {
+		try {
+		RMIHelper.bind("g3", "localhost");
+		RMIHelper.bind("g4", "localhost");
+		FileSourceDGS1And2 f = new FileSourceDGS1And2();
+		//FileSinkDGSDGraph o = new FileSinkDGSDGraph();
+		DGraphSink o2 = new DGraphSink();
+		DGraphNetwork d = new DGraphNetwork();
+		d.add("rmi://localhost:1099/g3");
+		d.add("rmi://localhost:1099/g4");
+		d.getDGraph("g3").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.getDGraph("g4").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.setDefaultDGraph("g3");
+		
+		o2.setDGraphNetwork(d);
+		//o.begin("out.dgs");
+		f.addSink(o2);
+		
+		
+		//GraphListenerDist l = new GraphListenerDist();
+		//f.addGraphListener(l);
+		f.begin("/home/baudryj/workspace01/gs-distributed2/bin/org/graphstream/distributed/stream/files/madhoc_170stations_v2.dgs");
+		//f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/stream/files/aaa.dgs");
+		
+		int i = 0 ;
+		while(f.nextEvents() && i<100) {
+			i++;
+			System.out.println("new Elements " + i);
+		}
+		System.out.println("g2 getNodeCount : " + d.getDGraph("g2").exec(EnumReg.DGraph, "getNodeCount", null));
+		/*FileOutputDGS o = new FileOutputDGS();
+		o.*/
+
+		}
+		catch(IOException e) {
+			System.out.println("IOException : " + e.getMessage());
 		}
 	}
 
-	
 	
 	
 

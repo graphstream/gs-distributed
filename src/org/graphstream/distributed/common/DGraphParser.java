@@ -86,8 +86,13 @@ public class DGraphParser {
 	private static Map<String, String> node_analyzer(String input) {
 		data.clear();
 		String[] tab = input.split(DGraphCst.sep);
-		data.put(EnumNode.DGraphName, tab[0]);
-		data.put(EnumNode.ElementId, tab[1]);
+		if(tab.length > 1) {
+			data.put(EnumNode.DGraphName, tab[0]);
+			data.put(EnumNode.ElementId, tab[1]);
+		} else {
+			data.put(EnumNode.ElementId, input);
+		}
+		
 		return data ;
 	}
 
