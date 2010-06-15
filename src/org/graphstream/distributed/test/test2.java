@@ -65,8 +65,7 @@ public class test2 {
 			
 			// comptage du nombre de nodes
 			System.out.println("g1 getNodeCount : " + g1.exec(EnumReg.DGraph, "getNodeCount", null));
-			System.out.println("g2 getNodeCount : " + g2.exec(EnumReg.DGraph, "getNodeCount", null));
-			
+			System.out.println("g2 getNodeCount : " + g2.exec(EnumReg.DGraph, "getNodeCount", null));			
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());
@@ -98,7 +97,7 @@ public class test2 {
 		//f.begin("/home/baudryj/workspace-gs/gs1-distributed/bin/org/graphstream/distributed/stream/files/aaa.dgs");
 		
 		int i = 0 ;
-		while(f.nextEvents() && i<100) {
+		while(f.nextEvents() && i<20) {
 			i++;
 			System.out.println("new Elements " + i);
 		}

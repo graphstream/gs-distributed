@@ -5,6 +5,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import org.graphstream.distributed.common.EnumReg;
+
 public class RMIHelper {
 	
 	private RMIHelper() {
@@ -39,6 +41,20 @@ public class RMIHelper {
 		catch (MalformedURLException exp) {
 				System.out.println("MalformedURLException dans register : " + exp);
 				return null ;
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static Object RMICall(RMIDGraphAdapter DGraph, String method, Object[] params) {
+		try {
+			return DGraph.exec(EnumReg.DGraph, method, params);
+		}
+		catch(RemoteException e) {
+			System.out.println("Error rmiCall : " + e.getMessage() + "parametres " + method + " " + DGraph);
+			return null ;
 		}
 	}
 	
