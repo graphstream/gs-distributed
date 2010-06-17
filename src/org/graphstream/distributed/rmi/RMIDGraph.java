@@ -7,13 +7,16 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.DynamicHelper;
 import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphNetwork;
+import org.graphstream.graph.Graph;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
-	/*
+	/**
 	 * Variables
 	 */
 	private String Id ;
@@ -22,7 +25,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	
 	private static final long serialVersionUID = 0001234543456;
 
-	/*
+	/**
 	 * Constructor
 	 */
 	public RMIDGraph(String id) throws java.rmi.RemoteException {
@@ -31,14 +34,18 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		this.Registry.put(EnumReg.Registry, this.Registry);		
 		this.Registry.put(EnumReg.DGraphNetwork, new DGraphNetwork());
 		this.Registry.put(EnumReg.DGraph, new DGraph(id, this.Registry));
+		//System.out.println("dgraph : " + ((DGraph)this.Registry.get(EnumReg.DGraph)).getGraph());
+		
 	}
 
 	
-	/*
-	 * instantiate a distGraph
+	/**
+	 * instantiate DGraph
 	 */
 	public void init(String graphClass, String[] params) throws java.rmi.RemoteException {
 		((DGraph)this.Registry.get(EnumReg.DGraph)).init(graphClass);
+		this.Registry.put(EnumReg.GraphInDGraph, ((DGraph)this.Registry.get(EnumReg.DGraph)).getGraph());
+		this.Registry.put(EnumReg.GraphVInDGraph, ((DGraph)this.Registry.get(EnumReg.DGraph)).getGraphV());
 	}
 	
 	
@@ -61,7 +68,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	
 	
 	/**
-	 * 
+	 * Clear the registry
 	 */
 	public void clear() throws java.rmi.RemoteException {
 		this.Registry.clear();
@@ -132,6 +139,12 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 			System.out.println("InvocationTargetException exception : " + e.getMessage() + e.getCause());
 			return null ;
 		}
+	}
+	
+	public Object exec(String functionCall, Object[] params) throws java.rmi.RemoteException  {
+		//DGraphParser.function_simple("function");
+		Object obj = DynamicHelper.call(DGraphParser.functionCall((Graph)this.Registry.get(EnumReg.GraphInDGraph), functionCall), DGraphParser.functionLast(functionCall), params);
+		return obj ;
 	}
 	
 	/**

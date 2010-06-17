@@ -70,20 +70,20 @@ public class DGraphSink implements Sink {
 			String nodeId, String attribute) {
 		// TODO Auto-generated method stub
 		//rmiCall(DGraphParser.edge(edgeId).get(EnumNode.DGraphName), "addEdge", new String[] {edgeId, fromNodeId, toNodeId});
+		RMIHelper.RMICall(m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)), "removeAttribute", new String[] {attribute}); 
 	}
 
 	public void edgeAdded(String sourceId, long timeId, String edgeId,
 			String fromNodeId, String toNodeId, boolean directed) {
 		// TODO Auto-generated method stub
 		System.out.println("edgeAdded");
-		rmiCall(DGraphParser.edge(edgeId).get(EnumNode.DGraphName), "addEdge", new String[] {edgeId, fromNodeId, toNodeId});
+		RMIHelper.RMICall(m.getDGraph(DGraphParser.edge(edgeId).get(EnumNode.DGraphName)), "addEdge", new String[] {edgeId, fromNodeId, toNodeId});
 	}
 
 	public void edgeRemoved(String sourceId, long timeId, String edgeId) {
 		// TODO Auto-generated method stub
 		//rmiCall(DGraphParser.edge(edgeId).get(EnumNode.DGraphName), "removeEdge", new String[] {edgeId});
 		RMIHelper.RMICall(m.getDGraph(DGraphParser.edge(edgeId).get(EnumNode.DGraphName)), "removeEdge", new String[] {edgeId});
-
 	}
 
 	public void graphCleared(String sourceId, long timeId) {
@@ -94,31 +94,18 @@ public class DGraphSink implements Sink {
 	public void nodeAdded(String sourceId, long timeId, String nodeId) {
 		// TODO Auto-generated method stub
 		//System.out.println("nodeAdded " + sourceId + " " + timeId);
-		//m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)).exec(EnumReg.DGraph, "addNode", new String[] {nodeId});
-		//rmiCall(DGraphParser.node(nodeId).get(EnumNode.DGraphName), "addNode", new String[] {nodeId});
 		RMIHelper.RMICall(m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)), "addNode", new String[] {nodeId});
 	}
 
 	public void nodeRemoved(String sourceId, long timeId, String nodeId) {
 		// TODO Auto-generated method stub
 		//System.out.println("nodeRemoved");
-		//rmiCall(DGraphParser.node(nodeId).get(EnumNode.DGraphName), "removeNode", new String[] {nodeId});
 		RMIHelper.RMICall(m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)), "removeNode", new String[] {nodeId});
 	}
 
 	public void stepBegins(String sourceId, long timeId, double step) {
 		// TODO Auto-generated method stub
 		System.out.println("stepBegins");
-	}
-
-	
-	private void rmiCall(String DGraphName, String method, Object[] params) {
-		try {
-			m.getDGraph(DGraphName).exec(EnumReg.DGraph, method, params);
-		}
-		catch(RemoteException e) {
-			System.out.println("Error rmiCall : " + e.getMessage() + "parametres " + method + " " + DGraphName);
-		}
 	}
 	
 	

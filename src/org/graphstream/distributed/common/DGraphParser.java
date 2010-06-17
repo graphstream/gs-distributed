@@ -3,6 +3,8 @@ package org.graphstream.distributed.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.graph.Graph;
+
 public class DGraphParser {
 	
 	private static HashMap<String, String> data = new HashMap<String, String>();
@@ -30,6 +32,9 @@ public class DGraphParser {
 		return node_analyzer(input) ;
 	}
 	
+	public static Object functionCall(Graph g, String input) {
+		return functionCall_analyzer(g, input) ;
+	}
 	
 	
 	//private method
@@ -95,5 +100,37 @@ public class DGraphParser {
 		
 		return data ;
 	}
+	
+	/**
+	 * functionCall_analyzer (g1.f1(a).f2(b).f3(c).f4, arguments)
+	 */
+	private static Object functionCall_analyzer(Graph g, String input) {
+		data.clear();
+		String[] tab = input.split(".");
+		Object obj = g ;
+		for(int i = 1 ; i < tab.length-1 ; i++) {
+			String[] tmp = functionSimple(tab[i]);
+			obj = DynamicHelper.call(obj, tmp[0], new Object[] { tmp[1]});
+		}
+		return obj ;
+	}
+	
+	/**
+	 * 
+	 * @param input function('arg')
+	 * @return
+	 */
+	public static String[] functionSimple(String input) {
+		String[] res = new String[2];
+		res[0] = input.split("\\(")[0];
+		res[1] = input.split("\'")[1];
+		return res ;
+	}
+	
+	public static String functionLast(String input) {
+		String[] res = input.split("\\.");
+		return res[res.length-1] ;
+	}
+	
 
 }

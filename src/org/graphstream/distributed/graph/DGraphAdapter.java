@@ -18,6 +18,8 @@ package org.graphstream.distributed.graph ;
 
 import java.util.Map;
 
+import org.graphstream.graph.Graph;
+
 
 public interface DGraphAdapter {
 
@@ -63,5 +65,9 @@ public interface DGraphAdapter {
 
 	public void removeNodeOnGraphVirtual( String id) throws java.rmi.RemoteException ;
 
-
+	//getGraph
+	public Graph getGraph() throws java.rmi.RemoteException ;
+	
+	//getGraphV
+	public Graph getGraphV() throws java.rmi.RemoteException ;
 }

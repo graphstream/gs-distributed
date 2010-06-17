@@ -63,21 +63,6 @@ public class DGraph implements DGraphAdapter {
 	}
 
 
-	/**
-	 * notifyNewGraph
-	 */
-	public void addDGraphRef(String uri) throws java.rmi.RemoteException {
-		this.DGNetwork.add(uri);
-	}
-
-	/**
-	 * notifyDelGraph
-	 */
-	public void delDGraphRef(String graphName) throws java.rmi.RemoteException {
-		this.DGNetwork.del(graphName);
-	}
-
-
 	// modifyGraph
 	/*public void modifyGraph(String graphId, Map<String,Object> attributes) throws java.rmi.RemoteException {
 		if( attributes != null )
@@ -181,6 +166,7 @@ public class DGraph implements DGraphAdapter {
 			this.Graph.getEdge(id).addAttributes(attributes);
 	}
 
+	
 	/**
 	 * getNodeCount
 	 */
@@ -188,6 +174,7 @@ public class DGraph implements DGraphAdapter {
 		return (this.Graph.getNodeCount());
 	}
 
+	
 	/**
 	 * getEdgeCount
 	 */
@@ -198,6 +185,7 @@ public class DGraph implements DGraphAdapter {
 		return (res) ;
 	}
 
+	
 	/**
 	 * removeEdge
 	 */
@@ -214,6 +202,7 @@ public class DGraph implements DGraphAdapter {
 		}
 	}
 
+	
 	/**
 	 * removeEdge
 	 */
@@ -229,6 +218,7 @@ public class DGraph implements DGraphAdapter {
 		}
 	}
 
+	
 	/**
 	 * removeNode
 	 */
@@ -258,5 +248,18 @@ public class DGraph implements DGraphAdapter {
 		this.GraphV.removeNode(id);
 	}
 
+	/**
+	 * getGraph
+	 */
+	public Graph getGraph() throws java.rmi.RemoteException {
+		return this.Graph ;
+	}
+	
+	/**
+	 * getGraphV
+	 */
+	public Graph getGraphV() throws java.rmi.RemoteException {
+		return this.GraphV ;
+	}
 
 }
