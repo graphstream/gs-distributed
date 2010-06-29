@@ -15,3 +15,9 @@ RMIDGraph
 - Asynchrone JMS (apache activ MQ eventuellement)
 
 - Serialisation des objets en JSON
+Node to JSON
+Edge to JSON
+Graph to JSON
+Attribute to JSON
+Element to JSON
+--

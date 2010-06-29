@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.graphstream.distributed.common.DGraphParser;
@@ -13,6 +15,8 @@ import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.distributed.graph.DGraph;
 import org.graphstream.distributed.graph.DGraphNetwork;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.DefaultGraph;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
@@ -124,16 +128,16 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 				return res ;
 			}
 			else {
-				return null ;
+				return false ;
 			}
 		}
 		catch(IllegalAccessException e) {
 			System.out.println("IllegalAccessException exception : " + e.getMessage());
-			return null ;
+			return false ;
 		}
 		catch(NoSuchMethodException e) {
 			System.out.println("NoSuchMethodException exception : " + e.getMessage());
-			return  null ;
+			return false ;
 		}
 		catch(InvocationTargetException e) {
 			System.out.println("InvocationTargetException exception : " + e.getMessage() + e.getCause());
@@ -141,10 +145,40 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		}
 	}
 	
-	public Object exec(String functionCall, Object[] params) throws java.rmi.RemoteException  {
+	public Object exec(String functionCall, Object ... params) throws java.rmi.RemoteException  {
 		//DGraphParser.function_simple("function");
-		Object obj = DynamicHelper.call(DGraphParser.functionCall((Graph)this.Registry.get(EnumReg.GraphInDGraph), functionCall), DGraphParser.functionLast(functionCall), params);
-		return obj ;
+		//Object obj = DynamicHelper.call(DGraphParser.functionCall((Graph)this.Registry.get(EnumReg.GraphInDGraph), functionCall), DGraphParser.functionLast(functionCall), params);
+		String f = DGraphParser.functionLast(functionCall) ;
+		String[][] f2 = DGraphParser.functionSpliter(functionCall);
+		
+		//n.addAttributes(attributes)
+		//Object obj = DynamicHelper.call(this.Registry.get(EnumReg.DGraph), f, params);
+		//Object obj = DynamicHelper.call(EnumReg.GraphInDGraph, f2[f2.length-1][0], params);
+		//Object obj = DynamicHelper.call(EnumReg.GraphInDGraph, "addAttribute", new Object[] {"aa", "qq"});
+		//Object obj = DynamicHelper.call2(n, "addAttribute", "n", new Object[] {"v"});
+		//Object obj = DynamicHelper.call2(n, "addAttribute", new Object[] {"n", new Object[] {"v"}});
+		//g1.addNode
+		Object obj = this.Registry.get(f2[0][0]);
+		//obj = DynamicHelper.call2(obj, f2[1][0], params);	
+		
+		if(f2.length>2) {
+			for(int i = 1 ; i < (f2.length-1) ; i++) {
+				System.out.println("boucle : " + i + obj.getClass() + " method : " + f2[i][0] + " [] " + f2[i][1]);
+				obj = DynamicHelper.call2(obj, f2[i][0], f2[i][1]);
+			}
+			//obj = DynamicHelper.call2(obj, f2[f2.length-1][0], params);
+		} else {
+			System.out.println("f2[i][1] : " + obj + "___"+ f2[f2.length-1][0]);
+			//obj = DynamicHelper.call2(obj, f2[f2.length-1][0], params);
+		}
+		//System.out.println("f2[i][1] : " + obj + "___"+ f2[f2.length-1][0]);
+		//obj = DynamicHelper.call2(obj, f2[f2.length-1][0], new Object[] {"n", new Object[] {"v"}});
+		
+		
+		System.out.println("GRAAAAAAPH : " + (Graph)this.Registry.get(EnumReg.GraphInDGraph));
+		
+		//Graph g = (Graph)obj ;
+		return 0 ;
 	}
 	
 	/**
