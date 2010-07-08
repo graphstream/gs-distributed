@@ -5,13 +5,16 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import org.graphstream.distributed.common.EnumReg;
-
 public class RMIHelper {
 	
 	private RMIHelper() {
 	}
 	
+	/**
+	 * 
+	 * @param id
+	 * @param host
+	 */
 	public static void bind(String id, String host) {
 		try	{
 			Naming.rebind( String.format( "//"+host+"/%s", id ), new RMIDGraph(id) );
@@ -22,9 +25,10 @@ public class RMIHelper {
 		}
 	}
 	
-	/*
-	 * Register
-	 * uri : rmi:<host>:<port>/<id>
+	/**
+	 * 
+	 * @param uri
+	 * @return
 	 */
 	public static RMIDGraphAdapter register(String uri) {
 		try {
@@ -46,14 +50,17 @@ public class RMIHelper {
 	
 	/**
 	 * 
+	 * @param DGraph
+	 * @param method
+	 * @param params
 	 * @return
 	 */
-	public static Object RMICall(RMIDGraphAdapter DGraph, String method, Object[] params) {
+	public static Object RMICall(RMIDGraphAdapter DGraph, String functionCall, Object[] params) {
 		try {
-			return DGraph.exec(EnumReg.DGraph, method, params);
+			return DGraph.exec(functionCall, params);
 		}
 		catch(RemoteException e) {
-			System.out.println("Error rmiCall : " + e.getMessage() + "parametres " + method + " " + DGraph);
+			System.out.println("Error rmiCall");
 			return null ;
 		}
 	}

@@ -2,8 +2,6 @@ package org.graphstream.distributed.test;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.graphstream.distributed.common.DGraphParser;
 import org.graphstream.distributed.common.EnumReg;
@@ -27,10 +25,10 @@ public class test2 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//test01();
+		test01();
 		//testio();
 		//parser();
-		testSerialisation();
+		//testSerialisation();
 	}
 
 	//test01
@@ -51,27 +49,25 @@ public class test2 {
 				
 		try {
 			//initialisation des graphs
-			g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
-			g2.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+			g1.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
+			g2.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
 			
 			//propagation des voisins
-			g1.exec(EnumReg.DGraphNetwork, "add", new String[] {"rmi://localhost:1099/g2"});
-			g2.exec(EnumReg.DGraphNetwork, "add", new String[] {"rmi://localhost:1099/g1"});
+			g1.exec(EnumReg.DGraphNetwork+".add", new String[] {"rmi://localhost:1099/g2"});
+			g2.exec(EnumReg.DGraphNetwork+".add", new String[] {"rmi://localhost:1099/g1"});
 				
 			//operations sur des graphs
-			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n1"});
-			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n2"});
-			g2.exec(EnumReg.DGraph, "addNode", new String[] {"n3"});
-			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n4"});
-			
-			Node n = (Node)g1.exec(EnumReg.GraphInDGraph, "getNode", new String[] {"n4"});
-			
+			g1.exec("g1.addNode", new String[] {"n1"});
+			g1.exec("g1.addNode", new String[] {"n2"});
+			g2.exec("g1.addNode", new String[] {"n3"});
+			g1.exec("g1.addNode", new String[] {"n4"});
+						
 			//ajout de plusieurs nodes en 1 commande
-			String[] methods = {"addNode", "addNode", "addNode", "addNode"} ;
-			String[] objects = {EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph};
+			String[] call = {"g1.addNode", "g1.addNode", "g1.addNode", "g1.addNode"} ;
+			//String[] objects = {EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph};
 			String[][] params = {new String[] {"n8"}, new String[] {"n5"}, new String[] {"n6"}, new String[] {"n7"}};
 			
-			g2.exec(objects, methods, params);
+			g2.exec(call, params);
 				
 			// ajout edge intra
 			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
@@ -80,8 +76,8 @@ public class test2 {
 			//g2.exec(EnumReg.DGraph, "addEdge", new String[] {"e3", "n3", "g1/n4"});
 			
 			// comptage du nombre de nodes
-			System.out.println("g1 getNodeCount : " + g1.exec(EnumReg.DGraph, "getNodeCount", null));
-			System.out.println("g2 getNodeCount : " + g2.exec(EnumReg.DGraph, "getNodeCount", null));
+			System.out.println("g1 getNodeCount : " + g1.exec("g1.getNodeCount", null));
+			System.out.println("g2 getNodeCount : " + g2.exec("g1.getNodeCount", null));
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());
@@ -99,8 +95,8 @@ public class test2 {
 		DGraphNetwork d = new DGraphNetwork();
 		d.add("rmi://localhost:1099/g3");
 		d.add("rmi://localhost:1099/g4");
-		d.getDGraph("g3").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
-		d.getDGraph("g4").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.getDGraph("g3").exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.getDGraph("g4").exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
 		d.setDefaultDGraph("g3");
 		
 		o2.setDGraphNetwork(d);
@@ -113,7 +109,7 @@ public class test2 {
 			i++;
 			System.out.println("new Elements " + i);
 		}
-		System.out.println("g2 getNodeCount : " + d.getDGraph("g2").exec(EnumReg.DGraph, "getNodeCount", null));
+		System.out.println("g2 getNodeCount : " + d.getDGraph("g2").exec("g2.getNodeCount", null));
 
 		}
 		catch(IOException e) {
@@ -128,12 +124,11 @@ public class test2 {
 				DGraphParser.functionSimple("toto('id')")[1]);
 	}
 	
-	//
+	/**
+	 * testSerialisation
+	 */
 	public static void testSerialisation() {	
-		DefaultGraph g = new DefaultGraph("") ;
-		g.addNode("a");
-		g.getNode("a");
-		
+				
 		//Déploiement des objets sur le serveur RMI
 		RMIHelper.bind("g1", "localhost");
 		
@@ -142,28 +137,20 @@ public class test2 {
 		
 		try {
 			//initialisation des graphs
-			g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+			//g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+			g1.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
 			
-			String f = "g1.addNode2('n1').addNode";
-			String[] f2 = DGraphParser.functionSimple(f);
-			g1.exec(EnumReg.DGraph, "addNode", new String[] {"n3"});
-			//g1.exec(EnumReg.DGraph, "addNode", new String[] {"n1"});
+			g1.exec("g1.addNode", new String[] {"n1"});
+			g1.exec("g1.addNode", new String[] {"n2"});
+			g1.exec("g1-Graph.getNode('n1').addAttribute", new Object[] {"l1", new Object[] {"v1"}});
+			g1.exec("g1-Graph.getNode('n1').addAttribute", new Object[] {"l2", new Object[] {"v2"}});
 			
-			g1.exec(EnumReg.GraphInDGraph+".addNode", new Object[] {"n1"});
-			//g1.exec(EnumReg.DGraph+".addNode", new Object[] {"n2"});
-			//g1.exec(EnumReg.DGraph+".addNode", new Object[] {"n3"});
+			Object[] params = new Object[] {"l2", new Object[] {"v2"}} ;
+			g1.exec("g1-Graph.getNode('n1').addAttribute", params);	
 			
-			//g1.exec(EnumReg.DGraph, "addNode", new String[] {"n1"});
-			//Node n = (Node)g1.exec(EnumReg.DGraph, "getNode", new String[] {"n1"});
-			//System.out.println("---------g1 getNode : " + n);	
+			System.out.println("getAttribute : " + g1.exec("g1-Graph.getNode('n1').getAttribute", new Object[] {"l2"}));
+			System.out.println("getAttribute : " + g1.exec("g1-Graph.getNode('n1').getAttribute", new String[] {"l2"}));
 			
-			//String request = EnumReg.GraphInDGraph+".getNode('n1').addAttribute" ;
-			//g1.exec(request, new Object[] {"l1", new Object[] {"v1"}});
-			
-			//g1.exec(EnumReg.GraphInDGraph+".getNode('n1').addAtttribute", new Object[] {"l1", new Object[] {"v1"}});
-			g1.exec(EnumReg.GraphInDGraph+".getNode('n1').addAtttribute", new Object[] {"l1", "v1"});
-			
-			//System.out.println("g1 getNodeCount : " + g1.exec(EnumReg.DGraph, "getNodeCount", null));		
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());

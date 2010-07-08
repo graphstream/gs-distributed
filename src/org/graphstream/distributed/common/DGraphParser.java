@@ -137,12 +137,10 @@ public class DGraphParser {
 		String[] f = functionAll(input);
 		String[][] res = new String[f.length][2];
 		for(int i=0 ; i < f.length ; i++) {
-			System.out.println("" + f[i]);
 			if(i==0 || i==(f.length-1)) {
 				res[i][0] = f[i];
 			} else if (i>0 && i<f.length) {
 				res[i] = functionSimple(f[i]);
-				System.out.println("functionSimple : "+res[i][0] + " " + res[i][1]);
 			}
 		}
 		return res ;
