@@ -110,7 +110,7 @@ public class DGraphParser {
 		Object obj = g ;
 		for(int i = 1 ; i < tab.length-1 ; i++) {
 			String[] tmp = functionSimple(tab[i]);
-			obj = DynamicHelper.call(obj, tmp[0], new Object[] { tmp[1]});
+			obj = DynamicHelper.call2(obj, tmp[0],true, new Object[] { tmp[1]});
 		}
 		return obj ;
 	}

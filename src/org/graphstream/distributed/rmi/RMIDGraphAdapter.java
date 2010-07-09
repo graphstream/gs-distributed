@@ -11,7 +11,7 @@ public interface RMIDGraphAdapter extends Remote {
 	
 	//public Object exec(String objectId, String method, Object[] params) throws java.rmi.RemoteException ;
 	
-	public Object exec(String functionCall, Object[] params) throws java.rmi.RemoteException ;
+	public Object exec(String functionCall, Object ... params) throws java.rmi.RemoteException ;
 	
 	public Object[] exec(String[] functionCalls, Object[][] params) throws java.rmi.RemoteException ;
 

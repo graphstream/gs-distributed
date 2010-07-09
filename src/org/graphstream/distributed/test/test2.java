@@ -53,31 +53,30 @@ public class test2 {
 			g2.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
 			
 			//propagation des voisins
-			g1.exec(EnumReg.DGraphNetwork+".add", new String[] {"rmi://localhost:1099/g2"});
-			g2.exec(EnumReg.DGraphNetwork+".add", new String[] {"rmi://localhost:1099/g1"});
+			g1.exec(EnumReg.DGraphNetwork+".add", new Object[] {"rmi://localhost:1099/g2"});
+			g2.exec(EnumReg.DGraphNetwork+".add", new Object[] {"rmi://localhost:1099/g1"});
 				
 			//operations sur des graphs
-			g1.exec("g1.addNode", new String[] {"n1"});
-			g1.exec("g1.addNode", new String[] {"n2"});
-			g2.exec("g1.addNode", new String[] {"n3"});
-			g1.exec("g1.addNode", new String[] {"n4"});
+			g1.exec("g1.addNode", new Object[] {"n1"});
+			g1.exec("g1.addNode", new Object[] {"n2"});
+			g2.exec("g2.addNode", new Object[] {"n3"});
+			g1.exec("g1.addNode", new Object[] {"n4"});
 						
 			//ajout de plusieurs nodes en 1 commande
-			String[] call = {"g1.addNode", "g1.addNode", "g1.addNode", "g1.addNode"} ;
-			//String[] objects = {EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph,EnumReg.DGraph};
+			String[] call = {"g2.addNode", "g2.addNode", "g2.addNode", "g2.addNode"} ;
 			String[][] params = {new String[] {"n8"}, new String[] {"n5"}, new String[] {"n6"}, new String[] {"n7"}};
 			
 			g2.exec(call, params);
 				
 			// ajout edge intra
-			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e1", "n1", "n2"});
+			g1.exec("g1.addEdge", new String[] {"e1", "n1", "n2"});
 			// ajout edge inter graphe
-			//g1.exec(EnumReg.DGraph, "addEdge", new String[] {"e2", "n1", "g2/n3"});
+			g1.exec("g1.addEdge", new String[] {"e2", "n1", "g2/n3"});
 			//g2.exec(EnumReg.DGraph, "addEdge", new String[] {"e3", "n3", "g1/n4"});
 			
 			// comptage du nombre de nodes
 			System.out.println("g1 getNodeCount : " + g1.exec("g1.getNodeCount", null));
-			System.out.println("g2 getNodeCount : " + g2.exec("g1.getNodeCount", null));
+			System.out.println("g2 getNodeCount : " + g2.exec("g2.getNodeCount", null));
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());

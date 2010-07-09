@@ -97,3 +97,43 @@ public Object[] exec(String[] objectIds, String[] methods, Object[][] params) th
 	public Object[] exec(String[] requestId, String[] objectIds, String[] methods, Object[][] params) throws java.rmi.RemoteException {
 		return exec(objectIds, methods, params);
 	}
+	
+	
+		/**
+	 * Dynamique invocation
+	 */
+	public static Object call(Object anObject, String aMethod, Object[] params) {
+		try {
+			Class[] argType ;
+			if(params!=null) {
+				argType = new Class[params.length] ;
+			} else {
+				argType = new Class[0];
+			}
+		  	for(int i = 0 ; i < argType.length ; i++) {
+		  		argType[i] = params[i].getClass();
+		  	}
+		  	Method m = anObject.getClass().getMethod(aMethod, argType);
+			Object res = m.invoke(anObject, params);
+
+			// pour savoir si une classe est serializable ou pas (je regarde si c'est une classe du package java ou pas)
+			if(res != null && !res.getClass().getName().startsWith("org.graphstream")) {
+				return res ;
+			}
+			else {
+				return false ;
+			}
+		}
+		catch(IllegalAccessException e) {
+			System.out.println("IllegalAccessException exception : " + e.getMessage());
+			return false ;
+		}
+		catch(NoSuchMethodException e) {
+			System.out.println("NoSuchMethodException exception : " + e.getMessage());
+			return  false ;
+		}
+		catch(InvocationTargetException e) {
+			System.out.println("InvocationTargetException exception : " + e.getMessage() + e.getCause());
+			return false ;
+		}
+	}

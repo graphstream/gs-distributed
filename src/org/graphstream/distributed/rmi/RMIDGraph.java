@@ -65,7 +65,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 			}
 			obj = DynamicHelper.call2(obj, f2[f2.length-1][0], true, params);
 		} else {
-			obj = DynamicHelper.call2(obj, f2[f2.length-1][0], false, params);
+			obj = DynamicHelper.call2(obj, f2[f2.length-1][0], true, params);
 		}
 		return obj ;
 	}
