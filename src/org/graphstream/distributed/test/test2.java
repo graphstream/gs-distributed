@@ -139,6 +139,8 @@ public class test2 {
 			//g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
 			g1.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
 			
+			g1.exec("g1-DGraphNetwork.add", new Object[] {"rmi://localhost:1099/g2"});
+			
 			g1.exec("g1.addNode", new String[] {"n1"});
 			g1.exec("g1.addNode", new String[] {"n2"});
 			g1.exec("g1-Graph.getNode('n1').addAttribute", new Object[] {"l1", new Object[] {"v1"}});
