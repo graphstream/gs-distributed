@@ -10,7 +10,7 @@ import org.graphstream.distributed.stream.FileSinkDGSDGraph;
 import org.graphstream.stream.file.FileSourceDGS1And2;
 
 
-public class test {
+public class Test99 {
 
 	/**
 	 * @param args

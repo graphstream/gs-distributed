@@ -17,7 +17,7 @@ import org.graphstream.stream.file.FileSourceDGS1And2;
 
 
 
-public class test2 {
+public class Test03 {
 
 
 	/**
