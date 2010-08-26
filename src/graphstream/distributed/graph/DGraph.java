@@ -14,16 +14,17 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.graphstream.distributed.graph;
+package graphstream.distributed.graph;
+
+import graphstream.distributed.common.DGraphParser;
+import graphstream.distributed.common.EnumEdge;
+import graphstream.distributed.common.EnumNode;
+import graphstream.distributed.common.EnumReg;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.EnumEdge;
-import org.graphstream.distributed.common.EnumNode;
-import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.GraphFactory;
@@ -109,7 +110,7 @@ public class DGraph implements DGraphAdapter {
 			}
 			else { // virtual Edge (part1) - request from client
 				this.GraphV.addEdge(id, node1, node2);
-				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumEdge.GraphTo+".addVirtualEdge", new String[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
+				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(e.get(EnumEdge.GraphTo)+".addVirtualEdge", new Object[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
 			}
 		}
 	}

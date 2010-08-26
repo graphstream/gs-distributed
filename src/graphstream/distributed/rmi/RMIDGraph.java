@@ -1,22 +1,17 @@
-package org.graphstream.distributed.rmi;
+package graphstream.distributed.rmi;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.rmi.Naming;
+import graphstream.distributed.common.DGraphParser;
+import graphstream.distributed.common.DynamicHelper;
+import graphstream.distributed.common.EnumReg;
+import graphstream.distributed.graph.DGraph;
+import graphstream.distributed.graph.DGraphNetwork;
+import graphstream.distributed.test.DGraph2;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.DynamicHelper;
-import org.graphstream.distributed.common.EnumReg;
-import org.graphstream.distributed.graph.DGraph;
-import org.graphstream.distributed.graph.DGraphNetwork;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.DefaultGraph;
+import org.json.JSONObject;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
@@ -38,7 +33,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		this.Registry.put("", this);
 		this.Registry.put(EnumReg.Registry, this.Registry);		
 		this.Registry.put(EnumReg.DGraphNetwork, new DGraphNetwork());
-		this.Registry.put(this.Id, new DGraph(id, this.Registry));		
+		//this.Registry.put(this.Id, new DGraph(id, this.Registry));		
 	}
 
 	
@@ -46,9 +41,17 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	 * instantiate DGraph
 	 */
 	public void init(String graphClass, String[] params) throws java.rmi.RemoteException {
+		this.Registry.put(this.Id, new DGraph(this.Id, this.Registry));		
 		((DGraph)this.Registry.get(this.Id)).init(graphClass);
 		this.Registry.put(EnumReg.Graph(this.Id), ((DGraph)this.Registry.get(this.Id)).getGraph());
 		this.Registry.put(EnumReg.GraphV(this.Id), ((DGraph)this.Registry.get(this.Id)).getGraphV());
+	}
+	
+	public void init2(String graphClass, String[] params) throws java.rmi.RemoteException {
+		this.Registry.put(this.Id, new DGraph2(this.Id, this.Registry));		
+		((DGraph2)this.Registry.get(this.Id)).init(graphClass);
+		this.Registry.put(EnumReg.Graph(this.Id), ((DGraph2)this.Registry.get(this.Id)).getGraph());
+		this.Registry.put(EnumReg.GraphV(this.Id), ((DGraph2)this.Registry.get(this.Id)).getGraphV());
 	}
 	
 	/**
@@ -81,14 +84,36 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 		}
 		return res ;
 	}
+
+
+	public Object[] exec(String functionCalls, Object[][] params)
+			throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public String execJson(String jsonRequest) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public JSONObject execJson(JSONObject jsonRequest) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
 	
 	/**
 	 * fonction de test
 	 */
-	public String hello(String name) throws java.rmi.RemoteException {
+	/*public String hello(String name) throws java.rmi.RemoteException {
 		System.out.println("hello");
 		return "hello " + name;
-	}
+	}*/
 
 
 

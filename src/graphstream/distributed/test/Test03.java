@@ -1,16 +1,16 @@
-package org.graphstream.distributed.test;
+package graphstream.distributed.test;
+
+import graphstream.distributed.common.DGraphParser;
+import graphstream.distributed.common.EnumReg;
+import graphstream.distributed.graph.DGraphNetwork;
+import graphstream.distributed.rmi.RMIDGraphAdapter;
+import graphstream.distributed.rmi.RMIHelper;
+import graphstream.distributed.stream.DGraphSink;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.EnumReg;
-import org.graphstream.distributed.graph.DGraphNetwork;
-import org.graphstream.distributed.rmi.RMIDGraphAdapter;
-import org.graphstream.distributed.rmi.RMIHelper;
-import org.graphstream.distributed.stream.DGraphSink;
 import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.stream.file.FileSourceDGS1And2;
 

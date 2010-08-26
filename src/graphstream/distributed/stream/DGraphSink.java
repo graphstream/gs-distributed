@@ -1,12 +1,10 @@
-package org.graphstream.distributed.stream;
+package graphstream.distributed.stream;
 
-import java.rmi.RemoteException;
+import graphstream.distributed.common.DGraphParser;
+import graphstream.distributed.common.EnumNode;
+import graphstream.distributed.graph.DGraphNetwork;
+import graphstream.distributed.rmi.RMIHelper;
 
-import org.graphstream.distributed.common.DGraphParser;
-import org.graphstream.distributed.common.EnumNode;
-import org.graphstream.distributed.common.EnumReg;
-import org.graphstream.distributed.graph.DGraphNetwork;
-import org.graphstream.distributed.rmi.RMIHelper;
 import org.graphstream.stream.Sink;
 
 public class DGraphSink implements Sink {

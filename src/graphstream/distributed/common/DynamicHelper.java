@@ -1,4 +1,4 @@
-package org.graphstream.distributed.common;
+package graphstream.distributed.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,7 +30,6 @@ public class DynamicHelper {
 
 		  	m = anObject.getClass().getMethod(aMethod, argType);
 		  	res = m.invoke(anObject, params);
-
 			if(retour) {
 				return res ;
 			}

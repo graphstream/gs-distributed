@@ -14,7 +14,7 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package org.graphstream.distributed.graph ;
+package graphstream.distributed.graph ;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public interface DGraphAdapter {
 	 */
 
 
-	// Node
+	// Node 
 	public void addNode(String id) throws java.rmi.RemoteException;
 
 	public void addNode(String tag, Map<String,Object> attributes ) throws java.rmi.RemoteException ;

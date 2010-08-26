@@ -1,4 +1,4 @@
-package org.graphstream.distributed.rmi;
+package graphstream.distributed.rmi;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -64,5 +64,7 @@ public class RMIHelper {
 			return null ;
 		}
 	}
+	
+	
 	
 }

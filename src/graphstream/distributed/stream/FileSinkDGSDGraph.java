@@ -20,7 +20,7 @@
  * 	Guilhelm Savin
  */
 
-package org.graphstream.distributed.stream;
+package graphstream.distributed.stream;
 
 import java.io.IOException;
 import java.io.PrintStream;

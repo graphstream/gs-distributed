@@ -1,12 +1,13 @@
-package org.graphstream.distributed.test;
+package graphstream.distributed.test;
+
+import graphstream.distributed.rmi.RMIDGraphAdapter;
+import graphstream.distributed.rmi.RMIHelper;
+import graphstream.distributed.stream.DGraphSink;
+import graphstream.distributed.stream.FileSinkDGSDGraph;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.graphstream.distributed.rmi.RMIDGraphAdapter;
-import org.graphstream.distributed.rmi.RMIHelper;
-import org.graphstream.distributed.stream.DGraphSink;
-import org.graphstream.distributed.stream.FileSinkDGSDGraph;
 import org.graphstream.stream.file.FileSourceDGS1And2;
 
 
