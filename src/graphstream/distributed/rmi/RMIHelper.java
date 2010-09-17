@@ -55,7 +55,7 @@ public class RMIHelper {
 	 * @param params
 	 * @return
 	 */
-	public static Object RMICall(RMIDGraphAdapter DGraph, String functionCall, Object[] params) {
+	/*public static Object RMICall(RMIDGraphAdapter DGraph, String functionCall, Object[] params) {
 		try {
 			return DGraph.exec(functionCall, params);
 		}
@@ -63,7 +63,7 @@ public class RMIHelper {
 			System.out.println("Error rmiCall");
 			return null ;
 		}
-	}
+	}*/
 	
 	
 	

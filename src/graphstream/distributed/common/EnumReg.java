@@ -5,6 +5,7 @@ public class EnumReg {
 	public static String RmiDGraph = "RmiDgraph" ;
 	public static String DGraphNetwork = "DGraphNetwork" ;
 	public static String Registry = "Registry";
+	public static String DGraphRequestManager = "DGraphRequestManager";
 	//public static String GraphInDGraph = "GraphInDGraph";
 	//public static String GraphVInDGraph = "GraphVInDGraph";
 	

@@ -1,5 +1,6 @@
 package graphstream.distributed.test;
 
+import graphstream.distributed.common.JSONHelper;
 import graphstream.distributed.rmi.RMIDGraphAdapter;
 import graphstream.distributed.rmi.RMIHelper;
 import graphstream.distributed.stream.DGraphSink;
@@ -9,6 +10,9 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.graphstream.stream.file.FileSourceDGS1And2;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Test99 {
@@ -29,7 +33,7 @@ public class Test99 {
 		//test_multi();
 		//graph_convert();
 		//Graph g2 ;
-		//testEnum();
+		testEnum();
 		//DGraph_test1();
 	}
 
@@ -139,12 +143,31 @@ public class Test99 {
 	
 	public static void testEnum() {
 		HashMap<String, String> h = new HashMap<String, String>();
-		h.put("k1", "v1");
+		h.put("dgraph", "gx");
 		h.put("k2", "v2");
 		h.put("k3", "v3");
 		for(String k : h.values()) {
 			System.out.println("k = " + k);
 		}
+		
+		JSONObject j = new JSONObject();
+		JSONArray a = new JSONArray();
+		try {
+			j.accumulate("type", "request");
+			j.accumulate("graph", "g1");
+			j.accumulate("functions", a);
+			a.put(JSONHelper.functionObj("obj1", "m1", new Object[][] {{"param", "param2"}}));
+			a.put(JSONHelper.functionObj("obj1", "m1", new Object[][] {{"param", "param2"}}));
+			a.put(JSONHelper.functionObj("obj1", "m1", new Object[][] {{"param", "param2"}}));
+			
+			System.out.println(j.toString());
+		}
+		catch(JSONException e) {
+			System.out.println("Error");
+		}
+		
+		
+		
 	}
 	
 
