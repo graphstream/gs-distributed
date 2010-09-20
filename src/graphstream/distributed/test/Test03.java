@@ -27,8 +27,8 @@ public class Test03 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		test01();
-		//testio();
+		//test01();
+		testio();
 		//parser();
 		//testSerialisation();
 	}
@@ -59,10 +59,10 @@ public class Test03 {
 			g2.exec(EnumReg.DGraphNetwork, "add", new Object[] {"rmi://localhost:1099/g1"});
 				
 			//passage de n parametres
-			g1.exec("g1", "addNode", new Object[] {"n1"});
-			g1.exec("g1", "addNode", new Object[] {"n2"});
-			g2.exec("g2", "addNode", new Object[] {"n3"});
-			g1.exec("g1", "addNode", new Object[] {"n4"});
+			g1.exec("DGraph", "addNode", new Object[] {"n1"});
+			g1.exec("DGraph", "addNode", new Object[] {"n2"});
+			g2.exec("DGraph", "addNode", new Object[] {"n3"});
+			g1.exec("DGraph", "addNode", new Object[] {"n4"});
 			
 			ArrayList<Object[]> p = new ArrayList<Object[]>();
 			p.add(new Object[] {"n51"});
@@ -70,30 +70,37 @@ public class Test03 {
 			p.add(new Object[] {"n53"});
 			p.add(new Object[] {"n54"});
 			
-			//g1.exec("g1", "addNode", p);
-			
-			
 			//fixation de parametres
 			HashMap<String, String> t = new HashMap<String, String>() ;
-			t.put("objectName", "g1");
-			t.put("methodName", "addNode");
+			t.put("ObjectName", "DGraph");
+			t.put("MethodName", "addNode");
 			g1.exec(EnumReg.DGraphRequestManager, "addReq", new Object[] {"R1", t});
 			g1.exec("R1", p);
 			
-			//g2.exec(call, params);
 				
 			// ajout edge intra
-			g1.exec("g1", "addEdge", new String[] {"e1", "n1", "n2"});
-			g1.exec("g1", "addEdge", new String[] {"e2", "n1", "n3"});
+			g1.exec("DGraph", "addEdge", new String[] {"e1", "n1", "n2"});
+			g1.exec("DGraph", "addEdge", new String[] {"e2", "n1", "n3"});
 			// ajout edge inter graphe
-			g1.exec("g1", "addEdge", new String[] {"e2", "n1", "g2/n3"});
-			g2.exec("g2", "addEdge", new String[] {"e3", "n3", "g1/n4"});
+			g1.exec("DGraph", "addEdge", new String[] {"e2", "n1", "g2/n3"});
+			g2.exec("DGraph", "addEdge", new String[] {"e3", "n3", "g1/n4"});
+			
+			//g1.exec("DGraph", "getNode.addAttribute", new String[][] {{"n1"}, {"k1", "v1"}}) ;
 			
 			// comptage du nombre de nodes
-			System.out.println("g1 getNodeCount : " + g1.exec("g1", "getNodeCount"));
-			System.out.println("g2 getNodeCount : " + g2.exec("g2","getNodeCount"));
-			System.out.println("g1 getEdgeCount : " + ((int[])g1.exec("g1", "getEdgeCount"))[0]);
-			System.out.println("g2 getEdgeCount : " + g2.exec("g2","getEdgeCount"));
+			System.out.println("g1 getNodeCount : " + g1.exec("DGraph", "getNodeCount"));
+			System.out.println("g1 getEdgeCount : " + ((HashMap)g1.exec("DGraph", "getEdgeCount")).get("Graph"));
+			
+			ArrayList<String> methods = new ArrayList<String>();
+			methods.add("getNode");
+			methods.add("getId");
+			
+			ArrayList<Object[]> ps = new ArrayList<Object[]>();
+			ps.add(new Object[] {"n1"});
+			ps.add(null);
+			
+			System.out.println("--> "+g1.exec("Graph", methods, ps));
+			
 		}
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());
@@ -103,29 +110,30 @@ public class Test03 {
 	//testio
 	public static void testio() {
 		try {
-		RMIHelper.bind("g3", "localhost");
-		RMIHelper.bind("g4", "localhost");
+		RMIHelper.bind("g1", "localhost");
+		RMIHelper.bind("g2", "localhost");
 		FileSourceDGS1And2 f = new FileSourceDGS1And2();
 		//FileSinkDGSDGraph o = new FileSinkDGSDGraph();
 		DGraphSink o2 = new DGraphSink();
 		DGraphNetwork d = new DGraphNetwork();
-		d.add("rmi://localhost:1099/g3");
-		d.add("rmi://localhost:1099/g4");
-		d.getDGraph("g3").exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
-		d.getDGraph("g4").exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
-		d.setDefaultDGraph("g3");
+		d.add("rmi://localhost:1099/g1");
+		d.add("rmi://localhost:1099/g2");
+		d.getDGraph("g1").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.getDGraph("g2").exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+		d.setDefaultDGraph("g1");
 		
 		o2.setDGraphNetwork(d);
 		f.addSink(o2);
 		
-		f.begin("/home/baudryj/workspace01/gs-distributed2/bin/org/graphstream/distributed/stream/files/madhoc_170stations_v2.dgs");
+		f.begin("/home/baudryj/workspace01/gs-distributed2/src/graphstream/distributed/stream/files/madhoc_170stations_v2.dgs");
+		//f.begin("/home/baudryj/workspace01/gs-distributed2/src/graphstream/distributed/stream/files/aaa.dgs");
 		
 		int i = 0 ;
 		while(f.nextEvents() && i<20) {
 			i++;
 			System.out.println("new Elements " + i);
 		}
-		System.out.println("g2 getNodeCount : " + d.getDGraph("g2").exec("g2.getNodeCount", null));
+		System.out.println("g2 getNodeCount : " + d.getDGraph("g1").exec("DGraph", "getNodeCount", new Object[]{}));
 
 		}
 		catch(IOException e) {
@@ -173,6 +181,12 @@ public class Test03 {
 		catch(RemoteException e) {
 			System.out.println("return function : " + e.getMessage());
 		}	
+	}
+	
+	public static void multiRequest() {
+		System.out.println("parser : " +
+				DGraphParser.functionSimple("toto('id')")[0] + "-" + 
+				DGraphParser.functionSimple("toto('id')")[1]);
 	}
 	
 	

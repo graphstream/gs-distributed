@@ -21,6 +21,7 @@ import graphstream.distributed.common.EnumEdge;
 import graphstream.distributed.common.EnumNode;
 import graphstream.distributed.common.EnumReg;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -110,7 +111,8 @@ public class DGraph implements DGraphAdapter {
 			}
 			else { // virtual Edge (part1) - request from client
 				this.GraphV.addEdge(id, node1, node2);
-				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(e.get(EnumEdge.GraphTo),"addVirtualEdge", new Object[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
+				this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec("DGraph","addVirtualEdge", new Object[] {id, this.Name+"/"+node1, e.get(EnumEdge.NodeTo)});
+
 			}
 		}
 	}
@@ -119,6 +121,7 @@ public class DGraph implements DGraphAdapter {
 	 * addVirtualEdge
 	 */
 	public void addVirtualEdge(String id, String node1, String node2) {
+		System.out.println("addVirtualEdge : ");
 		this.GraphV.addEdge(id, node1, node2);
 	}
 
@@ -127,6 +130,7 @@ public class DGraph implements DGraphAdapter {
 	 */
 	public void addEdge( String id, String from, String to, boolean directed ) throws java.rmi.RemoteException{
 		Map<String, String> e = DGraphParser.edge(from, to);
+		System.out.println("addEdge");
 		if(e.get(EnumEdge.GraphFrom) == e.get(EnumEdge.GraphTo)) {
 			this.Graph.addEdge(id, from, to, directed);
 		}
@@ -135,7 +139,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			this.GraphV.addEdge(id, from, to);
-			this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec(EnumEdge.GraphTo,"addEdge", new Object[] {id, from, to, directed});
+			this.DGNetwork.getDGraph(e.get(EnumEdge.GraphTo)).exec("DGraph","addEdge", new Object[] {id, from, to, directed});
 		}
 	}
 
@@ -144,6 +148,7 @@ public class DGraph implements DGraphAdapter {
 	 */
 	public void addEdge (String id, String from, String to, boolean directed, Map<String,Object> attributes ) throws java.rmi.RemoteException {
 		Edge edge ;
+		System.out.println("addEdge");
 		Map<String, String> e = DGraphParser.edge(from, to);
 		if(e.get(EnumEdge.GraphFrom) == e.get(EnumEdge.GraphTo)) {
 			edge = this.Graph.addEdge(id, from, to, directed);
@@ -153,7 +158,7 @@ public class DGraph implements DGraphAdapter {
 		}
 		else {
 			edge = this.GraphV.addEdge(id, from, to);
-			this.DGNetwork.getDGraph(EnumEdge.GraphTo).exec(EnumEdge.GraphTo,"addEdge", new Object[] {id, from, to, directed, attributes});
+			this.DGNetwork.getDGraph(EnumEdge.GraphTo).exec("DGraph","addEdge", new Object[] {id, from, to, directed, attributes});
 		}
 		if( attributes != null )
 			edge.addAttributes(attributes);
@@ -172,7 +177,6 @@ public class DGraph implements DGraphAdapter {
 	 * getNodeCount
 	 */
 	public int getNodeCount() throws java.rmi.RemoteException {
-		System.out.println("getNodeCount");
 		return (this.Graph.getNodeCount());
 	}
 
@@ -180,11 +184,11 @@ public class DGraph implements DGraphAdapter {
 	/**
 	 * getEdgeCount
 	 */
-	public int[] getEdgeCount() throws java.rmi.RemoteException {
-		int[] res = new int[2] ;
-		res[0]=this.Graph.getEdgeCount();
-		res[1]=this.GraphV.getEdgeCount();
-		return (res) ;
+	public HashMap<String, Integer> getEdgeCount() throws java.rmi.RemoteException {
+		HashMap<String, Integer> res = new HashMap<String, Integer>();
+		res.put("Graph", this.Graph.getEdgeCount());
+		res.put("GraphV", this.GraphV.getEdgeCount());
+		return res ;
 	}
 
 	

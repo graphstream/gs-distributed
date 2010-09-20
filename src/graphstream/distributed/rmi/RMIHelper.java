@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class RMIHelper {
 	
@@ -55,15 +56,25 @@ public class RMIHelper {
 	 * @param params
 	 * @return
 	 */
-	/*public static Object RMICall(RMIDGraphAdapter DGraph, String functionCall, Object[] params) {
+	public static Object RMICall(RMIDGraphAdapter DGraph, String ObjectName, String MethodName, Object[] params) {
 		try {
-			return DGraph.exec(functionCall, params);
+			return DGraph.exec(ObjectName, MethodName, params);
 		}
 		catch(RemoteException e) {
 			System.out.println("Error rmiCall");
 			return null ;
 		}
-	}*/
+	}
+	
+	public static Object RMICall(RMIDGraphAdapter DGraph, String ObjectName, ArrayList<String> MethodName, ArrayList<Object[]> params) {
+		try {
+			return DGraph.exec(ObjectName, MethodName, params);
+		}
+		catch(RemoteException e) {
+			System.out.println("Error rmiCall");
+			return null ;
+		}
+	}
 	
 	
 	

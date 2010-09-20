@@ -8,6 +8,8 @@ public class EnumReg {
 	public static String DGraphRequestManager = "DGraphRequestManager";
 	//public static String GraphInDGraph = "GraphInDGraph";
 	//public static String GraphVInDGraph = "GraphVInDGraph";
+	public static String ObjectName = "ObjectName" ;
+	public static String MethodName = "MethodName" ;
 	
 	public static String DGraph = "DGraph" ;
 	public static String Graph = "Graph" ;

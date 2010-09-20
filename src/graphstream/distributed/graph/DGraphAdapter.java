@@ -16,6 +16,7 @@
 
 package graphstream.distributed.graph ;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.graphstream.graph.Graph;
@@ -50,9 +51,7 @@ public interface DGraphAdapter {
 	public int getNodeCount() throws java.rmi.RemoteException;
 
 	// getEdgeCount
-	public int[] getEdgeCount() throws java.rmi.RemoteException;
-
-	//public int getVirtualEdgeCount() throws java.rmi.RemoteException;
+	public HashMap<String, Integer> getEdgeCount() throws java.rmi.RemoteException;
 
 	// removeEdge
 	public void removeEdge( String id ) throws java.rmi.RemoteException;
