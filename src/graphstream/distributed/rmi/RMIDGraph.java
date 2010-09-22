@@ -125,12 +125,7 @@ public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 	public Object exec(String objectName, ArrayList<String> methodNames,
 			ArrayList<Object[]> params) throws RemoteException {
 		
-		/*ArrayList<Object> res = new ArrayList<Object>();
-		for(Object[] o : params) {
-			res.add(DynamicHelper.call2(this.Registry.get(objectName), methodNames, true, o));
-		}*/
-		///
-		Object res = this.Registry.get(objectName);
+		Object res = this.Registry.get(objectName);		
 		for(int i = 0 ; i < methodNames.size() ; i++) {
 			res = DynamicHelper.call2(res, methodNames.get(i), true, params.get(i));
 		}

@@ -1,11 +1,13 @@
 package graphstream.distributed.stream;
 
-import java.util.ArrayList;
-
 import graphstream.distributed.common.DGraphParser;
 import graphstream.distributed.common.EnumNode;
 import graphstream.distributed.graph.DGraphNetwork;
 import graphstream.distributed.rmi.RMIHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.graphstream.stream.Sink;
 
@@ -85,13 +87,19 @@ public class DGraphSink implements Sink {
 	public void nodeAttributeAdded(String sourceId, long timeId, String nodeId,
 			String attribute, Object value) {
 		// TODO Auto-generated method stub
+		System.out.println("AttributeAdded");
 		methods.clear();
 		methods.add("getNode");
 		methods.add("addAttribute");
 		
 		params.clear();
 		params.add(new Object[] {nodeId});
-		params.add(new Object[] {attribute, value});
+		
+		//Map<String, Object> m2 = new HashMap<String, Object>();
+		//attributem2.put(attribute, value);
+		Object[] mm = new Object[] {value};
+		//ps.add(new Object[] {"cc", mm});
+		params.add(new Object[] {attribute, mm});
 		
 		RMIHelper.RMICall(m.getDGraph(DGraphParser.node(nodeId).get(EnumNode.DGraphName)),"Graph", methods, params);
 	}

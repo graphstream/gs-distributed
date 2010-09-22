@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.DefaultGraph;
@@ -37,8 +38,8 @@ public class Test03 {
 	public static void test01() {
 		
 		Graph g = new DefaultGraph("");
-		g.addNode("n1").addAttribute("att1",  "val1");
-		
+		//g.addNode("n1").addAttribute("att1",  "val1");
+		//g.getNode("").get
 		//g.addNode("n1").
 		
 		//Déploiement des objets sur le serveur RMI
@@ -91,15 +92,29 @@ public class Test03 {
 			System.out.println("g1 getNodeCount : " + g1.exec("DGraph", "getNodeCount"));
 			System.out.println("g1 getEdgeCount : " + ((HashMap)g1.exec("DGraph", "getEdgeCount")).get("Graph"));
 			
-			ArrayList<String> methods = new ArrayList<String>();
-			methods.add("getNode");
-			methods.add("getId");
+			//ArrayList<String> methods = new ArrayList<String>();
+			//methods.add("getNode");
+			//methods.add("getId");
+			
+			ArrayList<String> methods2 = new ArrayList<String>();
+			methods2.add("getNode");
+			methods2.add("addAttribute");
+			
+			ArrayList<String> methods3 = new ArrayList<String>();
+			methods3.add("getNode");
+			methods3.add("getAttribute");
 			
 			ArrayList<Object[]> ps = new ArrayList<Object[]>();
 			ps.add(new Object[] {"n1"});
-			ps.add(null);
+			Object[] mm = new Object[] {"aa", "bb"};
+			ps.add(new Object[] {"cc", mm});
+
+			ArrayList<Object[]> ps2 = new ArrayList<Object[]>();
+			ps2.add(new Object[] {"n1"});
+			ps2.add(new Object[] {"cc"});
 			
-			System.out.println("--> "+g1.exec("Graph", methods, ps));
+			g1.exec("Graph", methods2, ps);
+			System.out.println("--> "+((Object[])g1.exec("Graph", methods3, ps2))[1]);
 			
 		}
 		catch(RemoteException e) {
@@ -129,11 +144,12 @@ public class Test03 {
 		//f.begin("/home/baudryj/workspace01/gs-distributed2/src/graphstream/distributed/stream/files/aaa.dgs");
 		
 		int i = 0 ;
-		while(f.nextEvents() && i<20) {
+		while(f.nextEvents() && i<200) {
 			i++;
-			System.out.println("new Elements " + i);
+			//System.out.println("new Elements " + i);
+			System.out.println("getNodeCount : " + d.getDGraph("g1").exec("DGraph", "getNodeCount", new Object[]{}));
 		}
-		System.out.println("g2 getNodeCount : " + d.getDGraph("g1").exec("DGraph", "getNodeCount", new Object[]{}));
+		//System.out.println("g2 getNodeCount : " + d.getDGraph("g1").exec("DGraph", "getNodeCount", new Object[]{}));
 
 		}
 		catch(IOException e) {
@@ -148,46 +164,7 @@ public class Test03 {
 				DGraphParser.functionSimple("toto('id')")[1]);
 	}
 	
-	/**
-	 * testSerialisation
-	 */
-	public static void testSerialisation() {	
-				
-		//Déploiement des objets sur le serveur RMI
-		RMIHelper.bind("g1", "localhost");
-		
-		//Création de la partie cliente
-		RMIDGraphAdapter g1 = RMIHelper.register("rmi://localhost:1099/g1");
-		
-		try {
-			//initialisation des graphs
-			//g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
-			g1.exec(".init", new Object[] {"DefaultGraph", new String[] {""}});
-			
-			g1.exec("g1-DGraphNetwork.add", new Object[] {"rmi://localhost:1099/g2"});
-			
-			g1.exec("g1.addNode", new String[] {"n1"});
-			g1.exec("g1.addNode", new String[] {"n2"});
-			g1.exec("g1-Graph.getNode('n1').addAttribute", new Object[] {"l1", new Object[] {"v1"}});
-			g1.exec("g1-Graph.getNode('n1').addAttribute", new Object[] {"l2", new Object[] {"v2"}});
-			
-			Object[] params = new Object[] {"l2", new Object[] {"v2"}} ;
-			g1.exec("g1-Graph.getNode('n1').addAttribute", params);	
-			
-			System.out.println("getAttribute : " + g1.exec("g1-Graph.getNode('n1').getAttribute", new Object[] {"l2"}));
-			System.out.println("getAttribute : " + g1.exec("g1-Graph.getNode('n1').getAttribute", new String[] {"l2"}));
-			
-		}
-		catch(RemoteException e) {
-			System.out.println("return function : " + e.getMessage());
-		}	
-	}
 	
-	public static void multiRequest() {
-		System.out.println("parser : " +
-				DGraphParser.functionSimple("toto('id')")[0] + "-" + 
-				DGraphParser.functionSimple("toto('id')")[1]);
-	}
 	
 	
 
