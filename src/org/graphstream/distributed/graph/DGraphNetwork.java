@@ -1,11 +1,12 @@
-	package graphstream.distributed.graph;
+	package org.graphstream.distributed.graph;
 
-import graphstream.distributed.common.DGraphParser;
-import graphstream.distributed.common.EnumUri;
-import graphstream.distributed.rmi.RMIDGraphAdapter;
-import graphstream.distributed.rmi.RMIHelper;
 
 import java.util.HashMap;
+
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumUri;
+import org.graphstream.distributed.rmi.RMIDGraphAdapter;
+import org.graphstream.distributed.rmi.RMIHelper;
 
 public class DGraphNetwork {
 

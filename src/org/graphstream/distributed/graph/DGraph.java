@@ -14,18 +14,18 @@
  * Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-package graphstream.distributed.graph;
+package org.graphstream.distributed.graph;
 
-import graphstream.distributed.common.DGraphParser;
-import graphstream.distributed.common.EnumEdge;
-import graphstream.distributed.common.EnumNode;
-import graphstream.distributed.common.EnumReg;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumEdge;
+import org.graphstream.distributed.common.EnumNode;
+import org.graphstream.distributed.common.EnumReg;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.GraphFactory;

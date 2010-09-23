@@ -1,4 +1,4 @@
-package graphstream.distributed.graph;
+package org.graphstream.distributed.graph;
 
 import java.util.HashMap;
 

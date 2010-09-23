@@ -1,14 +1,14 @@
-package graphstream.distributed.stream;
+package org.graphstream.distributed.stream;
 
-import graphstream.distributed.common.DGraphParser;
-import graphstream.distributed.common.EnumNode;
-import graphstream.distributed.graph.DGraphNetwork;
-import graphstream.distributed.rmi.RMIHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumNode;
+import org.graphstream.distributed.graph.DGraphNetwork;
+import org.graphstream.distributed.rmi.RMIHelper;
 import org.graphstream.stream.Sink;
 
 public class DGraphSink implements Sink {

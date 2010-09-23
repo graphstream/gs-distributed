@@ -1,4 +1,4 @@
-package graphstream.distributed.rmi;
+package org.graphstream.distributed.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

@@ -1,18 +1,17 @@
-package graphstream.distributed.test;
+package org.graphstream.distributed.test;
 
-import graphstream.distributed.common.DGraphParser;
-import graphstream.distributed.common.EnumReg;
-import graphstream.distributed.graph.DGraphNetwork;
-import graphstream.distributed.rmi.RMIDGraphAdapter;
-import graphstream.distributed.rmi.RMIHelper;
-import graphstream.distributed.stream.DGraphSink;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
+import org.graphstream.distributed.common.DGraphParser;
+import org.graphstream.distributed.common.EnumReg;
+import org.graphstream.distributed.graph.DGraphNetwork;
+import org.graphstream.distributed.rmi.RMIDGraphAdapter;
+import org.graphstream.distributed.rmi.RMIHelper;
+import org.graphstream.distributed.stream.DGraphSink;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.DefaultGraph;
 import org.graphstream.stream.file.FileSourceDGS1And2;
@@ -28,14 +27,46 @@ public class Test03 {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//test01();
-		testio();
+		test_01();
+		//test_io();
 		//parser();
 		//testSerialisation();
 	}
 
+	/*
+	 * Simple connection to 2 DGraph
+	 */
+	public static void test_01() {
+		//Déploiement des objets sur le serveur RMI
+		RMIHelper.bind("g1", "localhost");
+		RMIHelper.bind("g2", "localhost");
+		
+		//Création de la partie cliente
+		RMIDGraphAdapter g1 = RMIHelper.register("rmi://localhost:1099/g1");
+		RMIDGraphAdapter g2 = RMIHelper.register("rmi://localhost:1099/g2");
+		
+		try {
+			//initialisation des graphs
+			g1.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+			g2.exec("", "init", new Object[] {"DefaultGraph", new String[] {""}});
+			
+			//propagation des voisins
+			g1.exec(EnumReg.DGraphNetwork, "add", new Object[] {"rmi://localhost:1099/g2"});
+			g2.exec(EnumReg.DGraphNetwork, "add", new Object[] {"rmi://localhost:1099/g1"});
+			
+			g1.exec("DGraph", "addNode", new Object[] {"n1"});
+			g1.exec("DGraph", "addNode", new Object[] {"n2"});
+			
+			System.out.println("getNodeCount : "+ g1.exec("DGraph", "getNodeCount", new Object[] {}));
+			
+		}
+		catch(RemoteException e) {
+			System.out.println("return function : " + e.getMessage());
+		}
+	}
+	
 	//test01
-	public static void test01() {
+	public static void test_02() {
 		
 		Graph g = new DefaultGraph("");
 		//g.addNode("n1").addAttribute("att1",  "val1");
@@ -122,8 +153,10 @@ public class Test03 {
 		}	
 	}
 	
+	
+	
 	//testio
-	public static void testio() {
+	public static void test_io() {
 		try {
 		RMIHelper.bind("g1", "localhost");
 		RMIHelper.bind("g2", "localhost");
@@ -157,14 +190,7 @@ public class Test03 {
 		}
 	}
 
-	//parser
-	public static void parser() {
-		System.out.println("parser : " +
-				DGraphParser.functionSimple("toto('id')")[0] + "-" + 
-				DGraphParser.functionSimple("toto('id')")[1]);
-	}
-	
-	
+		
 	
 	
 

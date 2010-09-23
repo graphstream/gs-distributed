@@ -1,4 +1,4 @@
-package graphstream.distributed.common;
+package org.graphstream.distributed.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

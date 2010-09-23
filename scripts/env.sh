@@ -1,8 +1,5 @@
 #!/bin/sh
 
-#export JAVA_HOME='/usr/lib/jvm/java-6-sun'
-#PATH=$JAVA_HOME:$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
-
 GS_ROOT=/home/baudryj/workspace01
 
 GS_CORE=$GS_ROOT/gs-core2

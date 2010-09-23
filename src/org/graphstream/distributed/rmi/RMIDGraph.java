@@ -1,16 +1,17 @@
-package graphstream.distributed.rmi;
+package org.graphstream.distributed.rmi;
 
-import graphstream.distributed.common.DynamicHelper;
-import graphstream.distributed.common.EnumReg;
-import graphstream.distributed.graph.DGraph;
-import graphstream.distributed.graph.DGraphNetwork;
-import graphstream.distributed.graph.DGraphRequestManager;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.graphstream.distributed.common.DynamicHelper;
+import org.graphstream.distributed.common.EnumReg;
+import org.graphstream.distributed.graph.DGraph;
+import org.graphstream.distributed.graph.DGraphNetwork;
+import org.graphstream.distributed.graph.DGraphRequestManager;
 
 public class RMIDGraph extends UnicastRemoteObject implements RMIDGraphAdapter {
 
